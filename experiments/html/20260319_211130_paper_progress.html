@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>面向公共事件的多模态情绪驱动演化预测研究 - 研究进展</title>
+  <style>
+    :root {
+      --bg: #f5efe4;
+      --panel: rgba(255, 252, 247, 0.92);
+      --ink: #1d2433;
+      --muted: #5f6978;
+      --line: #d9cfbf;
+      --accent: #8f3d2e;
+      --accent-soft: #f6dfd7;
+      --gold: #c98d2b;
+      --shadow: 0 14px 36px rgba(48, 39, 26, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Georgia, "Noto Serif SC", serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 34%),
+        linear-gradient(180deg, #ece4d7 0%, var(--bg) 100%);
+    }
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+    .hero, .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+    }
+    .hero {
+      padding: 28px;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(246, 223, 215, 0.9), transparent 24%),
+        linear-gradient(135deg, rgba(255,251,244,0.95), rgba(245,236,224,0.88));
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 40px; line-height: 1.08; }
+    h2 { font-size: 26px; }
+    h3 { font-size: 18px; }
+    p { line-height: 1.7; margin: 0 0 12px; }
+    .sub { color: var(--muted); max-width: 900px; }
+    .meta-grid, .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .meta-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: start;
+    }
+    .card {
+      padding: 20px;
+      grid-column: span 12;
+    }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .spec-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.58);
+      border: 1px solid var(--line);
+    }
+    .spec-card h3 {
+      margin-bottom: 8px;
+    }
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.55);
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .stat-value {
+      margin-top: 8px;
+      font-size: 24px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .intro p:last-child,
+    .plan li:last-child,
+    .notes li:last-child { margin-bottom: 0; }
+    .section-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mono { font-family: "SFMono-Regular", Consolas, monospace; font-size: 14px; }
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+    li {
+      margin: 0 0 10px;
+      line-height: 1.65;
+    }
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: rgba(143, 61, 46, 0.06);
+      border: 1px solid rgba(143, 61, 46, 0.12);
+      border-radius: 16px;
+    }
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .figure-grid img {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+    .metric-guide {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .metric-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.56);
+      border: 1px solid var(--line);
+    }
+    .metric-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .mini {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .spec-grid { grid-template-columns: 1fr; }
+      .metric-guide { grid-template-columns: 1fr; }
+      .span-7, .span-5, .span-6 { grid-column: span 12; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Research Progress HTML</div>
+      <h1>面向公共事件的多模态情绪驱动演化预测研究</h1>
+      <p class="sub">根据研究目标与当前关键实验结果生成的论文式进展页，默认服务于主实验叙事。</p>
+      <div class="meta-grid">
+        <div class="stat">
+          <div class="stat-label">Current Stage</div>
+          <div class="stat-value">主实验优先</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Experiment Type</div>
+          <div class="stat-value">主实验</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Best Model</div>
+          <div class="stat-value">structure_baseline</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card span-7 intro">
+        <div class="section-tag">Introduction Prototype</div>
+        <h2>研究引言原型</h2>
+        <p>本研究面向公共事件线程中的群体情绪演化预测，目标是在早期观测阶段利用文本、时间与传播结构线索，对后续窗口中的群体情绪走势进行前瞻预测。当前主任务围绕 以 future_neg_ratio 为主任务，预测未来窗口中的负面情绪比例 展开，并以 PHEME 作为第一阶段 benchmark 重构与验证的主要数据基础。</p><p>当前结果首先支持了任务本身的可做性：最佳 MAE 模型为 structure_baseline，其 MAE=0.1339，相对文本基线的改进幅度为 0.0184；但最佳 RMSE 模型是 affect_state_forecaster，说明结构基线在点预测平均误差上更强，而 Affect-State Forecaster 在极端误差控制上呈现局部优势。再结合当前相关性最优模型为 structure_baseline，更稳妥的叙事应是“多模态 affect-state 路线仍值得在公平容量下继续诊断”，而不是直接宣称方法已经稳定领先。</p>
+      </section>
+
+      <section class="card span-5">
+        <div class="section-tag">Evidence Snapshot</div>
+        <h2>关键结果信号</h2>
+        <ul class="notes">
+          <li>当前 MAE 最优模型：<span class='mono'>structure_baseline</span>，MAE=0.1339。</li><li>当前 RMSE 最优模型：<span class='mono'>affect_state_forecaster</span>，RMSE=0.1874。</li><li>相对文本基线的 MAE 改进：0.0184。</li><li>`affect_state_forecaster` 相对结构基线的 MAE 差：-0.0124。</li><li>`affect_state_forecaster` 相对时序基线的 MAE 差：0.0298。</li><li>当前相关性最优模型：<span class='mono'>structure_baseline</span>。</li><li>当前证据状态：diagnostic_needed。</li><li>主要风险：当前最优模型不是 affect_state_forecaster，方法主线仍需诊断。</li>
+        </ul>
+      </section>
+
+      <section class="card span-12">
+        <div class="section-tag">Model Card</div>
+        <h2>当前模型架构与 I/O</h2>
+        <div class="spec-grid">
+          <section class="spec-card">
+            <h3>模型架构</h3>
+            <p>Affect-State Forecaster 采用“输入编码层 -&gt; 时序聚合层 -&gt; affect-state 中间层 -&gt; 未来预测层”的四段式结构，先估计当前群体 affect state，再进行未来情绪预测。</p>
+          </section>
+          <section class="spec-card">
+            <h3>输入</h3>
+            <p>输入包括 source text、reply texts、timestamps、reply tree / propagation structure，并允许后续扩展图像或外部事件上下文。</p>
+          </section>
+          <section class="spec-card">
+            <h3>输出</h3>
+            <p>主输出为 future_neg_ratio，即未来窗口中的负面情绪比例；扩展任务输出为未来情绪分布 ([p_neg, p_neu, p_pos])。</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <div class="section-tag">Current Progress</div>
+        <h2>当前实验进展</h2>
+        <p>当前主实验呈现指标分裂：structure 在平均误差上更优，而 ASF 在大误差惩罚上更稳，因此需要用容量对齐实验继续诊断。</p>
+        <div class="metric-guide">
+          <section class='metric-item'><strong>MAE</strong><span>平均绝对误差，反映平均偏差大小。越低越好。</span></section><section class='metric-item'><strong>RMSE</strong><span>均方根误差，对大误差更敏感。越低越好。</span></section><section class='metric-item'><strong>Pearson</strong><span>线性相关性，越接近 1 越说明预测值与真实值线性同步。越高越好。</span></section><section class='metric-item'><strong>Spearman</strong><span>秩相关性，越接近 1 越说明排序趋势一致。越高越好。</span></section>
+        </div>
+        <h3>Table 1. 当前主实验（默认配置）</h3><table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>2.58M</td><td class='mono'>MAE=0.1523, RMSE=0.2243, Pearson=-0.1994, Spearman=-0.1170</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>2.71M</td><td class='mono'>MAE=0.1762, RMSE=0.2321, Pearson=-0.1444, Spearman=-0.0289</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>2.60M</td><td class='mono'>MAE=0.1339, RMSE=0.1948, Pearson=-0.2422, Spearman=0.0718</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>5.37M</td><td class='mono'>MAE=0.1174, RMSE=0.1729, Pearson=-0.0473, Spearman=0.1964</td></tr></tbody></table>
+        <h3>Table 2. 参数量对齐结果</h3><table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>2.58M</td><td class='mono'>MAE=0.1523, RMSE=0.2243, Pearson=-0.1994, Spearman=-0.1170</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>2.71M</td><td class='mono'>MAE=0.1762, RMSE=0.2321, Pearson=-0.1444, Spearman=-0.0289</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>2.60M</td><td class='mono'>MAE=0.1339, RMSE=0.1948, Pearson=-0.2422, Spearman=0.0718</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>2.62M</td><td class='mono'>MAE=0.1464, RMSE=0.1874, Pearson=-0.2094, Spearman=-0.0894</td></tr></tbody></table>
+        <div class="note">
+          <strong>结果解释：</strong> 当前结果存在 MAE/RMSE 分裂：structure_baseline 的平均误差最低，而 affect_state_forecaster 对大误差更稳。这通常意味着两类模型分别擅长“均值拟合”与“极端误差控制”，不能只靠单一指标下结论。
+        </div>
+        <div class="note">
+          <strong>Metric Reading：</strong> structure_baseline 的 MAE 更低，但 affect_state_forecaster 的 RMSE 更低，说明平均误差与极端误差控制分裂。 structure_baseline 的相关性偏弱，说明它虽然误差较低，但未必学到了稳定的排序关系。 affect_state_forecaster 的相关性仍不够稳，需要结合容量对齐和校准诊断一起解释。
+        </div>
+        <div class="note">
+          <strong>事件级摘要：</strong> 按当前事件级结果，structure_baseline 在 prince-toronto、putinmissing、sydneysiege 上的平均误差更稳；affect_state_forecaster 在 putinmissing、sydneysiege 上更能控制极端误差。
+        </div>
+        <div class='figure-grid'><img src='../figures/import_20260319_211003_capacity_matched_main_matched_ratio_trends.png' alt='import_20260319_211003_capacity_matched_main_matched_ratio_trends' /><img src='../figures/import_20260319_211003_capacity_matched_main_matched_event_errors.png' alt='import_20260319_211003_capacity_matched_main_matched_event_errors' /><img src='../figures/import_20260319_211003_capacity_matched_main_matched_model_metrics.png' alt='import_20260319_211003_capacity_matched_main_matched_model_metrics' /></div>
+      </section>
+
+      <section class="card span-12">
+        <div class="section-tag">Next Experiment Plan</div>
+        <h2>下一步实验计划</h2>
+        <ul class="plan">
+          <li>先做参数量对齐实验，以 structure_baseline 为容量锚点，检查 ASF 在公平容量下是否仍保留 RMSE 或趋势优势。</li><li>补充残差分位统计和事件级 head-to-head，对“平均误差更优”与“极端误差更稳”的分裂现象做诊断。</li><li>若对齐后 ASF 仍未在 MAE 上领先，则收缩论文叙事，避免把优势过早归因于 affect-state 建模。</li>
+        </ul>
+      </section>
+    </section>
+  </div>
+</body>
+</html>

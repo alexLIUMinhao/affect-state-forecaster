@@ -68,7 +68,7 @@ OVERRIDABLE_MODEL_ARGS = (
 
 
 def load_model_configs(path: Path) -> dict[str, dict[str, object]]:
-    if not str(path) or not path.exists():
+    if not str(path) or str(path) == "." or not path.exists() or path.is_dir():
         return {}
     with path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
