@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+.pycache/
+*.py[cod]
+*.so
+.Python
+.venv/
+venv/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+
+# Data artifacts
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+artifacts/
+outputs/
+*.tar.bz2
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Tooling
+.DS_Store
+.pytest_cache/
+.mypy_cache/
+.coverage
