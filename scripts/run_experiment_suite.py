@@ -63,6 +63,7 @@ OVERRIDABLE_MODEL_ARGS = (
     "disable_temporal",
     "disable_structure",
     "disable_affect_state",
+    "fusion_variant",
     "capacity_group",
 )
 

@@ -24,6 +24,7 @@ ratio_sweep = load_module("scripts/run_ratio_sweep.py", "run_ratio_sweep")
 cross_event = load_module("scripts/run_cross_event_suite.py", "run_cross_event_suite")
 labeler_robustness = load_module("scripts/run_labeler_robustness_suite.py", "run_labeler_robustness_suite")
 capacity_matched = load_module("scripts/run_capacity_matched_suite.py", "run_capacity_matched_suite")
+fusion_diagnostic = load_module("scripts/run_fusion_diagnostic_suite.py", "run_fusion_diagnostic_suite")
 
 
 class ExperimentEntrypointTests(unittest.TestCase):
@@ -73,6 +74,14 @@ class ExperimentEntrypointTests(unittest.TestCase):
         gap_ratio = abs(matched["param_count"] - target) / target
         self.assertLessEqual(gap_ratio, 0.05)
         self.assertLess(matched["hidden_dim"], 128)
+
+    def test_fusion_diagnostic_includes_gate_variants(self) -> None:
+        variants = fusion_diagnostic.variant_matrix()
+        variant_names = {name for _model, name, _overrides in variants}
+        self.assertIn("asf_scalar_gate", variant_names)
+        self.assertIn("asf_vector_gate", variant_names)
+        self.assertIn("asf_softmax_router", variant_names)
+        self.assertIn("structure_baseline", {model for model, _name, _overrides in variants})
 
 
 if __name__ == "__main__":

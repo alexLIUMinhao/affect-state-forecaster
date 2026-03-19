@@ -138,17 +138,27 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
             if len(figure_candidates) == 3:
                 break
 
+    base_results: dict[str, Any] | None = None
     summary_candidates = sorted(records_root.glob("*capacity_summary.csv"), key=slug_sort_key, reverse=True)
     if summary_candidates:
-        return collect_capacity_summary_results(summary_candidates[0], figure_candidates)
+        base_results = collect_capacity_summary_results(summary_candidates[0], figure_candidates)
+    else:
+        latest_main_summary = records_root / "latest_main_results.csv"
+        if latest_main_summary.exists():
+            base_results = collect_capacity_summary_results(latest_main_summary, figure_candidates)
+        else:
+            manifest_path = select_main_manifest(manifests_root)
+            if manifest_path:
+                base_results = collect_manifest_results(manifest_path, figure_candidates)
 
-    latest_main_summary = records_root / "latest_main_results.csv"
-    if latest_main_summary.exists():
-        return collect_capacity_summary_results(latest_main_summary, figure_candidates)
-
-    manifest_path = select_main_manifest(manifests_root)
-    if manifest_path:
-        return collect_manifest_results(manifest_path, figure_candidates)
+    fusion_candidates = sorted(records_root.glob("*fusion_diagnostic_summary.csv"), key=slug_sort_key, reverse=True)
+    if base_results and fusion_candidates:
+        base_results["fusion_diagnostic"] = collect_fusion_diagnostic_results(fusion_candidates[0])
+        base_results["tables"].append(build_fusion_table(base_results["fusion_diagnostic"]))
+        base_results["source_label"] = f"{base_results['source_label']} + {fusion_candidates[0].name}"
+        return base_results
+    if base_results:
+        return base_results
 
     outputs_root = project_root / "outputs"
     models: dict[str, dict[str, Any]] = {}
@@ -177,6 +187,7 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
         "current_group": "default",
         "figures": figure_candidates,
         "source_label": "outputs",
+        "fusion_diagnostic": None,
     }
 
 
@@ -228,6 +239,7 @@ def collect_manifest_results(manifest_path: Path, figure_candidates: list[str]) 
         "current_group": "default",
         "figures": figure_candidates,
         "source_label": manifest_path.name,
+        "fusion_diagnostic": None,
     }
 
 
@@ -279,6 +291,62 @@ def collect_capacity_summary_results(summary_path: Path, figure_candidates: list
         "current_group": current_group,
         "figures": figure_candidates,
         "source_label": summary_path.name,
+        "fusion_diagnostic": None,
+    }
+
+
+def collect_fusion_diagnostic_results(summary_path: Path) -> dict[str, Any]:
+    rows = read_csv_rows(summary_path)
+    variants: list[dict[str, Any]] = []
+    for row in rows:
+        variants.append(
+            {
+                "model_name": row.get("model_name", ""),
+                "fusion_variant": row.get("fusion_variant", ""),
+                "param_count": int(float(row["param_count"])) if row.get("param_count") not in {"", None} else None,
+                "metrics": {
+                    "mae": to_float(row.get("mae")),
+                    "rmse": to_float(row.get("rmse")),
+                    "pearson": to_float(row.get("pearson")),
+                    "spearman": to_float(row.get("spearman")),
+                },
+                "gate_means": {
+                    "source": to_float(row.get("gate_source_mean")),
+                    "temporal": to_float(row.get("gate_temporal_mean")),
+                    "structure": to_float(row.get("gate_structure_mean")),
+                },
+            }
+        )
+    return {"summary_path": str(summary_path), "variants": variants}
+
+
+def build_fusion_table(fusion_results: dict[str, Any]) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    for item in fusion_results.get("variants", []):
+        gate = item.get("gate_means", {})
+        rows.append(
+            {
+                "variant": item.get("fusion_variant", ""),
+                "model_name": item.get("model_name", ""),
+                "param_count": item.get("param_count"),
+                "metric_text": (
+                    f"MAE={format_metric(item['metrics'].get('mae'))}, "
+                    f"RMSE={format_metric(item['metrics'].get('rmse'))}, "
+                    f"Pearson={format_metric(item['metrics'].get('pearson'))}, "
+                    f"Spearman={format_metric(item['metrics'].get('spearman'))}"
+                ),
+                "gate_text": (
+                    f"source={format_metric(gate.get('source'))}, "
+                    f"temporal={format_metric(gate.get('temporal'))}, "
+                    f"structure={format_metric(gate.get('structure'))}"
+                ),
+            }
+        )
+    return {
+        "key": "fusion_diagnostic",
+        "title": "Table 3. 融合筛选诊断结果",
+        "headers": ["Variant", "Model", "Params", "Metrics", "Gate Means"],
+        "rows": rows,
     }
 
 
@@ -311,8 +379,10 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
     latest = sorted(candidates, key=slug_sort_key, reverse=True)[0]
     page = read_text(latest)
 
-    row_matches = re.findall(r"<tr><td>([^<]+)</td><td>([^<]+)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td><td>([^<]*)</td></tr>", page)
-    for model_name, _status, mae, rmse, pearson, spearman in row_matches:
+    row_matches = re.findall(r"<tr><td>([^<]+)</td><td>([^<]+)</td><td>([^<]*)</td><td(?: class='mono')?>([^<]*)</td><td(?: class='mono')?>([^<]*)</td></tr>", page)
+    for first_col, second_col, third_col, _params_or_metric, metrics_cell in row_matches:
+        model_name = third_col if third_col and third_col != "—" else second_col
+        parsed = parse_metrics_cell(metrics_cell)
         models[model_name] = {
             "model": model_name,
             "dataset": "PHEME",
@@ -320,10 +390,10 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
             "capacity_group": "default",
             "event_metrics": [],
             "metrics": {
-                "mae": to_float(mae),
-                "rmse": to_float(rmse),
-                "pearson": to_float(pearson),
-                "spearman": to_float(spearman),
+                "mae": parsed.get("mae"),
+                "rmse": parsed.get("rmse"),
+                "pearson": parsed.get("pearson"),
+                "spearman": parsed.get("spearman"),
             },
         }
 
@@ -335,6 +405,7 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
         "current_group": "default",
         "figures": figures,
         "source_label": latest.name,
+        "fusion_diagnostic": None,
     }
 
 
@@ -433,6 +504,48 @@ def compute_evidence(results: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def compute_reason_diagnosis(results: dict[str, Any], evidence: dict[str, Any]) -> list[dict[str, str]]:
+    fusion = results.get("fusion_diagnostic") or {}
+    variants = fusion.get("variants", [])
+    asf_full = next((item for item in variants if item.get("fusion_variant") == "full"), None)
+    best_gate = None
+    for item in variants:
+        if item.get("model_name") != "affect_state_forecaster" or item.get("fusion_variant") == "full":
+            continue
+        if best_gate is None or (item["metrics"].get("mae") or float("inf")) < (best_gate["metrics"].get("mae") or float("inf")):
+            best_gate = item
+
+    fusion_status = "待进一步验证"
+    fusion_reason = "当前还没有门控变体结果，暂时只能依据已有消融猜测融合筛选问题。"
+    if asf_full and best_gate:
+        full_mae = asf_full["metrics"].get("mae")
+        full_rmse = asf_full["metrics"].get("rmse")
+        gate_mae = best_gate["metrics"].get("mae")
+        gate_rmse = best_gate["metrics"].get("rmse")
+        gate_corr = max(best_gate["metrics"].get("pearson") or -1.0, best_gate["metrics"].get("spearman") or -1.0)
+        full_corr = max(asf_full["metrics"].get("pearson") or -1.0, asf_full["metrics"].get("spearman") or -1.0)
+        if gate_mae is not None and full_mae is not None and gate_mae < full_mae and (full_rmse is None or gate_rmse is None or gate_rmse <= full_rmse + 0.01):
+            fusion_status = "当前证据最强"
+            fusion_reason = f"最佳门控变体 {best_gate['fusion_variant']} 优于 asf_full，说明问题更像是筛选机制缺失，而不是多模态本身无效。"
+        elif gate_corr > full_corr:
+            fusion_status = "部分成立"
+            fusion_reason = f"最佳门控变体 {best_gate['fusion_variant']} 主要改善相关性，说明筛选机制可能更影响趋势保持而非点误差。"
+        else:
+            fusion_status = "待削弱"
+            fusion_reason = "现有门控变体没有稳定优于 asf_full，融合筛选问题仍需谨慎判断。"
+
+    capacity_status = "部分成立"
+    capacity_reason = "容量对齐后 ASF 明显变弱，说明多模态表征确实受模型容量影响，但这不足以单独解释全部现象。"
+    other_status = "待进一步验证"
+    other_reason = "若门控变体依然没有收益，下一步应转向目标建模、排序学习和弱标签噪声诊断。"
+
+    return [
+        {"title": "容量因素", "status": capacity_status, "reason": capacity_reason},
+        {"title": "融合筛选问题", "status": fusion_status, "reason": fusion_reason},
+        {"title": "其他问题", "status": other_status, "reason": other_reason},
+    ]
+
+
 def build_introduction(context: dict[str, str], evidence: dict[str, Any]) -> list[str]:
     dataset = context["dataset"]
     method = context["method"]
@@ -459,7 +572,17 @@ def build_introduction(context: dict[str, str], evidence: dict[str, Any]) -> lis
             f"{format_metric(ours_vs_temporal)}，因此现阶段可以把论文叙事重心放在“情绪状态作为中间驱动变量”的有效性上。"
         )
     elif status in {"diagnostic_needed", "task_supported"}:
-        if best_model == "structure_baseline" and best_rmse_model == "affect_state_forecaster":
+        if evidence.get("fusion_diagnosis_status") == "当前证据最强":
+            paragraph_two = (
+                f"当前主任务已经证明多模态信息并非天然无效，但新增诊断更倾向于说明问题不在多模态本身，而在缺少信息筛选机制。"
+                f"在保持任务与训练设置不变的前提下，门控筛选变体相对 asf_full 出现改进，说明当前直接融合可能把无效或冲突线索一并送入预测路径。"
+            )
+        elif evidence.get("fusion_diagnosis_status") == "待削弱":
+            paragraph_two = (
+                f"当前结果首先支持了任务本身的可做性，但门控筛选变体并没有稳定优于 asf_full。"
+                f"这说明当前瓶颈更可能来自目标建模、标签噪声或优化方式，而不是简单的融合策略本身。"
+            )
+        elif best_model == "structure_baseline" and best_rmse_model == "affect_state_forecaster":
             paragraph_two = (
                 f"当前结果首先支持了任务本身的可做性：最佳 MAE 模型为 {best_model}，其 MAE={format_metric(evidence['best_mae'])}，"
                 f"相对文本基线的改进幅度为 {format_metric(mae_gain)}；但最佳 RMSE 模型是 {best_rmse_model}，"
@@ -566,12 +689,35 @@ def render_table(context: dict[str, str], table: dict[str, Any]) -> str:
     )
 
 
+def render_custom_table(table: dict[str, Any]) -> str:
+    headers = table.get("headers", [])
+    rows = table.get("rows", [])
+    header_html = "".join(f"<th>{html.escape(header)}</th>" for header in headers)
+    row_html = "".join(
+        "<tr>"
+        f"<td>{html.escape(str(row.get('variant', '')))}</td>"
+        f"<td>{html.escape(str(row.get('model_name', '')))}</td>"
+        f"<td class='mono'>{html.escape(format_param_count(row.get('param_count')) if row.get('param_count') is not None else 'TODO')}</td>"
+        f"<td class='mono'>{html.escape(str(row.get('metric_text', '')))}</td>"
+        f"<td class='mono'>{html.escape(str(row.get('gate_text', '')))}</td>"
+        "</tr>"
+        for row in rows
+    )
+    return (
+        f"<h3>{html.escape(table.get('title', 'Table'))}</h3>"
+        "<table>"
+        f"<thead><tr>{header_html}</tr></thead>"
+        f"<tbody>{row_html}</tbody>"
+        "</table>"
+    )
+
+
 def build_table_html(context: dict[str, str], results: dict[str, Any]) -> tuple[str, str]:
     tables = results.get("tables", [])
     if not tables:
         return render_table(context, {"title": "Table 1. 当前主实验（默认配置）", "models": results.get("models", {})}), ""
-    primary = render_table(context, tables[0])
-    secondary = "".join(render_table(context, table) for table in tables[1:])
+    primary = render_custom_table(tables[0]) if tables[0].get("rows") else render_table(context, tables[0])
+    secondary = "".join(render_custom_table(table) if table.get("rows") else render_table(context, table) for table in tables[1:])
     return primary, secondary
 
 
@@ -664,6 +810,18 @@ def build_metric_guide_html() -> str:
 
 
 def build_next_plan(evidence: dict[str, Any]) -> list[str]:
+    if evidence.get("fusion_diagnosis_status") == "当前证据最强":
+        return [
+            "保留表现最好的 1-2 个门控变体，并追加一轮对齐到 structure_baseline 的容量控制实验。",
+            "记录门控均值与事件级误差，确认增益来自信息筛选而不是偶然拟合。",
+            "若公平容量下收益仍成立，再把论文叙事升级为“问题在筛选机制而非多模态本身”。",
+        ]
+    if evidence.get("fusion_diagnosis_status") == "待削弱":
+        return [
+            "暂停继续设计更多融合结构，转向目标建模、标签噪声和排序学习诊断。",
+            "补充预测值分布、残差分位和按事件相关性分析，确认是否存在均值化或排序失效问题。",
+            "若这些分析给出清晰异常，再针对损失函数或标签质量设计下一轮实验。",
+        ]
     if evidence["best_mae_model"] != evidence["best_rmse_model"]:
         return [
             "先做参数量对齐实验，以 structure_baseline 为容量锚点，检查 ASF 在公平容量下是否仍保留 RMSE 或趋势优势。",
@@ -710,6 +868,11 @@ def generate_html(args: argparse.Namespace) -> tuple[str, dict[str, Any], dict[s
     context = derive_idea_context(idea_text)
     results = select_result_source(PROJECT_ROOT, args.experiments_root, args.result_source)
     evidence = compute_evidence(results)
+    reason_diagnosis = compute_reason_diagnosis(results, evidence)
+    evidence["fusion_diagnosis_status"] = next(
+        (item["status"] for item in reason_diagnosis if item["title"] == "融合筛选问题"),
+        "待进一步验证",
+    )
 
     introduction = build_introduction(context, evidence)
     signals = build_signal_items(evidence)
@@ -731,6 +894,14 @@ def generate_html(args: argparse.Namespace) -> tuple[str, dict[str, Any], dict[s
         "output_text": html.escape(context["output"]),
         "progress_summary": html.escape(build_progress_summary(evidence)),
         "metric_guide_html": build_metric_guide_html(),
+        "reason_diagnosis_html": "".join(
+            "<section class='diagnosis-card'>"
+            f"<h3>{html.escape(item['title'])}</h3>"
+            f"<p>{html.escape(item['reason'])}</p>"
+            f"<span class='diagnosis-status'>{html.escape(item['status'])}</span>"
+            "</section>"
+            for item in reason_diagnosis
+        ),
         "table_html": table_html,
         "secondary_tables_html": secondary_tables_html,
         "table_note": html.escape(build_table_note(evidence)),

@@ -185,6 +185,28 @@
       display: block;
       margin-bottom: 6px;
     }
+    .diagnosis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .diagnosis-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+    }
+    .diagnosis-status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
     .mini {
       color: var(--muted);
       font-size: 14px;
@@ -193,6 +215,7 @@
       .meta-grid { grid-template-columns: 1fr; }
       .spec-grid { grid-template-columns: 1fr; }
       .metric-guide { grid-template-columns: 1fr; }
+      .diagnosis-grid { grid-template-columns: 1fr; }
       .span-7, .span-5, .span-6 { grid-column: span 12; }
       h1 { font-size: 32px; }
     }
@@ -261,6 +284,9 @@
         <div class="metric-guide">
           <section class='metric-item'><strong>MAE</strong><span>平均绝对误差，反映平均偏差大小。越低越好。</span></section><section class='metric-item'><strong>RMSE</strong><span>均方根误差，对大误差更敏感。越低越好。</span></section><section class='metric-item'><strong>Pearson</strong><span>线性相关性，越接近 1 越说明预测值与真实值线性同步。越高越好。</span></section><section class='metric-item'><strong>Spearman</strong><span>秩相关性，越接近 1 越说明排序趋势一致。越高越好。</span></section>
         </div>
+        <div class="diagnosis-grid">
+          <section class='diagnosis-card'><h3>容量因素</h3><p>容量对齐后 ASF 明显变弱，说明多模态表征确实受模型容量影响，但这不足以单独解释全部现象。</p><span class='diagnosis-status'>部分成立</span></section><section class='diagnosis-card'><h3>融合筛选问题</h3><p>当前还没有门控变体结果，暂时只能依据已有消融猜测融合筛选问题。</p><span class='diagnosis-status'>待进一步验证</span></section><section class='diagnosis-card'><h3>其他问题</h3><p>若门控变体依然没有收益，下一步应转向目标建模、排序学习和弱标签噪声诊断。</p><span class='diagnosis-status'>待进一步验证</span></section>
+        </div>
         <h3>Table 1. 当前主实验（默认配置）</h3><table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>2.58M</td><td class='mono'>MAE=0.1523, RMSE=0.2243, Pearson=-0.1994, Spearman=-0.1170</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>2.71M</td><td class='mono'>MAE=0.1762, RMSE=0.2321, Pearson=-0.1444, Spearman=-0.0289</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>2.60M</td><td class='mono'>MAE=0.1339, RMSE=0.1948, Pearson=-0.2422, Spearman=0.0718</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>5.37M</td><td class='mono'>MAE=0.1174, RMSE=0.1729, Pearson=-0.0473, Spearman=0.1964</td></tr></tbody></table>
         <h3>Table 2. 参数量对齐结果</h3><table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>2.58M</td><td class='mono'>MAE=0.1523, RMSE=0.2243, Pearson=-0.1994, Spearman=-0.1170</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>2.71M</td><td class='mono'>MAE=0.1762, RMSE=0.2321, Pearson=-0.1444, Spearman=-0.0289</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>2.60M</td><td class='mono'>MAE=0.1339, RMSE=0.1948, Pearson=-0.2422, Spearman=0.0718</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>2.62M</td><td class='mono'>MAE=0.1464, RMSE=0.1874, Pearson=-0.2094, Spearman=-0.0894</td></tr></tbody></table>
         <div class="note">
@@ -272,7 +298,7 @@
         <div class="note">
           <strong>事件级摘要：</strong> 按当前事件级结果，structure_baseline 在 prince-toronto、putinmissing、sydneysiege 上的平均误差更稳；affect_state_forecaster 在 putinmissing、sydneysiege 上更能控制极端误差。
         </div>
-        <div class='figure-grid'><img src='../figures/import_20260319_211003_capacity_matched_main_matched_ratio_trends.png' alt='import_20260319_211003_capacity_matched_main_matched_ratio_trends' /><img src='../figures/import_20260319_211003_capacity_matched_main_matched_event_errors.png' alt='import_20260319_211003_capacity_matched_main_matched_event_errors' /><img src='../figures/import_20260319_211003_capacity_matched_main_matched_model_metrics.png' alt='import_20260319_211003_capacity_matched_main_matched_model_metrics' /></div>
+        <div class='figure-grid'><img src='../figures/20260319_211003_capacity_matched_main_matched_ratio_trends.png' alt='20260319_211003_capacity_matched_main_matched_ratio_trends' /><img src='../figures/20260319_211003_capacity_matched_main_matched_model_metrics.png' alt='20260319_211003_capacity_matched_main_matched_model_metrics' /><img src='../figures/20260319_211003_capacity_matched_main_matched_event_errors.png' alt='20260319_211003_capacity_matched_main_matched_event_errors' /></div>
       </section>
 
       <section class="card span-12">

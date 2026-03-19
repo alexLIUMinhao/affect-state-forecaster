@@ -31,11 +31,13 @@ class AffectStateForecaster(nn.Module):
         disable_temporal: bool = False,
         disable_structure: bool = False,
         disable_affect_state: bool = False,
+        fusion_variant: str = "full",
     ):
         super().__init__()
         self.disable_temporal = disable_temporal
         self.disable_structure = disable_structure
         self.disable_affect_state = disable_affect_state
+        self.fusion_variant = fusion_variant
         self.reply_encoder = HashingTextEncoder(
             vocab_size=vocab_size,
             embedding_dim=hidden_dim,
@@ -64,6 +66,12 @@ class AffectStateForecaster(nn.Module):
             nn.GELU(),
             nn.Dropout(dropout),
         )
+        self.source_scalar_gate = nn.Linear(hidden_dim, 1)
+        self.temporal_scalar_gate = nn.Linear(hidden_dim, 1)
+        self.structure_scalar_gate = nn.Linear(hidden_dim, 1)
+        self.source_vector_gate = nn.Linear(hidden_dim, hidden_dim)
+        self.temporal_vector_gate = nn.Linear(hidden_dim, hidden_dim)
+        self.structure_vector_gate = nn.Linear(hidden_dim, hidden_dim)
         self.affect_state_head = nn.Sequential(
             nn.LayerNorm(hidden_dim),
             nn.Linear(hidden_dim, hidden_dim),
@@ -85,6 +93,70 @@ class AffectStateForecaster(nn.Module):
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, 3),
         )
+
+    def _apply_fusion_gates(
+        self,
+        source_encoding: torch.Tensor,
+        temporal_encoding: torch.Tensor,
+        tree_encoding: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        batch_size = source_encoding.size(0)
+        device = source_encoding.device
+        ones = torch.ones(batch_size, 3, device=device)
+
+        if self.fusion_variant == "full":
+            return source_encoding, temporal_encoding, tree_encoding, ones
+
+        if self.fusion_variant == "scalar_gate":
+            source_gate = torch.sigmoid(self.source_scalar_gate(source_encoding))
+            temporal_gate = torch.sigmoid(self.temporal_scalar_gate(temporal_encoding))
+            structure_gate = torch.sigmoid(self.structure_scalar_gate(tree_encoding))
+            gate_summary = torch.cat([source_gate, temporal_gate, structure_gate], dim=1)
+            return source_encoding * source_gate, temporal_encoding * temporal_gate, tree_encoding * structure_gate, gate_summary
+
+        if self.fusion_variant == "vector_gate":
+            source_gate = torch.sigmoid(self.source_vector_gate(source_encoding))
+            temporal_gate = torch.sigmoid(self.temporal_vector_gate(temporal_encoding))
+            structure_gate = torch.sigmoid(self.structure_vector_gate(tree_encoding))
+            gate_summary = torch.stack(
+                [source_gate.mean(dim=1), temporal_gate.mean(dim=1), structure_gate.mean(dim=1)],
+                dim=1,
+            )
+            return source_encoding * source_gate, temporal_encoding * temporal_gate, tree_encoding * structure_gate, gate_summary
+
+        if self.fusion_variant == "softmax_router":
+            router_scores = torch.cat(
+                [
+                    self.source_scalar_gate(source_encoding),
+                    self.temporal_scalar_gate(temporal_encoding),
+                    self.structure_scalar_gate(tree_encoding),
+                ],
+                dim=1,
+            )
+            gate_summary = torch.softmax(router_scores, dim=1)
+            return (
+                source_encoding * gate_summary[:, 0:1],
+                temporal_encoding * gate_summary[:, 1:2],
+                tree_encoding * gate_summary[:, 2:3],
+                gate_summary,
+            )
+
+        if self.fusion_variant == "structure_gate_only":
+            structure_gate = torch.sigmoid(self.structure_scalar_gate(tree_encoding))
+            gate_summary = torch.cat([torch.ones_like(structure_gate), torch.ones_like(structure_gate), structure_gate], dim=1)
+            return source_encoding, temporal_encoding, tree_encoding * structure_gate, gate_summary
+
+        if self.fusion_variant == "source_gate_only":
+            source_gate = torch.sigmoid(self.source_scalar_gate(source_encoding))
+            gate_summary = torch.cat([source_gate, torch.ones_like(source_gate), torch.ones_like(source_gate)], dim=1)
+            return source_encoding * source_gate, temporal_encoding, tree_encoding, gate_summary
+
+        if self.fusion_variant == "reply_gate_only":
+            temporal_gate = torch.sigmoid(self.temporal_scalar_gate(temporal_encoding))
+            gate_summary = torch.cat([torch.ones_like(temporal_gate), temporal_gate, torch.ones_like(temporal_gate)], dim=1)
+            return source_encoding, temporal_encoding * temporal_gate, tree_encoding, gate_summary
+
+        raise ValueError(f"Unsupported fusion_variant: {self.fusion_variant}")
         self.future_regressor = nn.Sequential(
             nn.LayerNorm(affect_state_dim),
             nn.Linear(affect_state_dim, hidden_dim),
@@ -158,16 +230,23 @@ class AffectStateForecaster(nn.Module):
             temporal_encoding = torch.zeros_like(temporal_encoding)
         if self.disable_structure:
             tree_encoding = torch.zeros_like(tree_encoding)
+        source_encoding, temporal_encoding, tree_encoding, gate_summary = self._apply_fusion_gates(
+            source_encoding,
+            temporal_encoding,
+            tree_encoding,
+        )
         fused_encoding = self.fusion(torch.cat([source_encoding, temporal_encoding, tree_encoding], dim=1))
         if self.disable_affect_state:
             return {
                 "predicted_current_affect_state": fused_encoding,
                 "predicted_future_neg_ratio": self.direct_regressor(fused_encoding).squeeze(-1),
                 "predicted_future_majority_logits": self.direct_classifier(fused_encoding),
+                "fusion_gate_means": gate_summary,
             }
         predicted_current_affect_state = self.affect_state_head(fused_encoding)
         return {
             "predicted_current_affect_state": predicted_current_affect_state,
             "predicted_future_neg_ratio": self.future_regressor(predicted_current_affect_state).squeeze(-1),
             "predicted_future_majority_logits": self.future_classifier(predicted_current_affect_state),
+            "fusion_gate_means": gate_summary,
         }

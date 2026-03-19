@@ -185,6 +185,28 @@
       display: block;
       margin-bottom: 6px;
     }
+    .diagnosis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .diagnosis-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+    }
+    .diagnosis-status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
     .mini {
       color: var(--muted);
       font-size: 14px;
@@ -193,6 +215,7 @@
       .meta-grid { grid-template-columns: 1fr; }
       .spec-grid { grid-template-columns: 1fr; }
       .metric-guide { grid-template-columns: 1fr; }
+      .diagnosis-grid { grid-template-columns: 1fr; }
       .span-7, .span-5, .span-6 { grid-column: span 12; }
       h1 { font-size: 32px; }
     }
@@ -260,6 +283,9 @@
         <p>${progress_summary}</p>
         <div class="metric-guide">
           ${metric_guide_html}
+        </div>
+        <div class="diagnosis-grid">
+          ${reason_diagnosis_html}
         </div>
         ${table_html}
         ${secondary_tables_html}

@@ -38,6 +38,7 @@ def build_model(
     disable_temporal: bool = False,
     disable_structure: bool = False,
     disable_affect_state: bool = False,
+    fusion_variant: str = "full",
 ) -> nn.Module:
     if name == "text_baseline":
         return TextBaseline(hidden_dim=hidden_dim, vocab_size=vocab_size, dropout=dropout)
@@ -54,6 +55,7 @@ def build_model(
             disable_temporal=disable_temporal,
             disable_structure=disable_structure,
             disable_affect_state=disable_affect_state,
+            fusion_variant=fusion_variant,
         )
     raise ValueError(f"Unknown model: {name}")
 
@@ -245,6 +247,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable_temporal", action="store_true")
     parser.add_argument("--disable_structure", action="store_true")
     parser.add_argument("--disable_affect_state", action="store_true")
+    parser.add_argument(
+        "--fusion_variant",
+        type=str,
+        default="full",
+        choices=[
+            "full",
+            "scalar_gate",
+            "vector_gate",
+            "softmax_router",
+            "structure_gate_only",
+            "source_gate_only",
+            "reply_gate_only",
+        ],
+    )
     parser.add_argument("--capacity_group", type=str, default="default")
     return parser.parse_args()
 
@@ -286,6 +302,7 @@ def main() -> None:
         disable_temporal=args.disable_temporal,
         disable_structure=args.disable_structure,
         disable_affect_state=args.disable_affect_state,
+        fusion_variant=args.fusion_variant,
     ).to(args.device)
     param_count = count_trainable_parameters(model)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
@@ -363,6 +380,7 @@ def main() -> None:
                 "disable_temporal": args.disable_temporal,
                 "disable_structure": args.disable_structure,
                 "disable_affect_state": args.disable_affect_state,
+                "fusion_variant": args.fusion_variant,
             },
             handle,
             indent=2,
