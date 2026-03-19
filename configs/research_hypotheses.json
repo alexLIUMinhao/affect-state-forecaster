@@ -1,0 +1,61 @@
+{
+  "hypotheses": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "description": "至少有一个模型相对文本基线取得可见改进，且回归相关性不长期接近零。",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "criteria": {
+        "min_mae_gain_vs_text": 0.01,
+        "min_positive_correlation": 0.05
+      }
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "description": "显式 affect-state 建模应至少优于文本基线，并最好优于时间或结构基线。",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "criteria": {
+        "min_mae_gain_vs_text": 0.01,
+        "min_rmse_gain_vs_text": 0.01
+      }
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "description": "时序或结构基线至少一者优于静态文本基线，说明额外模态对预测有帮助。",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "criteria": {
+        "min_mae_gain_vs_text": 0.01
+      }
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "description": "随着 observation ratio 增加，主指标应整体更稳定或更优；若数据不足则标记证据不足。",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "criteria": {
+        "min_required_ratios": 2
+      }
+    }
+  ],
+  "anomaly_thresholds": {
+    "correlation_near_zero": 0.05,
+    "macro_f1_gap": 0.35,
+    "event_mae_variation": 0.08,
+    "material_gap_for_model_comparison": 0.01,
+    "repeat_conflict_runs_for_new_idea": 2
+  }
+}

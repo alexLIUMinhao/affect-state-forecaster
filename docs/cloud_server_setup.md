@@ -103,3 +103,37 @@ After the first-round run succeeds, expand to:
 - ablations for time, structure, and affect-state
 - alternate weak sentiment labelers
 - cross-dataset experiments with a new RumourEval pipeline
+
+## 7. Experiment Tracking
+
+The server can maintain a unified experiment journal under:
+
+```text
+experiments/logs/
+experiments/manifests/
+experiments/records/
+experiments/figures/
+```
+
+Import historical results:
+
+```bash
+python scripts/sync_experiment_records.py --runs_root runs
+```
+
+Run a tracked experiment from scratch:
+
+```bash
+python scripts/run_experiment_suite.py \
+  --train_path data/processed/pheme_forecast_ratio_05_train.jsonl \
+  --val_path data/processed/pheme_forecast_ratio_05_val.jsonl \
+  --test_path data/processed/pheme_forecast_ratio_05_test.jsonl \
+  --tag ratio05_main
+```
+
+Recompute report and figures for an existing manifest:
+
+```bash
+python scripts/analyze_experiment_progress.py \
+  --run_manifest experiments/manifests/<run_id>.json
+```

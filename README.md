@@ -67,6 +67,22 @@ Run the first-round `50/50` experiment suite on a GPU server:
 bash scripts/run_first_round_experiments.sh
 ```
 
+Run a fully tracked server-side experiment with logs, reports, figures, and `idea.md` alignment analysis:
+
+```bash
+python scripts/run_experiment_suite.py \
+  --train_path data/processed/pheme_forecast_ratio_05_train.jsonl \
+  --val_path data/processed/pheme_forecast_ratio_05_val.jsonl \
+  --test_path data/processed/pheme_forecast_ratio_05_test.jsonl \
+  --tag ratio05_main
+```
+
+Import existing `runs/` results into the experiment journal:
+
+```bash
+python scripts/sync_experiment_records.py --runs_root runs
+```
+
 Validate server CUDA and benchmark files before training:
 
 ```bash
