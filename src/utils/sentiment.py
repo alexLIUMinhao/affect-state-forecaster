@@ -74,6 +74,7 @@ NEGATIVE_WORDS = {
     "wrong",
 }
 NEGATION_WORDS = {"no", "not", "never", "none", "hardly", "without", "n't"}
+WEAK_LABELERS = ("lexicon_v1", "lexicon_conservative")
 
 
 def normalize_sentiment_label(label: str | None) -> str:
@@ -106,12 +107,10 @@ def tokenize(text: str) -> list[str]:
     return TOKEN_PATTERN.findall(text.lower())
 
 
-def weak_label_text(text: str) -> str:
-    """Assign a weak sentiment label using a small lexicon-based scorer."""
-
+def _lexicon_score(text: str, amplify_exclamation: bool) -> int:
     tokens = tokenize(text)
     if not tokens:
-        return "neutral"
+        return 0
 
     score = 0
     for index, token in enumerate(tokens):
@@ -121,8 +120,23 @@ def weak_label_text(text: str) -> str:
         elif token in NEGATIVE_WORDS:
             score += 1 if negated else -1
 
-    if "!" in text and score != 0:
+    if amplify_exclamation and "!" in text and score != 0:
         score += 1 if score > 0 else -1
+
+    return score
+
+
+def weak_label_text(text: str, labeler: str = "lexicon_v1") -> str:
+    """Assign a weak sentiment label using one of the supported weak labelers."""
+
+    if labeler == "lexicon_v1":
+        score = _lexicon_score(text, amplify_exclamation=True)
+    elif labeler == "lexicon_conservative":
+        score = _lexicon_score(text, amplify_exclamation=False)
+        if abs(score) < 2:
+            score = 0
+    else:
+        raise ValueError(f"Unsupported weak labeler: {labeler}")
 
     if score > 0:
         return "positive"

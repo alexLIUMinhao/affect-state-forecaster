@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.sentiment import weak_label_text
+from src.utils.sentiment import WEAK_LABELERS, weak_label_text
 
 
 LOGGER = logging.getLogger(__name__)
@@ -38,6 +38,13 @@ def parse_args() -> argparse.Namespace:
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
         help="Logging verbosity.",
     )
+    parser.add_argument(
+        "--labeler",
+        type=str,
+        default="lexicon_v1",
+        choices=list(WEAK_LABELERS),
+        help="Weak sentiment labeler used to annotate replies.",
+    )
     return parser.parse_args()
 
 
@@ -61,15 +68,17 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
-def label_thread(record: dict[str, Any]) -> dict[str, Any]:
+def label_thread(record: dict[str, Any], labeler: str) -> dict[str, Any]:
     labeled_replies = []
     for reply in record.get("replies", []):
         labeled_reply = dict(reply)
-        labeled_reply["sentiment_label"] = weak_label_text(str(reply.get("text", "")))
+        labeled_reply["sentiment_label"] = weak_label_text(str(reply.get("text", "")), labeler=labeler)
+        labeled_reply["sentiment_labeler"] = labeler
         labeled_replies.append(labeled_reply)
 
     labeled_record = dict(record)
     labeled_record["replies"] = labeled_replies
+    labeled_record["sentiment_labeler"] = labeler
     return labeled_record
 
 
@@ -85,9 +94,9 @@ def main() -> None:
     configure_logging(args.log_level)
 
     threads = load_jsonl(args.input_path)
-    labeled_threads = [label_thread(record) for record in threads]
+    labeled_threads = [label_thread(record, args.labeler) for record in threads]
     write_jsonl(args.output_path, labeled_threads)
-    LOGGER.info("Labeled %d threads and wrote %s", len(labeled_threads), args.output_path)
+    LOGGER.info("Labeled %d threads with %s and wrote %s", len(labeled_threads), args.labeler, args.output_path)
 
 
 if __name__ == "__main__":

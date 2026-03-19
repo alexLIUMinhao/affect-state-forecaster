@@ -28,8 +28,14 @@ class AffectStateForecaster(nn.Module):
         vocab_size: int = 20000,
         num_layers: int = 1,
         dropout: float = 0.1,
+        disable_temporal: bool = False,
+        disable_structure: bool = False,
+        disable_affect_state: bool = False,
     ):
         super().__init__()
+        self.disable_temporal = disable_temporal
+        self.disable_structure = disable_structure
+        self.disable_affect_state = disable_affect_state
         self.reply_encoder = HashingTextEncoder(
             vocab_size=vocab_size,
             embedding_dim=hidden_dim,
@@ -64,6 +70,20 @@ class AffectStateForecaster(nn.Module):
             nn.GELU(),
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, affect_state_dim),
+        )
+        self.direct_regressor = nn.Sequential(
+            nn.LayerNorm(hidden_dim),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, 1),
+        )
+        self.direct_classifier = nn.Sequential(
+            nn.LayerNorm(hidden_dim),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, 3),
         )
         self.future_regressor = nn.Sequential(
             nn.LayerNorm(affect_state_dim),
@@ -134,7 +154,17 @@ class AffectStateForecaster(nn.Module):
         temporal_encoding = self._encode_reply_sequences(reply_sequences)
         source_encoding = self.source_encoder(source_texts)
         tree_encoding = self._encode_tree_features(thread_ids, conversation_trees, observed_replies)
+        if self.disable_temporal:
+            temporal_encoding = torch.zeros_like(temporal_encoding)
+        if self.disable_structure:
+            tree_encoding = torch.zeros_like(tree_encoding)
         fused_encoding = self.fusion(torch.cat([source_encoding, temporal_encoding, tree_encoding], dim=1))
+        if self.disable_affect_state:
+            return {
+                "predicted_current_affect_state": fused_encoding,
+                "predicted_future_neg_ratio": self.direct_regressor(fused_encoding).squeeze(-1),
+                "predicted_future_majority_logits": self.direct_classifier(fused_encoding),
+            }
         predicted_current_affect_state = self.affect_state_head(fused_encoding)
         return {
             "predicted_current_affect_state": predicted_current_affect_state,

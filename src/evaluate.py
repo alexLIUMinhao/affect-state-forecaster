@@ -35,6 +35,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--config_path", type=str, default="")
     parser.add_argument("--output_dir", type=str, default="outputs")
+    parser.add_argument("--input_view", type=str, default="full", choices=["full", "source_only", "replies_only"])
+    parser.add_argument("--disable_temporal", action="store_true")
+    parser.add_argument("--disable_structure", action="store_true")
+    parser.add_argument("--disable_affect_state", action="store_true")
     return parser.parse_args()
 
 
@@ -50,6 +54,10 @@ def maybe_load_config(args: argparse.Namespace) -> argparse.Namespace:
     args.vocab_size = int(config.get("vocab_size", args.vocab_size))
     args.dropout = float(config.get("dropout", args.dropout))
     args.affect_state_dim = int(config.get("affect_state_dim", args.affect_state_dim))
+    args.input_view = str(config.get("input_view", args.input_view))
+    args.disable_temporal = bool(config.get("disable_temporal", args.disable_temporal))
+    args.disable_structure = bool(config.get("disable_structure", args.disable_structure))
+    args.disable_affect_state = bool(config.get("disable_affect_state", args.disable_affect_state))
     return args
 
 
@@ -181,7 +189,16 @@ def main() -> None:
         raise ValueError("Evaluation dataset is empty.")
 
     loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False, collate_fn=collate_forecast_batch)
-    model = build_model(args.model, args.hidden_dim, args.vocab_size, args.dropout, args.affect_state_dim).to(args.device)
+    model = build_model(
+        args.model,
+        args.hidden_dim,
+        args.vocab_size,
+        args.dropout,
+        args.affect_state_dim,
+        disable_temporal=args.disable_temporal,
+        disable_structure=args.disable_structure,
+        disable_affect_state=args.disable_affect_state,
+    ).to(args.device)
     state = torch.load(args.model_path, map_location=args.device)
     model.load_state_dict(state)
     model.eval()
@@ -193,7 +210,7 @@ def main() -> None:
     with torch.no_grad():
         for batch in loader:
             targets = batch["targets"].to(args.device)
-            raw_output = model_forward(model, args.model, batch)
+            raw_output = model_forward(model, args.model, batch, input_view=args.input_view)
             preds_tensor, cls_logits, affect_state = normalize_model_output(raw_output)
             total_loss += float(criterion(preds_tensor, targets).item())
             preds = preds_tensor.cpu().numpy()

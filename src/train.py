@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -27,7 +29,16 @@ from src.utils.sentiment import id_to_label
 MODEL_NAMES = ("text_baseline", "temporal_baseline", "structure_baseline", "affect_state_forecaster")
 
 
-def build_model(name: str, hidden_dim: int, vocab_size: int, dropout: float, affect_state_dim: int) -> nn.Module:
+def build_model(
+    name: str,
+    hidden_dim: int,
+    vocab_size: int,
+    dropout: float,
+    affect_state_dim: int,
+    disable_temporal: bool = False,
+    disable_structure: bool = False,
+    disable_affect_state: bool = False,
+) -> nn.Module:
     if name == "text_baseline":
         return TextBaseline(hidden_dim=hidden_dim, vocab_size=vocab_size, dropout=dropout)
     if name == "temporal_baseline":
@@ -40,28 +51,69 @@ def build_model(name: str, hidden_dim: int, vocab_size: int, dropout: float, aff
             vocab_size=vocab_size,
             dropout=dropout,
             affect_state_dim=affect_state_dim,
+            disable_temporal=disable_temporal,
+            disable_structure=disable_structure,
+            disable_affect_state=disable_affect_state,
         )
     raise ValueError(f"Unknown model: {name}")
 
 
-def model_forward(model: nn.Module, model_name: str, batch: dict[str, Any]) -> dict[str, torch.Tensor]:
+def _empty_reply_records(batch_size: int) -> list[list[dict[str, Any]]]:
+    return [[] for _ in range(batch_size)]
+
+
+def _reply_concat_texts(observed_replies: list[list[dict[str, Any]]]) -> list[str]:
+    return [
+        " ".join(str(reply.get("text", "")).strip() for reply in replies if str(reply.get("text", "")).strip())
+        for replies in observed_replies
+    ]
+
+
+def set_random_seed(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+
+def model_forward(
+    model: nn.Module,
+    model_name: str,
+    batch: dict[str, Any],
+    input_view: str = "full",
+) -> dict[str, torch.Tensor]:
+    source_texts = batch["source_texts"]
+    observed_reply_texts = batch["observed_reply_texts"]
+    observed_replies = batch["observed_replies"]
+    if input_view == "source_only":
+        observed_reply_texts = [[] for _ in observed_reply_texts]
+        observed_replies = _empty_reply_records(len(source_texts))
+    elif input_view == "replies_only":
+        source_texts = ["" for _ in source_texts]
+    concat_texts = batch["concat_texts"]
+    if input_view == "source_only":
+        concat_texts = source_texts
+    elif input_view == "replies_only":
+        concat_texts = _reply_concat_texts(observed_replies)
+
     if model_name == "text_baseline":
-        return model(batch["concat_texts"])
+        return model(concat_texts)
     if model_name == "temporal_baseline":
-        return model(batch["observed_reply_texts"])
+        return model(observed_reply_texts if input_view != "source_only" else [[text] for text in source_texts])
     if model_name == "structure_baseline":
         return model(
             batch["thread_ids"],
-            batch["source_texts"],
-            batch["observed_replies"],
+            source_texts,
+            observed_replies,
             batch["conversation_trees"],
         )
     if model_name == "affect_state_forecaster":
         return model(
             batch["thread_ids"],
-            batch["source_texts"],
-            batch["observed_reply_texts"],
-            batch["observed_replies"],
+            source_texts,
+            observed_reply_texts,
+            observed_replies,
             batch["conversation_trees"],
         )
     raise ValueError(f"Unsupported model: {model_name}")
@@ -132,6 +184,7 @@ def evaluate_model(
     device: str,
     classification_loss_weight: float,
     affect_state_weight: float,
+    input_view: str = "full",
 ) -> tuple[float, dict[str, float]]:
     model.eval()
     mse_criterion = nn.MSELoss()
@@ -144,7 +197,7 @@ def evaluate_model(
 
     with torch.no_grad():
         for batch in loader:
-            output = model_forward(model, model_name, batch)
+            output = model_forward(model, model_name, batch, input_view=input_view)
             loss, _ = compute_loss(
                 output,
                 batch,
@@ -183,6 +236,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--affect_state_weight", type=float, default=0.0)
     parser.add_argument("--output_dir", type=str, default="artifacts")
     parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--input_view", type=str, default="full", choices=["full", "source_only", "replies_only"])
+    parser.add_argument("--disable_temporal", action="store_true")
+    parser.add_argument("--disable_structure", action="store_true")
+    parser.add_argument("--disable_affect_state", action="store_true")
     return parser.parse_args()
 
 
@@ -192,6 +250,7 @@ def artifact_prefix(model_name: str, dataset_path: str) -> str:
 
 def main() -> None:
     args = parse_args()
+    set_random_seed(args.seed)
     train_dataset = PHEMEForecastDataset(args.train_path)
     if len(train_dataset) == 0:
         raise ValueError("Training dataset is empty.")
@@ -219,6 +278,9 @@ def main() -> None:
         args.vocab_size,
         args.dropout,
         args.affect_state_dim,
+        disable_temporal=args.disable_temporal,
+        disable_structure=args.disable_structure,
+        disable_affect_state=args.disable_affect_state,
     ).to(args.device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     mse_criterion = nn.MSELoss()
@@ -237,7 +299,7 @@ def main() -> None:
         model.train()
         running_loss = 0.0
         for batch in tqdm(train_loader, desc=f"epoch {epoch + 1}/{args.epochs}"):
-            output = model_forward(model, args.model, batch)
+            output = model_forward(model, args.model, batch, input_view=args.input_view)
             loss, _ = compute_loss(
                 output,
                 batch,
@@ -246,6 +308,7 @@ def main() -> None:
                 args.device,
                 args.classification_loss_weight,
                 args.affect_state_weight,
+                input_view=args.input_view,
             )
             optimizer.zero_grad()
             loss.backward()
@@ -287,6 +350,11 @@ def main() -> None:
                 "affect_state_dim": args.affect_state_dim,
                 "classification_loss_weight": args.classification_loss_weight,
                 "affect_state_weight": args.affect_state_weight,
+                "seed": args.seed,
+                "input_view": args.input_view,
+                "disable_temporal": args.disable_temporal,
+                "disable_structure": args.disable_structure,
+                "disable_affect_state": args.disable_affect_state,
             },
             handle,
             indent=2,

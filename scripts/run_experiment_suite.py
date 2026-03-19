@@ -32,6 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch_size", type=int, default=16)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--run_id", type=str, default="")
     parser.add_argument("--tag", type=str, default="experiment")
     parser.add_argument("--runs_root", type=Path, default=Path("runs"))
@@ -69,6 +70,7 @@ def main() -> None:
         "models": list(args.models),
         "epochs": args.epochs,
         "batch_size": args.batch_size,
+        "seed": args.seed,
         "device": args.device,
         "special_settings": args.special_settings or "无",
     }
@@ -95,6 +97,8 @@ def main() -> None:
             str(args.epochs),
             "--batch_size",
             str(args.batch_size),
+            "--seed",
+            str(args.seed),
             "--output_dir",
             str(artifact_dir),
         ]
