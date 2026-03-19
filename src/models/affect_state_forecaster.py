@@ -93,6 +93,20 @@ class AffectStateForecaster(nn.Module):
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, 3),
         )
+        self.future_regressor = nn.Sequential(
+            nn.LayerNorm(affect_state_dim),
+            nn.Linear(affect_state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, 1),
+        )
+        self.future_classifier = nn.Sequential(
+            nn.LayerNorm(affect_state_dim),
+            nn.Linear(affect_state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, 3),
+        )
 
     def _apply_fusion_gates(
         self,
@@ -155,22 +169,7 @@ class AffectStateForecaster(nn.Module):
             temporal_gate = torch.sigmoid(self.temporal_scalar_gate(temporal_encoding))
             gate_summary = torch.cat([torch.ones_like(temporal_gate), temporal_gate, torch.ones_like(temporal_gate)], dim=1)
             return source_encoding, temporal_encoding * temporal_gate, tree_encoding, gate_summary
-
         raise ValueError(f"Unsupported fusion_variant: {self.fusion_variant}")
-        self.future_regressor = nn.Sequential(
-            nn.LayerNorm(affect_state_dim),
-            nn.Linear(affect_state_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim, 1),
-        )
-        self.future_classifier = nn.Sequential(
-            nn.LayerNorm(affect_state_dim),
-            nn.Linear(affect_state_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim, 3),
-        )
 
     def _encode_reply_sequences(self, reply_sequences: list[list[str]]) -> torch.Tensor:
         device = self.future_regressor[-1].weight.device
