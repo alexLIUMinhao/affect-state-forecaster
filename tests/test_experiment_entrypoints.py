@@ -22,6 +22,7 @@ def load_module(relative_path: str, module_name: str):
 
 ratio_sweep = load_module("scripts/run_ratio_sweep.py", "run_ratio_sweep")
 cross_event = load_module("scripts/run_cross_event_suite.py", "run_cross_event_suite")
+labeler_robustness = load_module("scripts/run_labeler_robustness_suite.py", "run_labeler_robustness_suite")
 
 
 class ExperimentEntrypointTests(unittest.TestCase):
@@ -49,6 +50,11 @@ class ExperimentEntrypointTests(unittest.TestCase):
         self.assertTrue(all(item["event_name"] != "a" for item in train_records + val_records))
         self.assertEqual({item["split"] for item in train_records}, {"train"})
         self.assertEqual({item["split"] for item in val_records}, {"val"})
+
+    def test_labeler_robustness_uses_benchmark_ratio_suffix(self) -> None:
+        self.assertEqual(labeler_robustness.ratio_suffix("30"), "03")
+        self.assertEqual(labeler_robustness.ratio_suffix("50"), "05")
+        self.assertEqual(labeler_robustness.ratio_suffix("70"), "07")
 
 
 if __name__ == "__main__":

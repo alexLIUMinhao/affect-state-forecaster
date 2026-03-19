@@ -27,8 +27,13 @@ def ratio_float(ratio: str) -> str:
     return {"30": "0.3", "50": "0.5", "70": "0.7"}[ratio]
 
 
+def ratio_suffix(ratio: str) -> str:
+    return {"30": "03", "50": "05", "70": "07"}[ratio]
+
+
 def main() -> None:
     args = parse_args()
+    suffix = ratio_suffix(args.ratio)
     for labeler in WEAK_LABELERS:
         label_output = args.output_root / f"pheme_threads_{labeler}.jsonl"
         benchmark_dir = args.output_root / labeler
@@ -67,11 +72,11 @@ def main() -> None:
                 sys.executable,
                 "scripts/run_experiment_suite.py",
                 "--train_path",
-                str(benchmark_dir / f"pheme_forecast_ratio_{args.ratio}_train.jsonl"),
+                str(benchmark_dir / f"pheme_forecast_ratio_{suffix}_train.jsonl"),
                 "--val_path",
-                str(benchmark_dir / f"pheme_forecast_ratio_{args.ratio}_val.jsonl"),
+                str(benchmark_dir / f"pheme_forecast_ratio_{suffix}_val.jsonl"),
                 "--test_path",
-                str(benchmark_dir / f"pheme_forecast_ratio_{args.ratio}_test.jsonl"),
+                str(benchmark_dir / f"pheme_forecast_ratio_{suffix}_test.jsonl"),
                 "--device",
                 args.device,
                 "--epochs",
@@ -79,7 +84,7 @@ def main() -> None:
                 "--batch_size",
                 str(args.batch_size),
                 "--tag",
-                f"labeler_{labeler}_ratio_{args.ratio}",
+                f"labeler_{labeler}_ratio_{suffix}",
                 "--question",
                 f"比较 weak labeler={labeler} 时主实验结果是否稳定。",
                 "--success_criteria",
