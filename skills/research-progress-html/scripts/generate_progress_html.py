@@ -90,13 +90,39 @@ def derive_idea_context(idea_text: str) -> dict[str, str]:
         "goal": "在事件早期观测阶段预测后续群体情绪走势",
         "task": "以 future_neg_ratio 为主任务，评估未来负面情绪比例预测能力",
         "method": "Affect-State Forecaster",
+        "architecture": (
+            "Affect-State Forecaster 采用“输入编码层 -> 时序聚合层 -> affect-state 中间层 -> 未来预测层”的四段式结构，"
+            "用于把早期观测压缩为可解释的群体情绪状态，再预测后续走势。"
+        ),
+        "input": (
+            "输入包括 source post、早期 replies、timestamps、reply tree / parent-child structure，"
+            "第一阶段以语义、时间、结构三类模态为主。"
+        ),
+        "output": (
+            "主输出为 future_neg_ratio 回归值；扩展输出可包括 future sentiment distribution "
+            "([p_neg, p_neu, p_pos]) 或 majority sentiment 分析指标。"
+        ),
     }
     if "future_neg_ratio" in task:
         context["task"] = "以 future_neg_ratio 为主任务，预测未来窗口中的负面情绪比例"
     if "Affect-State Forecaster" in method:
         context["method"] = "Affect-State Forecaster"
+        context["architecture"] = (
+            "Affect-State Forecaster 采用“输入编码层 -> 时序聚合层 -> affect-state 中间层 -> 未来预测层”的四段式结构，"
+            "先估计当前群体 affect state，再进行未来情绪预测。"
+        )
     if "事件线程" in background:
         context["goal"] = "在真实公共事件线程的早期观测阶段预测后续群体情绪走势"
+    if "source text、reply texts、timestamps、reply tree / propagation structure" in task or "source text、reply texts" in task:
+        context["input"] = (
+            "输入包括 source text、reply texts、timestamps、reply tree / propagation structure，"
+            "并允许后续扩展图像或外部事件上下文。"
+        )
+    if "future_neg_ratio" in task:
+        context["output"] = (
+            "主输出为 future_neg_ratio，即未来窗口中的负面情绪比例；扩展任务输出为未来情绪分布 "
+            "([p_neg, p_neu, p_pos])。"
+        )
     return context
 
 
@@ -437,6 +463,9 @@ def generate_html(args: argparse.Namespace) -> tuple[str, dict[str, Any], dict[s
         "best_model": evidence["best_model"],
         "introduction_html": "".join(f"<p>{html.escape(paragraph)}</p>" for paragraph in introduction),
         "signals_html": "".join(f"<li>{item}</li>" for item in signals),
+        "architecture_text": html.escape(context["architecture"]),
+        "input_text": html.escape(context["input"]),
+        "output_text": html.escape(context["output"]),
         "progress_summary": html.escape(build_progress_summary(evidence)),
         "table_html": build_table_html(context, results),
         "table_note": html.escape(build_table_note(evidence)),

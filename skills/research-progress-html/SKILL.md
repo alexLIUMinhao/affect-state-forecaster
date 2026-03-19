@@ -26,6 +26,7 @@ If fields are still missing after these steps, keep the page renderable and use 
 5. Ensure the output HTML contains:
    - Hero section
    - `Introduction Prototype`
+   - a model card section that labels the current model architecture, inputs, and outputs
    - `Current Progress`
    - `Next Experiment Plan`
 

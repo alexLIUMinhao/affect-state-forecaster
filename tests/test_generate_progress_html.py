@@ -73,6 +73,10 @@ class GenerateProgressHtmlTests(unittest.TestCase):
         self.assertIn("下一步实验计划", html_text)
         self.assertIn("Compared Baselines", html_text)
         self.assertIn("affect_state_forecaster", html_text)
+        self.assertIn("当前模型架构与 I/O", html_text)
+        self.assertIn("模型架构", html_text)
+        self.assertIn("输入", html_text)
+        self.assertIn("输出", html_text)
 
 
 if __name__ == "__main__":
