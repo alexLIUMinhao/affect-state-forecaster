@@ -161,6 +161,7 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
 
     fusion_candidates = sorted(records_root.glob("*fusion_diagnostic_summary.csv"), key=slug_sort_key, reverse=True)
     fusion_capacity_candidates = sorted(records_root.glob("*fusion_capacity_summary.csv"), key=slug_sort_key, reverse=True)
+    source_gate_validation_candidates = sorted(records_root.glob("*source_gate_validation_summary.csv"), key=slug_sort_key, reverse=True)
     if base_results and fusion_candidates:
         base_results["fusion_diagnostic"] = collect_fusion_diagnostic_results(fusion_candidates[0])
         base_results["tables"].append(build_fusion_table(base_results["fusion_diagnostic"]))
@@ -169,6 +170,10 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
         base_results["fusion_capacity_control"] = collect_fusion_capacity_results(fusion_capacity_candidates[0])
         base_results["tables"].append(build_fusion_capacity_table(base_results["fusion_capacity_control"]))
         base_results["source_label"] = f"{base_results['source_label']} + {fusion_capacity_candidates[0].name}"
+    if base_results and source_gate_validation_candidates:
+        base_results["source_gate_validation"] = collect_source_gate_validation_results(source_gate_validation_candidates[0])
+        base_results["tables"].append(build_source_gate_validation_table(base_results["source_gate_validation"]))
+        base_results["source_label"] = f"{base_results['source_label']} + {source_gate_validation_candidates[0].name}"
     if base_results:
         return base_results
 
@@ -201,6 +206,7 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
         "source_label": "outputs",
         "fusion_diagnostic": None,
         "fusion_capacity_control": None,
+        "source_gate_validation": None,
     }
 
 
@@ -254,6 +260,7 @@ def collect_manifest_results(manifest_path: Path, figure_candidates: list[str]) 
         "source_label": manifest_path.name,
         "fusion_diagnostic": None,
         "fusion_capacity_control": None,
+        "source_gate_validation": None,
     }
 
 
@@ -307,6 +314,7 @@ def collect_capacity_summary_results(summary_path: Path, figure_candidates: list
         "source_label": summary_path.name,
         "fusion_diagnostic": None,
         "fusion_capacity_control": None,
+        "source_gate_validation": None,
     }
 
 
@@ -421,6 +429,73 @@ def build_fusion_capacity_table(fusion_capacity_results: dict[str, Any]) -> dict
     }
 
 
+def collect_source_gate_validation_results(summary_path: Path) -> dict[str, Any]:
+    rows = read_csv_rows(summary_path)
+    variants: list[dict[str, Any]] = []
+    for row in rows:
+        variants.append(
+            {
+                "capacity_group": row.get("capacity_group", ""),
+                "model_name": row.get("model_name", ""),
+                "fusion_variant": row.get("fusion_variant", ""),
+                "seeds": row.get("seeds", ""),
+                "param_count": int(float(row["param_count"])) if row.get("param_count") not in {"", None} else None,
+                "param_count_std": to_float(row.get("param_count_std")),
+                "metrics": {
+                    "mae": to_float(row.get("mae")),
+                    "mae_std": to_float(row.get("mae_std")),
+                    "rmse": to_float(row.get("rmse")),
+                    "rmse_std": to_float(row.get("rmse_std")),
+                    "pearson": to_float(row.get("pearson")),
+                    "pearson_std": to_float(row.get("pearson_std")),
+                    "spearman": to_float(row.get("spearman")),
+                    "spearman_std": to_float(row.get("spearman_std")),
+                },
+                "gate_means": {
+                    "source": to_float(row.get("gate_source_mean")),
+                    "source_std": to_float(row.get("gate_source_mean_std")),
+                    "temporal": to_float(row.get("gate_temporal_mean")),
+                    "temporal_std": to_float(row.get("gate_temporal_mean_std")),
+                    "structure": to_float(row.get("gate_structure_mean")),
+                    "structure_std": to_float(row.get("gate_structure_mean_std")),
+                },
+            }
+        )
+    return {"summary_path": str(summary_path), "variants": variants}
+
+
+def build_source_gate_validation_table(validation_results: dict[str, Any]) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    for item in validation_results.get("variants", []):
+        gate = item.get("gate_means", {})
+        metrics = item.get("metrics", {})
+        rows.append(
+            {
+                "variant": f"{item.get('capacity_group', '')}:{item.get('fusion_variant', '')}",
+                "model_name": item.get("model_name", ""),
+                "param_count": item.get("param_count"),
+                "metric_text": (
+                    f"MAE={format_metric(metrics.get('mae'))}±{format_metric(metrics.get('mae_std'))}, "
+                    f"RMSE={format_metric(metrics.get('rmse'))}±{format_metric(metrics.get('rmse_std'))}, "
+                    f"Pearson={format_metric(metrics.get('pearson'))}±{format_metric(metrics.get('pearson_std'))}, "
+                    f"Spearman={format_metric(metrics.get('spearman'))}±{format_metric(metrics.get('spearman_std'))}"
+                ),
+                "gate_text": (
+                    f"source={format_metric(gate.get('source'))}, "
+                    f"temporal={format_metric(gate.get('temporal'))}, "
+                    f"structure={format_metric(gate.get('structure'))}; "
+                    f"seeds={html.escape(item.get('seeds', ''))}"
+                ),
+            }
+        )
+    return {
+        "key": "source_gate_validation",
+        "title": "Table 5. source_gate_only 的多 seed 稳定性验证",
+        "headers": ["Variant", "Model", "Params", "Metrics", "Gate Means / Seeds"],
+        "rows": rows,
+    }
+
+
 def strip_tags(raw_html: str) -> str:
     text = re.sub(r"<[^>]+>", "", raw_html)
     return html.unescape(" ".join(text.split()))
@@ -478,6 +553,7 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
         "source_label": latest.name,
         "fusion_diagnostic": None,
         "fusion_capacity_control": None,
+        "source_gate_validation": None,
     }
 
 
@@ -581,6 +657,8 @@ def compute_reason_diagnosis(results: dict[str, Any], evidence: dict[str, Any]) 
     variants = fusion.get("variants", [])
     fusion_capacity = results.get("fusion_capacity_control") or {}
     fusion_capacity_variants = fusion_capacity.get("variants", [])
+    source_gate_validation = results.get("source_gate_validation") or {}
+    source_gate_validation_variants = source_gate_validation.get("variants", [])
     asf_full = next((item for item in variants if item.get("fusion_variant") == "full"), None)
     best_gate = None
     for item in variants:
@@ -628,6 +706,30 @@ def compute_reason_diagnosis(results: dict[str, Any], evidence: dict[str, Any]) 
                         fusion_reason += f" 在公平容量下，{best_gate['fusion_variant']} 仍优于 matched full，说明筛选机制收益并不完全依赖更大容量。"
                     else:
                         fusion_reason += f" 但在公平容量下，{best_gate['fusion_variant']} 不再优于 matched full，说明筛选机制有效但仍依赖较大容量承载多模态特征。"
+        matched_source_gate = next(
+            (
+                item
+                for item in source_gate_validation_variants
+                if item.get("capacity_group") == "matched" and item.get("fusion_variant") == "source_gate_only"
+            ),
+            None,
+        )
+        matched_source_full = next(
+            (
+                item
+                for item in source_gate_validation_variants
+                if item.get("capacity_group") == "matched" and item.get("fusion_variant") == "full"
+            ),
+            None,
+        )
+        if matched_source_gate and matched_source_full:
+            matched_source_gate_mae = matched_source_gate["metrics"].get("mae")
+            matched_source_full_mae = matched_source_full["metrics"].get("mae")
+            if matched_source_gate_mae is not None and matched_source_full_mae is not None:
+                if matched_source_gate_mae < matched_source_full_mae:
+                    fusion_reason += " 进一步的多 seed 验证表明，source_gate_only 在公平容量下仍略优于 matched full，说明轻量筛选机制具备一定稳健性。"
+                else:
+                    fusion_reason += " 进一步的多 seed 验证没有支持 source_gate_only 在公平容量下稳定优于 matched full，轻量筛选收益仍需继续确认。"
 
     capacity_status = "部分成立"
     capacity_reason = "容量对齐后 ASF 明显变弱，说明多模态表征确实受模型容量影响，但这不足以单独解释全部现象。"

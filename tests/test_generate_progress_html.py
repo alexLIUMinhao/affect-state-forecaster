@@ -129,6 +129,38 @@ class GenerateProgressHtmlTests(unittest.TestCase):
         self.assertEqual(fusion_item["status"], "当前证据最强")
         self.assertIn("scalar_gate", fusion_item["reason"])
 
+    def test_reason_diagnosis_mentions_source_gate_stability_when_validation_exists(self) -> None:
+        results = {
+            "models": {
+                "text_baseline": {"metrics": {"mae": 0.18, "rmse": 0.23, "pearson": 0.02, "spearman": 0.03}},
+                "structure_baseline": {"metrics": {"mae": 0.12, "rmse": 0.18, "pearson": 0.01, "spearman": 0.04}},
+                "temporal_baseline": {"metrics": {"mae": 0.17, "rmse": 0.22, "pearson": 0.00, "spearman": 0.01}},
+                "affect_state_forecaster": {"metrics": {"mae": 0.13, "rmse": 0.17, "pearson": 0.05, "spearman": 0.20}},
+            },
+            "fusion_diagnostic": {
+                "variants": [
+                    {"model_name": "affect_state_forecaster", "fusion_variant": "full", "metrics": {"mae": 0.13, "rmse": 0.17, "pearson": 0.05, "spearman": 0.20}},
+                    {"model_name": "affect_state_forecaster", "fusion_variant": "vector_gate", "metrics": {"mae": 0.11, "rmse": 0.169, "pearson": 0.06, "spearman": 0.24}},
+                ]
+            },
+            "fusion_capacity_control": {
+                "variants": [
+                    {"capacity_group": "matched", "fusion_variant": "full", "metrics": {"mae": 0.125}},
+                    {"capacity_group": "matched", "fusion_variant": "vector_gate", "metrics": {"mae": 0.138}},
+                ]
+            },
+            "source_gate_validation": {
+                "variants": [
+                    {"capacity_group": "matched", "fusion_variant": "full", "metrics": {"mae": 0.1248}},
+                    {"capacity_group": "matched", "fusion_variant": "source_gate_only", "metrics": {"mae": 0.1244}},
+                ]
+            },
+        }
+        evidence = MODULE.compute_evidence(results)
+        diagnosis = MODULE.compute_reason_diagnosis(results, evidence)
+        fusion_item = next(item for item in diagnosis if item["title"] == "融合筛选问题")
+        self.assertIn("source_gate_only", fusion_item["reason"])
+
 
 if __name__ == "__main__":
     unittest.main()
