@@ -308,7 +308,6 @@ def main() -> None:
                 args.device,
                 args.classification_loss_weight,
                 args.affect_state_weight,
-                input_view=args.input_view,
             )
             optimizer.zero_grad()
             loss.backward()
@@ -328,6 +327,7 @@ def main() -> None:
                 args.device,
                 args.classification_loss_weight,
                 args.affect_state_weight,
+                input_view=args.input_view,
             )
             epoch_summary["val_loss"] = val_loss
             epoch_summary.update({f"val_{key}": value for key, value in val_metrics.items()})
