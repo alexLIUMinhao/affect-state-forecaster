@@ -716,13 +716,16 @@ def append_journal(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
         return
     best = best_model_by_metric(manifest, "mae")
     decision = manifest.get("decision", {})
+    hypothesis_summary = "; ".join(
+        f"{item['id']}={item['verdict']}" for item in manifest.get("hypothesis_analysis", [])
+    )
     summary_lines = [
         anchor,
         f"- 日期: {manifest['created_at']}",
         f"- 实验目的: {manifest.get('experiment_plan', {}).get('question', '未提供')}",
         f"- 核心结论: {manifest['idea_followup']['summary']}",
         f"- 最优模型: `{best['model']}`" if best else "- 最优模型: unknown",
-        f"- H1-H4: {'; '.join(f'{item['id']}={item['verdict']}' for item in manifest.get('hypothesis_analysis', []))}",
+        f"- H1-H4: {hypothesis_summary}",
         f"- 是否存在异常: {'是' if manifest.get('anomalies') else '否'}",
         f"- 下一步动作: {decision.get('action', '未定义')}",
         f"- 是否建议补充 idea: {'是' if manifest['idea_followup']['suggest_new_idea'] else '否'}",
