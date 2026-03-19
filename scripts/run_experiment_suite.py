@@ -12,6 +12,8 @@ from src.experiment_reporting import (
     build_manifest,
     default_run_id,
     ensure_experiment_paths,
+    finalize_log,
+    initialize_log,
     load_hypothesis_config,
     persist_manifest_outputs,
     run_command_with_logging,
@@ -36,6 +38,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--experiments_root", type=Path, default=Path("experiments"))
     parser.add_argument("--config_path", type=Path, default=Path("configs/research_hypotheses.json"))
     parser.add_argument("--continue_on_error", action="store_true")
+    parser.add_argument("--experiment_type", type=str, default="主实验")
+    parser.add_argument("--target_hypotheses", nargs="+", default=["H1", "H2", "H3"])
+    parser.add_argument("--question", type=str, default="验证当前设置下哪些模型最能预测 future_neg_ratio。")
+    parser.add_argument("--success_criteria", type=str, default="至少一个模型优于文本基线，并减少当前研究不确定性。")
+    parser.add_argument("--failure_criteria", type=str, default="若核心假设被削弱或结果无法解释，则转入诊断实验。")
+    parser.add_argument("--idea_sections", nargs="+", default=["三、核心研究问题", "六、方法方案", "七、实验设计"])
+    parser.add_argument("--special_settings", type=str, default="")
     return parser.parse_args()
 
 
@@ -46,12 +55,32 @@ def main() -> None:
     paths = ensure_experiment_paths(args.experiments_root)
     config = load_hypothesis_config(args.config_path)
     log_path = paths.logs / f"{run_id}.log"
+    ratio_label = args.train_path.stem.replace("pheme_forecast_ratio_", "ratio_")
+    plan = {
+        "run_id": run_id,
+        "experiment_type": args.experiment_type,
+        "target_hypotheses": args.target_hypotheses,
+        "question": args.question,
+        "success_criteria": args.success_criteria,
+        "failure_criteria": args.failure_criteria,
+        "idea_sections": args.idea_sections,
+        "dataset": str(args.train_path),
+        "ratio_labels": [ratio_label],
+        "models": list(args.models),
+        "epochs": args.epochs,
+        "batch_size": args.batch_size,
+        "device": args.device,
+        "special_settings": args.special_settings or "无",
+    }
+    initialize_log(log_path, plan)
 
     for model in args.models:
         artifact_dir = run_root / model / "artifacts"
         eval_dir = run_root / model / "eval"
         artifact_dir.mkdir(parents=True, exist_ok=True)
         eval_dir.mkdir(parents=True, exist_ok=True)
+        with log_path.open("a", encoding="utf-8") as handle:
+            handle.write(f"==> train model={model}\n")
 
         train_cmd = [
             sys.executable,
@@ -76,6 +105,8 @@ def main() -> None:
             raise SystemExit(train_code)
         if train_code != 0:
             continue
+        with log_path.open("a", encoding="utf-8") as handle:
+            handle.write(f"==> evaluate model={model}\n")
 
         prefix = f"{model}_{args.train_path.stem}"
         eval_cmd = [
@@ -98,7 +129,8 @@ def main() -> None:
         if eval_code != 0 and not args.continue_on_error:
             raise SystemExit(eval_code)
 
-    manifest = build_manifest(run_id=run_id, run_root=run_root, config=config, log_path=log_path)
+    manifest = build_manifest(run_id=run_id, run_root=run_root, config=config, log_path=log_path, experiment_plan=plan)
+    finalize_log(log_path, manifest["anomalies"])
     persist_manifest_outputs(paths, manifest)
     print(f"completed_run={run_id}")
     print(f"saved_manifest={manifest['manifest_path']}")

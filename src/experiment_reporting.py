@@ -3,7 +3,9 @@ from __future__ import annotations
 import csv
 import json
 import math
+import os
 import subprocess
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -99,6 +101,105 @@ def _to_float(value: Any) -> float | None:
 def _status(rank: str) -> int:
     order = {"不支持": 0, "部分支持": 1, "支持": 2, "证据不足": -1}
     return order.get(rank, -1)
+
+
+def summarize_runtime(log_path: Path) -> dict[str, Any]:
+    summary = {
+        "has_log": log_path.exists(),
+        "start_time": "",
+        "end_time": "",
+        "duration_seconds": None,
+        "warning_count": 0,
+        "error_count": 0,
+        "failed_commands": [],
+        "executed_commands": [],
+    }
+    if not log_path.exists():
+        return summary
+
+    start_epoch = None
+    end_epoch = None
+    with log_path.open("r", encoding="utf-8") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if line.startswith("==> plan start_time="):
+                summary["start_time"] = line.split("=", 1)[1]
+                try:
+                    start_epoch = float(summary["start_time"])
+                except ValueError:
+                    start_epoch = None
+            elif line.startswith("==> summarize end_time="):
+                summary["end_time"] = line.split("=", 1)[1]
+                try:
+                    end_epoch = float(summary["end_time"])
+                except ValueError:
+                    end_epoch = None
+            elif line.startswith("$ "):
+                summary["executed_commands"].append(line[2:])
+            elif line.startswith("==> command_exit command="):
+                parts = line.split(" returncode=")
+                if len(parts) == 2 and parts[1] != "0":
+                    summary["failed_commands"].append(parts[0].replace("==> command_exit command=", "", 1))
+            if "warning" in line.lower():
+                summary["warning_count"] += 1
+            if "error" in line.lower() or "traceback" in line.lower():
+                summary["error_count"] += 1
+
+    if start_epoch is not None and end_epoch is not None:
+        summary["duration_seconds"] = round(end_epoch - start_epoch, 2)
+    return summary
+
+
+def build_decision(manifest: dict[str, Any]) -> dict[str, str]:
+    verdicts = {item["id"]: item["verdict"] for item in manifest.get("hypothesis_analysis", [])}
+    anomalies = manifest.get("anomalies", [])
+    failed_models = [entry["model"] for entry in manifest.get("models", []) if entry.get("status") != "completed"]
+
+    if failed_models:
+        return {
+            "action": "暂停方法扩展，先修复工程问题",
+            "reason": f"存在失败模型：{', '.join(failed_models)}，当前结果不能作为研究结论。",
+            "next_step": "修复失败模型后重新运行同一轮实验。",
+        }
+    if verdicts.get("H1") == "不支持":
+        return {
+            "action": "暂停方法扩展，回到数据/标签问题",
+            "reason": "主任务本身没有被当前证据支持，继续加模型没有意义。",
+            "next_step": "先检查 weak label、数据切分和 benchmark 协议。",
+        }
+    if verdicts.get("H2") == "不支持":
+        return {
+            "action": "继续，但先做诊断",
+            "reason": "Affect-State 主线被当前结果削弱，需要先确认是实现问题还是假设问题。",
+            "next_step": "优先做 affect-state 消融、正则化和去结构对比。",
+        }
+    if anomalies:
+        return {
+            "action": "继续，但先做诊断",
+            "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+            "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。",
+        }
+    return {
+        "action": "继续主线",
+        "reason": "当前结果减少了不确定性，且没有明显削弱核心研究叙事。",
+        "next_step": "进入下一个主实验包，例如多 ratio 或泛化实验。",
+    }
+
+
+def describe_figure(manifest: dict[str, Any], figure_key: str) -> str:
+    if figure_key == "model_metrics":
+        best = best_model_by_metric(manifest, "mae")
+        if best:
+            return f"该图用于比较模型整体误差，当前 MAE 最优模型是 `{best['model']}`。"
+        return "该图用于比较模型整体误差。"
+    if figure_key == "event_errors":
+        return "该图用于查看不同事件上的误差波动，帮助判断 cross-event 稳定性。"
+    if figure_key == "ratio_trends":
+        num_ratios = len(manifest.get("observation_ratios", []))
+        if num_ratios < 2:
+            return "当前只有一个 observation ratio，因此该图主要起到占位作用，尚不能判断趋势。"
+        return "该图用于观察 observation ratio 变化时模型误差是否呈现可解释趋势。"
+    return ""
 
 
 def discover_run_models(run_root: Path) -> list[str]:
@@ -517,17 +618,49 @@ def create_figures(manifest: dict[str, Any], figure_dir: Path, run_id: str) -> d
 
 
 def build_report_markdown(manifest: dict[str, Any]) -> str:
+    plan = manifest.get("experiment_plan", {})
+    runtime = manifest.get("runtime_summary", {})
+    best = best_model_by_metric(manifest, "mae")
+    decision = manifest.get("decision", {})
+    previous = manifest.get("comparison_to_previous", {})
     lines = [
         f"# Experiment Report: {manifest['run_id']}",
         "",
-        "## Experiment Configuration",
-        f"- Created at: {manifest['created_at']}",
-        f"- Run root: `{manifest['run_root']}`",
-        f"- Models: {', '.join(entry['model'] for entry in manifest.get('models', [])) or 'none'}",
-        f"- Observation ratios: {', '.join(str(ratio) for ratio in manifest.get('observation_ratios', [])) or 'unknown'}",
+        "## 实验背景",
+        f"- 实验类型: {plan.get('experiment_type', 'unknown')}",
+        f"- 目标假设: {', '.join(plan.get('target_hypotheses', [])) or 'unknown'}",
+        f"- 本轮问题: {plan.get('question', '未提供')}",
+        f"- 对应 idea.md: {', '.join(plan.get('idea_sections', [])) or '未显式绑定'}",
         "",
-        "## Key Results",
+        "## 实验任务单",
+        f"- run_id: `{manifest['run_id']}`",
+        f"- 成功标准: {plan.get('success_criteria', '未提供')}",
+        f"- 失败标准: {plan.get('failure_criteria', '未提供')}",
+        f"- 数据集: {plan.get('dataset', 'unknown')}",
+        f"- ratio: {', '.join(plan.get('ratio_labels', [])) or 'unknown'}",
+        f"- 模型: {', '.join(entry['model'] for entry in manifest.get('models', [])) or 'none'}",
+        f"- 关键参数: epochs={plan.get('epochs', 'unknown')}, batch_size={plan.get('batch_size', 'unknown')}, device={plan.get('device', 'unknown')}",
+        f"- 特殊设置: {plan.get('special_settings', '无')}",
+        "",
+        "## 运行过程摘要",
+        f"- 创建时间: {manifest['created_at']}",
+        f"- Run root: `{manifest['run_root']}`",
+        f"- 日志路径: `{manifest.get('log_path', '') or 'none'}`",
+        f"- 总耗时(秒): {runtime.get('duration_seconds')}",
+        f"- Warning 数: {runtime.get('warning_count')}",
+        f"- Error 数: {runtime.get('error_count')}",
+        f"- 是否全部成功: {'是' if all(entry.get('status') == 'completed' for entry in manifest.get('models', [])) else '否'}",
+        f"- 执行命令数: {len(runtime.get('executed_commands', []))}",
+        "",
+        "## 结果总览",
     ]
+    if best:
+        lines.append(f"- 最优模型: `{best['model']}`，MAE={best['overall_metrics'].get('mae')}, RMSE={best['overall_metrics'].get('rmse')}")
+    if previous:
+        lines.append(
+            f"- 与上一轮相比: 上一轮 `{previous.get('previous_run_id')}` 的最优模型是 `{previous.get('previous_best_model')}`，"
+            f"本轮最佳 MAE 变化 {previous.get('best_mae_delta')}。"
+        )
     for entry in manifest.get("models", []):
         metrics = entry.get("overall_metrics", {})
         lines.append(
@@ -538,12 +671,15 @@ def build_report_markdown(manifest: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## Figures",
+            "## 图表解读",
             f"- Model metrics: `{manifest['figures']['model_metrics']}`",
+            f"  {describe_figure(manifest, 'model_metrics')}",
             f"- Event errors: `{manifest['figures']['event_errors']}`",
+            f"  {describe_figure(manifest, 'event_errors')}",
             f"- Ratio trends: `{manifest['figures']['ratio_trends']}`",
+            f"  {describe_figure(manifest, 'ratio_trends')}",
             "",
-            "## Alignment With idea.md",
+            "## 对 idea.md 的判断",
         ]
     )
     for hypothesis in manifest.get("hypothesis_analysis", []):
@@ -551,7 +687,7 @@ def build_report_markdown(manifest: dict[str, Any]) -> str:
         lines.append(f"- Verdict: {hypothesis['verdict']}")
         for evidence in hypothesis.get("evidence", []):
             lines.append(f"- {evidence}")
-    lines.extend(["", "## Mismatch Signals"])
+    lines.extend(["", "## 异常现象"])
     if manifest.get("anomalies"):
         for anomaly in manifest["anomalies"]:
             lines.append(f"### {anomaly['phenomenon']}")
@@ -563,8 +699,10 @@ def build_report_markdown(manifest: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## Next Step Recommendation",
-            f"- {manifest['idea_followup']['summary']}",
+            "## 下一步决策",
+            f"- 决策动作: {decision.get('action', '未定义')}",
+            f"- 原因: {decision.get('reason', manifest['idea_followup']['summary'])}",
+            f"- 因此下一步是 {decision.get('next_step', '未定义')}，而不是直接扩大实验范围。",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -576,12 +714,19 @@ def append_journal(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
     anchor = f"## {manifest['run_id']}\n"
     if anchor in existing:
         return
-    summary_lines = [anchor, f"- Created at: {manifest['created_at']}", f"- Run root: `{manifest['run_root']}`"]
-    for entry in manifest.get("models", []):
-        summary_lines.append(
-            f"- {entry['model']}: MAE={entry['overall_metrics'].get('mae')}, RMSE={entry['overall_metrics'].get('rmse')}, status={entry['status']}"
-        )
-    summary_lines.append(f"- idea follow-up: {manifest['idea_followup']['summary']}")
+    best = best_model_by_metric(manifest, "mae")
+    decision = manifest.get("decision", {})
+    summary_lines = [
+        anchor,
+        f"- 日期: {manifest['created_at']}",
+        f"- 实验目的: {manifest.get('experiment_plan', {}).get('question', '未提供')}",
+        f"- 核心结论: {manifest['idea_followup']['summary']}",
+        f"- 最优模型: `{best['model']}`" if best else "- 最优模型: unknown",
+        f"- H1-H4: {'; '.join(f'{item['id']}={item['verdict']}' for item in manifest.get('hypothesis_analysis', []))}",
+        f"- 是否存在异常: {'是' if manifest.get('anomalies') else '否'}",
+        f"- 下一步动作: {decision.get('action', '未定义')}",
+        f"- 是否建议补充 idea: {'是' if manifest['idea_followup']['suggest_new_idea'] else '否'}",
+    ]
     summary_lines.append("")
     journal_path.write_text(existing + "\n".join(summary_lines), encoding="utf-8")
 
@@ -595,6 +740,8 @@ def upsert_index(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
         "best_model",
         "best_mae",
         "best_rmse",
+        "experiment_goal",
+        "decision_action",
         "hypothesis_summary",
         "suggest_new_idea",
         "report_path",
@@ -609,6 +756,8 @@ def upsert_index(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
         "best_model": best["model"] if best else "",
         "best_mae": best["overall_metrics"].get("mae") if best else "",
         "best_rmse": best["overall_metrics"].get("rmse") if best else "",
+        "experiment_goal": manifest.get("experiment_plan", {}).get("question", ""),
+        "decision_action": manifest.get("decision", {}).get("action", ""),
         "hypothesis_summary": "; ".join(f"{item['id']}={item['verdict']}" for item in manifest.get("hypothesis_analysis", [])),
         "suggest_new_idea": str(manifest["idea_followup"]["suggest_new_idea"]),
         "report_path": manifest["report_path"],
@@ -620,8 +769,15 @@ def upsert_index(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
     write_csv_rows(index_path, filtered, fieldnames)
 
 
-def build_manifest(run_id: str, run_root: str | Path, config: dict[str, Any], log_path: str | Path | None = None) -> dict[str, Any]:
+def build_manifest(
+    run_id: str,
+    run_root: str | Path,
+    config: dict[str, Any],
+    log_path: str | Path | None = None,
+    experiment_plan: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     run_data = collect_run_results(run_root)
+    log_file = Path(log_path) if log_path else Path("")
     manifest = {
         "run_id": run_id,
         "created_at": utc_now_iso(),
@@ -629,14 +785,40 @@ def build_manifest(run_id: str, run_root: str | Path, config: dict[str, Any], lo
         "log_path": str(log_path) if log_path else "",
         "models": run_data["models"],
         "observation_ratios": run_data["observation_ratios"],
+        "experiment_plan": experiment_plan or {},
     }
+    manifest["runtime_summary"] = summarize_runtime(log_file) if log_path else summarize_runtime(Path(str(run_root)) / "missing.log")
     manifest["hypothesis_analysis"] = analyze_hypotheses(manifest, config)
     manifest["anomalies"] = detect_anomalies(manifest, config)
     manifest["idea_followup"] = recommendation_from_hypotheses(manifest["hypothesis_analysis"], manifest["anomalies"], config)
+    manifest["decision"] = build_decision(manifest)
+    return manifest
+
+
+def enrich_manifest_with_history(manifest: dict[str, Any], index_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    previous_rows = [row for row in index_rows if row.get("run_id") != manifest["run_id"]]
+    previous_rows.sort(key=lambda row: row.get("created_at", ""))
+    if not previous_rows:
+        manifest["comparison_to_previous"] = {}
+        return manifest
+    previous = previous_rows[-1]
+    best = best_model_by_metric(manifest, "mae")
+    previous_best_mae = _to_float(previous.get("best_mae"))
+    current_best_mae = best["overall_metrics"].get("mae") if best else None
+    delta = None
+    if previous_best_mae is not None and current_best_mae is not None:
+        delta = round(current_best_mae - previous_best_mae, 4)
+    manifest["comparison_to_previous"] = {
+        "previous_run_id": previous.get("run_id", ""),
+        "previous_best_model": previous.get("best_model", ""),
+        "previous_best_mae": previous_best_mae,
+        "best_mae_delta": delta,
+    }
     return manifest
 
 
 def persist_manifest_outputs(paths: ExperimentPaths, manifest: dict[str, Any]) -> dict[str, Any]:
+    manifest = enrich_manifest_with_history(manifest, read_csv_rows(paths.records / "experiment_index.csv"))
     figures = create_figures(manifest, paths.figures, manifest["run_id"])
     manifest["figures"] = figures
     manifest_path = paths.manifests / f"{manifest['run_id']}.json"
@@ -655,6 +837,7 @@ def run_command_with_logging(command: list[str], log_path: Path, cwd: Path) -> i
     with log_path.open("a", encoding="utf-8") as handle:
         handle.write(f"\n$ {' '.join(command)}\n")
         handle.flush()
+        start_time = time.time()
         process = subprocess.Popen(
             command,
             cwd=str(cwd),
@@ -667,4 +850,32 @@ def run_command_with_logging(command: list[str], log_path: Path, cwd: Path) -> i
         for line in process.stdout:
             print(line, end="")
             handle.write(line)
-        return process.wait()
+        return_code = process.wait()
+        handle.write(f"==> command_exit command={' '.join(command)} returncode={return_code}\n")
+        handle.write(f"==> command_duration_seconds {round(time.time() - start_time, 2)}\n")
+        return return_code
+
+
+def initialize_log(log_path: Path, plan: dict[str, Any]) -> None:
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("w", encoding="utf-8") as handle:
+        handle.write(f"==> plan start_time={time.time()}\n")
+        handle.write(f"==> plan run_id={plan.get('run_id', '')}\n")
+        handle.write(f"==> plan experiment_type={plan.get('experiment_type', '')}\n")
+        handle.write(f"==> plan target_hypotheses={','.join(plan.get('target_hypotheses', []))}\n")
+        handle.write(f"==> plan question={plan.get('question', '')}\n")
+        handle.write(f"==> plan success_criteria={plan.get('success_criteria', '')}\n")
+        handle.write(f"==> plan failure_criteria={plan.get('failure_criteria', '')}\n")
+        handle.write(f"==> plan dataset={plan.get('dataset', '')}\n")
+        handle.write(f"==> plan ratio_labels={','.join(plan.get('ratio_labels', []))}\n")
+        handle.write(f"==> plan models={','.join(plan.get('models', []))}\n")
+        handle.write(f"==> plan python={os.environ.get('CONDA_DEFAULT_ENV', '')}:{os.sys.executable}\n")
+        handle.write(f"==> plan device={plan.get('device', '')}\n")
+
+
+def finalize_log(log_path: Path, anomalies: list[dict[str, str]]) -> None:
+    with log_path.open("a", encoding="utf-8") as handle:
+        handle.write("==> summarize completed\n")
+        for anomaly in anomalies:
+            handle.write(f"==> anomaly {anomaly['phenomenon']}\n")
+        handle.write(f"==> summarize end_time={time.time()}\n")

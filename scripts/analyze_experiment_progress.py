@@ -25,10 +25,14 @@ def main() -> None:
     config = load_hypothesis_config(args.config_path)
     manifest = read_json(args.run_manifest)
     from src.experiment_reporting import analyze_hypotheses, detect_anomalies, recommendation_from_hypotheses
+    from src.experiment_reporting import build_decision, finalize_log
 
     manifest["hypothesis_analysis"] = analyze_hypotheses(manifest, config)
     manifest["anomalies"] = detect_anomalies(manifest, config)
     manifest["idea_followup"] = recommendation_from_hypotheses(manifest["hypothesis_analysis"], manifest["anomalies"], config)
+    manifest["decision"] = build_decision(manifest)
+    if manifest.get("log_path"):
+        finalize_log(Path(manifest["log_path"]), manifest["anomalies"])
     persist_manifest_outputs(paths, manifest)
     print(f"updated_manifest={manifest['manifest_path']}")
     print(f"updated_report={manifest['report_path']}")

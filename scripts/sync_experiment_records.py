@@ -34,7 +34,23 @@ def main() -> None:
 
     for run_root in run_roots:
         run_id = args.run_id if args.run_id else f"import_{slugify(run_root.name)}"
-        manifest = build_manifest(run_id=run_id, run_root=run_root, config=config)
+        plan = {
+            "run_id": run_id,
+            "experiment_type": "历史结果导入",
+            "target_hypotheses": ["H1", "H2", "H3", "H4"],
+            "question": f"回填历史实验 `{run_root.name}`，确认其对当前研究主线的支持程度。",
+            "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+            "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+            "idea_sections": ["三、核心研究问题", "七、实验设计"],
+            "dataset": str(run_root),
+            "ratio_labels": [],
+            "models": [],
+            "epochs": "unknown",
+            "batch_size": "unknown",
+            "device": "unknown",
+            "special_settings": "来自既有 runs 目录的历史导入",
+        }
+        manifest = build_manifest(run_id=run_id, run_root=run_root, config=config, experiment_plan=plan)
         persist_manifest_outputs(paths, manifest)
         print(f"synced_run={run_root}")
         print(f"saved_manifest={manifest['manifest_path']}")
