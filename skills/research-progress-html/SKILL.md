@@ -19,11 +19,13 @@ If fields are still missing after these steps, keep the page renderable and use 
 
 ## Workflow
 
-1. Read `idea.md`.
-2. Run `scripts/generate_progress_html.py`.
-3. Default to `main` experiment rendering unless the user explicitly asks for ablation mode or provides ablation inputs.
-4. After updating the HTML, sync the changed HTML and related skill files to GitHub. At minimum, stage the updated files, commit with a task-specific message, and push the current branch unless the user explicitly says not to.
-5. Ensure the output HTML contains:
+1. On the server, run all experiments inside `conda activate asf311`.
+2. Read `idea.md`.
+3. Run the relevant experiment commands and only then run `scripts/generate_progress_html.py`.
+4. Default to `main` experiment rendering unless the user explicitly asks for ablation mode or provides ablation inputs.
+5. After every experiment batch, update the HTML report immediately.
+6. After updating the HTML, sync the changed HTML and experiment artifacts to GitHub. At minimum, stage the updated files, commit with a task-specific message, and push the current branch unless the user explicitly says not to.
+7. Ensure the output HTML contains:
    - Hero section
    - `Introduction Prototype`
    - a model card section that labels the current model architecture, inputs, and outputs
@@ -47,12 +49,14 @@ If fields are still missing after these steps, keep the page renderable and use 
 Primary command:
 
 ```bash
+conda activate asf311
 python skills/research-progress-html/scripts/generate_progress_html.py
 ```
 
 Useful flags:
 
 ```bash
+conda activate asf311
 python skills/research-progress-html/scripts/generate_progress_html.py \
   --idea-path idea.md \
   --experiments-root experiments \
@@ -64,8 +68,8 @@ python skills/research-progress-html/scripts/generate_progress_html.py \
 Git sync after each HTML update:
 
 ```bash
-git add skills/research-progress-html experiments/html/paper_progress.html
-git commit -m "Update research progress HTML"
+git add experiments/html experiments/figures experiments/manifests experiments/records skills/research-progress-html
+git commit -m "Update experiment HTML and records"
 git push
 ```
 

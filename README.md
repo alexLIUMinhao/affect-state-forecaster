@@ -12,6 +12,7 @@ Given the early-stage observations of an event thread, predict the future group 
 - `src/` layout
 - `argparse`-based experiment entry points
 - Paper V1 scope: semantic + temporal + structural modalities on PHEME
+- Server experiment environment: `conda activate asf311`
 
 ## Quick Start
 
@@ -118,17 +119,29 @@ For batch runs, per-model outputs are stored under:
 ## Cloud Server Workflow
 
 The deployment target is a Linux GPU server with `/home/alexmhliu/affect-state-forecaster` as the project root.
+All server-side experiments should run inside the existing conda environment `asf311`.
 
 Minimal workflow:
 
 ```bash
+conda activate asf311
 cd /home/alexmhliu
 git clone git@github.com:alexLIUMinhao/affect-state-forecaster.git
 cd affect-state-forecaster
-bash scripts/setup_server_env.sh
-source .venv/bin/activate
 python scripts/check_server_env.py
 bash scripts/run_first_round_experiments.sh
+```
+
+After each server experiment batch:
+
+```bash
+python scripts/sync_experiment_records.py --runs_root runs
+python skills/research-progress-html/scripts/generate_progress_html.py \
+  --result-source html \
+  --output-html experiments/html/$(date +%Y%m%d_%H%M%S)_paper_progress.html
+git add experiments/html experiments/figures experiments/manifests experiments/records
+git commit -m "Update experiment HTML and records"
+git push
 ```
 
 Detailed server instructions are in [docs/cloud_server_setup.md](/Users/minhaoliu/Desktop/project/sentimentF/docs/cloud_server_setup.md).
