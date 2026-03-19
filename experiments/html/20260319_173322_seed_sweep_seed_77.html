@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Experiment import_first_round_ratio_05</title>
+  <title>Experiment 20260319_173322_seed_sweep_seed_77</title>
   <style>
     :root {
       --bg: #f4f1e8;
@@ -48,11 +48,11 @@
   <div class="wrap">
     <section class="hero">
       <div class="banner">HTML 实验进展展示</div>
-      <h1>import_first_round_ratio_05</h1>
+      <h1>20260319_173322_seed_sweep_seed_77</h1>
       <p class="sub">这个页面用于回答三件事：这轮实验为什么做、当前研究进展到了哪里、下一步为什么应该这样推进。</p>
       <div class="grid">
-        <div class="card span-4"><div class="label">实验类型</div><div class="metric" style="font-size:22px">历史结果导入</div></div>
-        <div class="card span-4"><div class="label">目标假设</div><div class="metric" style="font-size:22px">H1, H2, H3, H4</div></div>
+        <div class="card span-4"><div class="label">实验类型</div><div class="metric" style="font-size:22px">主实验</div></div>
+        <div class="card span-4"><div class="label">目标假设</div><div class="metric" style="font-size:22px">H1, H2, H3</div></div>
         <div class="card span-4"><div class="label">当前决策</div><div class="metric" style="font-size:22px">继续，但先做诊断</div></div>
       </div>
     </section>
@@ -60,18 +60,18 @@
     <section class="grid">
       <section class="card span-8">
         <h2>这轮实验在验证什么</h2>
-        <p><strong>实验问题:</strong> 回填历史实验 `first_round_ratio_05`，确认其对当前研究主线的支持程度。</p>
-        <p><strong>成功标准:</strong> 能够生成完整报告，并对 idea.md 给出可读判断。</p>
-        <p><strong>失败标准:</strong> 若历史结果缺失严重，则仅标记证据不足，不给过度结论。</p>
-        <p><strong>对应 idea.md:</strong> 三、核心研究问题, 七、实验设计</p>
+        <p><strong>实验问题:</strong> 验证固定数据设置下 seed=77 时主实验结果是否稳定。</p>
+        <p><strong>成功标准:</strong> affect_state_forecaster 的领先关系在不同随机种子下保持一致。</p>
+        <p><strong>失败标准:</strong> 若不同 seed 下排序波动明显，则先做稳健性分析。</p>
+        <p><strong>对应 idea.md:</strong> 三、核心研究问题, 六、方法方案, 七、实验设计</p>
       </section>
       <section class="card span-4">
         <h2>运行摘要</h2>
-        <p><strong>数据:</strong> runs/first_round_ratio_05</p>
-        <p><strong>Ratio:</strong> unknown</p>
+        <p><strong>数据:</strong> data/processed/pheme_forecast_ratio_50_train.jsonl</p>
+        <p><strong>Ratio:</strong> ratio_50_train</p>
         <p><strong>模型:</strong> affect_state_forecaster, structure_baseline, temporal_baseline, text_baseline</p>
-        <p><strong>参数:</strong> epochs=unknown, batch=unknown, device=unknown</p>
-        <p><strong>总耗时(秒):</strong> </p>
+        <p><strong>参数:</strong> epochs=5, batch=16, device=cuda</p>
+        <p><strong>总耗时(秒):</strong> 0.0</p>
         <p><strong>Warning 数:</strong> 0</p>
         <p><strong>Error 数:</strong> 0</p>
       </section>
@@ -81,18 +81,18 @@
       </section>
       <section class="card span-12">
         <h2>结果总览</h2>
-        <p class="mini">最优模型: structure_baseline；与上一轮相比的最佳 MAE 变化: 0.0091</p>
+        <p class="mini">最优模型: structure_baseline；与上一轮相比的最佳 MAE 变化: -0.0056</p>
         <table>
           <thead><tr><th>Model</th><th>Status</th><th>MAE</th><th>RMSE</th><th>Pearson</th><th>Spearman</th></tr></thead>
-          <tbody><tr><td>affect_state_forecaster</td><td>completed</td><td>0.12956660985946655</td><td>0.1775040626525879</td><td>0.012592171937575194</td><td>0.2499063447761134</td></tr><tr><td>structure_baseline</td><td>completed</td><td>0.11702784150838852</td><td>0.18761485815048218</td><td>-0.24840297070910894</td><td>0.06612889918410354</td></tr><tr><td>temporal_baseline</td><td>completed</td><td>0.1690751612186432</td><td>0.23412001132965088</td><td>-0.11197426572541778</td><td>-0.08715696324883868</td></tr><tr><td>text_baseline</td><td>completed</td><td>0.1778370887041092</td><td>0.23616482317447662</td><td>0.06463792218333347</td><td>0.13863209721255523</td></tr></tbody>
+          <tbody><tr><td>affect_state_forecaster</td><td>completed</td><td>0.1326192170381546</td><td>0.17890654504299164</td><td>-0.005296023525416785</td><td>0.1258745968718417</td></tr><tr><td>structure_baseline</td><td>completed</td><td>0.11176416277885437</td><td>0.18310125172138214</td><td>-0.13186541754167846</td><td>-0.0850559373727686</td></tr><tr><td>temporal_baseline</td><td>completed</td><td>0.1274629384279251</td><td>0.20435117185115814</td><td>-0.07113139713555058</td><td>0.037693828641019715</td></tr><tr><td>text_baseline</td><td>completed</td><td>0.14465729892253876</td><td>0.21342800557613373</td><td>-0.02172147034896881</td><td>0.09492007580787722</td></tr></tbody>
         </table>
       </section>
       <section class="span-12">
-        <div class="grid"><div class='span-4'><section class='card figure'><h3>模型误差对比</h3><p>该图用于比较模型整体误差，当前 MAE 最优模型是 `structure_baseline`。</p><img src='../figures/import_first_round_ratio_05_model_metrics.png' alt='模型误差对比' /></section></div><div class='span-4'><section class='card figure'><h3>事件级误差对比</h3><p>该图用于查看不同事件上的误差波动，帮助判断 cross-event 稳定性。</p><img src='../figures/import_first_round_ratio_05_event_errors.png' alt='事件级误差对比' /></section></div><div class='span-4'><section class='card figure'><h3>Observation Ratio 趋势</h3><p>当前只有一个 observation ratio，因此该图主要起到占位作用，尚不能判断趋势。</p><img src='../figures/import_first_round_ratio_05_ratio_trends.png' alt='Observation Ratio 趋势' /></section></div></div>
+        <div class="grid"><div class='span-4'><section class='card figure'><h3>模型误差对比</h3><p>该图用于比较模型整体误差，当前 MAE 最优模型是 `structure_baseline`。</p><img src='../figures/20260319_173322_seed_sweep_seed_77_model_metrics.png' alt='模型误差对比' /></section></div><div class='span-4'><section class='card figure'><h3>事件级误差对比</h3><p>该图用于查看不同事件上的误差波动，帮助判断 cross-event 稳定性。</p><img src='../figures/20260319_173322_seed_sweep_seed_77_event_errors.png' alt='事件级误差对比' /></section></div><div class='span-4'><section class='card figure'><h3>Observation Ratio 趋势</h3><p>当前只有一个 observation ratio，因此该图主要起到占位作用，尚不能判断趋势。</p><img src='../figures/20260319_173322_seed_sweep_seed_77_ratio_trends.png' alt='Observation Ratio 趋势' /></section></div></div>
       </section>
       <section class="span-12">
         <h2>验证了哪些研究问题</h2>
-        <div class="grid"><div class='span-6'><section class='card'><h3>H1 早期观测足以预测未来群体情绪</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#1f7a4f;color:#fff;font-size:12px;font-weight:700;">支持</span><ul><li>最佳模型为 structure_baseline，相对文本基线 MAE 改进 0.0608。</li><li>最佳模型相关系数表现 Pearson=-0.24840297070910894, Spearman=0.06612889918410354。</li></ul></section></div><div class='span-6'><section class='card'><h3>H2 Affect-State Forecaster 优于直接预测基线</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#ad7c14;color:#fff;font-size:12px;font-weight:700;">部分支持</span><ul><li>Affect-State Forecaster: MAE=0.12956660985946655, RMSE=0.1775040626525879。</li><li>Text baseline: MAE=0.1778370887041092, RMSE=0.23616482317447662。</li><li>Structure baseline: MAE=0.11702784150838852, RMSE=0.18761485815048218。</li></ul></section></div><div class='span-6'><section class='card'><h3>H3 时间或结构信息相对文本基线有增益</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#1f7a4f;color:#fff;font-size:12px;font-weight:700;">支持</span><ul><li>temporal_baseline 相对文本基线的 MAE 改进为 0.0088。</li><li>structure_baseline 相对文本基线的 MAE 改进为 0.0608。</li></ul></section></div><div class='span-6'><section class='card'><h3>H4 不同 observation ratio 呈现可解释趋势</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#667085;color:#fff;font-size:12px;font-weight:700;">证据不足</span><ul><li>当前只有 1 个 observation ratio，尚不足以判断趋势。</li></ul></section></div></div>
+        <div class="grid"><div class='span-6'><section class='card'><h3>H1 早期观测足以预测未来群体情绪</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#ad7c14;color:#fff;font-size:12px;font-weight:700;">部分支持</span><ul><li>最佳模型为 structure_baseline，相对文本基线 MAE 改进 0.0329。</li><li>最佳模型相关系数表现 Pearson=-0.13186541754167846, Spearman=-0.0850559373727686。</li></ul></section></div><div class='span-6'><section class='card'><h3>H2 Affect-State Forecaster 优于直接预测基线</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#ad7c14;color:#fff;font-size:12px;font-weight:700;">部分支持</span><ul><li>Affect-State Forecaster: MAE=0.1326192170381546, RMSE=0.17890654504299164。</li><li>Text baseline: MAE=0.14465729892253876, RMSE=0.21342800557613373。</li><li>Structure baseline: MAE=0.11176416277885437, RMSE=0.18310125172138214。</li></ul></section></div><div class='span-6'><section class='card'><h3>H3 时间或结构信息相对文本基线有增益</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#1f7a4f;color:#fff;font-size:12px;font-weight:700;">支持</span><ul><li>temporal_baseline 相对文本基线的 MAE 改进为 0.0172。</li><li>structure_baseline 相对文本基线的 MAE 改进为 0.0329。</li></ul></section></div><div class='span-6'><section class='card'><h3>H4 不同 observation ratio 呈现可解释趋势</h3><span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#667085;color:#fff;font-size:12px;font-weight:700;">证据不足</span><ul><li>当前只有 1 个 observation ratio，尚不足以判断趋势。</li></ul></section></div></div>
       </section>
       <section class="span-12">
         <h2>不一致现象与风险</h2>

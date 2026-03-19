@@ -1,0 +1,27 @@
+==> plan start_time=1773911673.5152075
+==> plan run_id=20260319_171433_ratio_sweep_ratio_30
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证四个模型在 observation ratio 30 下对 future_neg_ratio 的预测表现。
+==> plan success_criteria=affect_state_forecaster 在主要回归指标上稳定优于文本基线，并最好保持最优。
+==> plan failure_criteria=如果 affect_state_forecaster 不能稳定领先，则转入诊断与消融实验。
+==> plan dataset=data/processed/pheme_forecast_ratio_30_train.jsonl
+==> plan ratio_labels=ratio_30_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_30_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_171433_ratio_sweep_ratio_30/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_30_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alexmhliu/affect-state-forecaster/src/train.py", line 371, in <module>
+    main()
+  File "/home/alexmhliu/affect-state-forecaster/src/train.py", line 303, in main
+    loss, _ = compute_loss(
+              ^^^^^^^^^^^^^
+TypeError: compute_loss() got an unexpected keyword argument 'input_view'
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_30_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_171433_ratio_sweep_ratio_30/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_30_val.jsonl returncode=1
+==> command_duration_seconds 4.15

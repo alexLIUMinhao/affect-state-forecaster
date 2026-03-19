@@ -1,0 +1,590 @@
+{
+  "run_id": "import_20260319_172746_cross_event_charliehebdo",
+  "created_at": "2026-03-19T09:44:39.286854+00:00",
+  "run_root": "runs/20260319_172746_cross_event_charliehebdo",
+  "log_path": "",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.14312565326690674,
+        "rmse": 0.19114930927753448,
+        "pearson": 0.1472883079857914,
+        "spearman": 0.07957264496789483,
+        "accuracy": 0.8513513513513513,
+        "macro_f1": 0.30656934306569344,
+        "weighted_f1": 0.7829946735056224,
+        "loss": 0.03269527045389017
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "74",
+          "mae": "0.14312565326690674",
+          "rmse": "0.19114930927753448",
+          "pearson": "0.1472883079857914",
+          "spearman": "0.07957264496789483",
+          "majority_sentiment_accuracy": "0.8513513513513513",
+          "majority_sentiment_macro_f1": "0.30656934306569344",
+          "majority_sentiment_weighted_f1": "0.7829946735056224",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "charliehebdo",
+          "num_threads": "74",
+          "mae": "0.14312565326690674",
+          "rmse": "0.19114930927753448",
+          "pearson": "0.1472883079857914",
+          "spearman": "0.07957264496789483"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.22005251348018645,
+          "val_loss": 0.09510065540671349,
+          "val_mae": 0.1127077043056488,
+          "val_rmse": 0.1818239837884903,
+          "val_pearson": 0.26797467304284767,
+          "val_spearman": 0.05516555844372024,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.09780987389385701,
+          "val_loss": 0.08067140020430089,
+          "val_mae": 0.11927621811628342,
+          "val_rmse": 0.18382355570793152,
+          "val_pearson": 0.22832743011419504,
+          "val_spearman": 0.109664910881411,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.08521531168371439,
+          "val_loss": 0.0827423319220543,
+          "val_mae": 0.10569639503955841,
+          "val_rmse": 0.18637774884700775,
+          "val_pearson": 0.1108853455637277,
+          "val_spearman": 0.23637359208374328,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.09470726307481528,
+          "val_loss": 0.0871799848973751,
+          "val_mae": 0.15219740569591522,
+          "val_rmse": 0.19919803738594055,
+          "val_pearson": 0.06321105685374842,
+          "val_spearman": 0.30234649240305317,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07908910922706128,
+          "val_loss": 0.08272094577550888,
+          "val_mae": 0.10149496048688889,
+          "val_rmse": 0.18739785254001617,
+          "val_pearson": 0.1271766898222033,
+          "val_spearman": 0.3566237761720674,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts",
+        "eval_dir": "runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval",
+        "summary_csv": "runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.15103869140148163,
+        "rmse": 0.2162090688943863,
+        "pearson": -0.01657771622831246,
+        "spearman": 0.035532725578447125,
+        "accuracy": 0.8513513513513513,
+        "macro_f1": 0.30656934306569344,
+        "weighted_f1": 0.7829946735056224,
+        "loss": 0.04114686076839765
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "74",
+          "mae": "0.15103869140148163",
+          "rmse": "0.2162090688943863",
+          "pearson": "-0.01657771622831246",
+          "spearman": "0.035532725578447125",
+          "majority_sentiment_accuracy": "0.8513513513513513",
+          "majority_sentiment_macro_f1": "0.30656934306569344",
+          "majority_sentiment_weighted_f1": "0.7829946735056224",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "charliehebdo",
+          "num_threads": "74",
+          "mae": "0.15103869140148163",
+          "rmse": "0.2162090688943863",
+          "pearson": "-0.01657771622831246",
+          "spearman": "0.035532725578447125"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.20374962836503982,
+          "val_loss": 0.11302045881748199,
+          "val_mae": 0.19581149518489838,
+          "val_rmse": 0.23830823600292206,
+          "val_pearson": -0.29882909731046614,
+          "val_spearman": 0.018690779613605317,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.09943009354174137,
+          "val_loss": 0.09129967838525772,
+          "val_mae": 0.14721885323524475,
+          "val_rmse": 0.21018390357494354,
+          "val_pearson": -0.5089894340267629,
+          "val_spearman": -0.2004169734805402,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.08834478799253702,
+          "val_loss": 0.08949231579899788,
+          "val_mae": 0.11763040721416473,
+          "val_rmse": 0.2041177898645401,
+          "val_pearson": -0.45708315149784506,
+          "val_spearman": 0.012065730998089767,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.08368735630065202,
+          "val_loss": 0.08784765414893628,
+          "val_mae": 0.1096915602684021,
+          "val_rmse": 0.20392253994941711,
+          "val_pearson": -0.3762264823985194,
+          "val_spearman": 0.045209479798057214,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07569109462201595,
+          "val_loss": 0.08828382007777691,
+          "val_mae": 0.14089171588420868,
+          "val_rmse": 0.2049795240163803,
+          "val_pearson": -0.423976719583949,
+          "val_spearman": -0.07940805477423803,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval",
+        "summary_csv": "runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.16785885393619537,
+        "rmse": 0.22112470865249634,
+        "pearson": 0.15376714293017324,
+        "spearman": 0.11659412946326705,
+        "accuracy": 0.8513513513513513,
+        "macro_f1": 0.30656934306569344,
+        "weighted_f1": 0.7829946735056224,
+        "loss": 0.04497040435671806
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "74",
+          "mae": "0.16785885393619537",
+          "rmse": "0.22112470865249634",
+          "pearson": "0.15376714293017324",
+          "spearman": "0.11659412946326705",
+          "majority_sentiment_accuracy": "0.8513513513513513",
+          "majority_sentiment_macro_f1": "0.30656934306569344",
+          "majority_sentiment_weighted_f1": "0.7829946735056224",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "charliehebdo",
+          "num_threads": "74",
+          "mae": "0.16785885393619537",
+          "rmse": "0.22112470865249634",
+          "pearson": "0.15376714293017324",
+          "spearman": "0.11659412946326705"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2293954074382782,
+          "val_loss": 0.15169400870800018,
+          "val_mae": 0.18477119505405426,
+          "val_rmse": 0.2696409225463867,
+          "val_pearson": 0.09349449747625019,
+          "val_spearman": 0.10453882577946182,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12350853234529495,
+          "val_loss": 0.09621824026107788,
+          "val_mae": 0.18384096026420593,
+          "val_rmse": 0.23849107325077057,
+          "val_pearson": 0.02142628694472189,
+          "val_spearman": 0.14019935282442958,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.07896457519382238,
+          "val_loss": 0.0809752143919468,
+          "val_mae": 0.1318328082561493,
+          "val_rmse": 0.20547686517238617,
+          "val_pearson": 0.06278683856788783,
+          "val_spearman": 0.14279015395898875,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.06648273877799511,
+          "val_loss": 0.08594868332147598,
+          "val_mae": 0.14717425405979156,
+          "val_rmse": 0.2173060178756714,
+          "val_pearson": -0.008010363525575874,
+          "val_spearman": 0.05829302552758094,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0536991173401475,
+          "val_loss": 0.08894417807459831,
+          "val_mae": 0.16518531739711761,
+          "val_rmse": 0.22557589411735535,
+          "val_pearson": -0.041809852954682696,
+          "val_spearman": 0.07733541386659071,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts",
+        "eval_dir": "runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval",
+        "summary_csv": "runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.20317234098911285,
+        "rmse": 0.2551981210708618,
+        "pearson": 0.043713749938064095,
+        "spearman": -0.007398220332066588,
+        "accuracy": 0.8513513513513513,
+        "macro_f1": 0.30656934306569344,
+        "weighted_f1": 0.7829946735056224,
+        "loss": 0.06399513905247052
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "74",
+          "mae": "0.20317234098911285",
+          "rmse": "0.2551981210708618",
+          "pearson": "0.043713749938064095",
+          "spearman": "-0.007398220332066588",
+          "majority_sentiment_accuracy": "0.8513513513513513",
+          "majority_sentiment_macro_f1": "0.30656934306569344",
+          "majority_sentiment_weighted_f1": "0.7829946735056224",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "charliehebdo",
+          "num_threads": "74",
+          "mae": "0.20317234098911285",
+          "rmse": "0.2551981210708618",
+          "pearson": "0.043713749938064095",
+          "spearman": "-0.007398220332066588"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.21585834622383118,
+          "val_loss": 0.16024990379810333,
+          "val_mae": 0.1909620463848114,
+          "val_rmse": 0.2643214464187622,
+          "val_pearson": -0.18915380570758883,
+          "val_spearman": -0.1990845614684812,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.10981723479926586,
+          "val_loss": 0.12046045958995819,
+          "val_mae": 0.20436643064022064,
+          "val_rmse": 0.27387332916259766,
+          "val_pearson": -0.27271551722515464,
+          "val_spearman": -0.2148514369445126,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.0731948271393776,
+          "val_loss": 0.09992463514208794,
+          "val_mae": 0.1576143503189087,
+          "val_rmse": 0.24629512429237366,
+          "val_pearson": -0.17983129964838718,
+          "val_spearman": -0.06934094179423675,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.06672133803367615,
+          "val_loss": 0.09899379089474677,
+          "val_mae": 0.1714102178812027,
+          "val_rmse": 0.24677905440330505,
+          "val_pearson": -0.17034860678832053,
+          "val_spearman": -0.015008140858053378,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.05487382747232914,
+          "val_loss": 0.0977634958922863,
+          "val_mae": 0.17010320723056793,
+          "val_rmse": 0.24381372332572937,
+          "val_pearson": -0.24391843566535648,
+          "val_spearman": -0.16595931839090344,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "import_20260319_172746_cross_event_charliehebdo",
+    "experiment_type": "历史结果导入",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "question": "回填历史实验 `20260319_172746_cross_event_charliehebdo`，确认其对当前研究主线的支持程度。",
+    "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+    "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "七、实验设计"
+    ],
+    "dataset": "runs/20260319_172746_cross_event_charliehebdo",
+    "ratio_labels": [],
+    "models": [],
+    "epochs": "unknown",
+    "batch_size": "unknown",
+    "device": "unknown",
+    "special_settings": "来自既有 runs 目录的历史导入"
+  },
+  "runtime_summary": {
+    "has_log": false,
+    "start_time": "",
+    "end_time": "",
+    "duration_seconds": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": []
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 affect_state_forecaster，相对文本基线 MAE 改进 0.0600。",
+        "最佳模型相关系数表现 Pearson=0.1472883079857914, Spearman=0.07957264496789483。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.14312565326690674, RMSE=0.19114930927753448。",
+        "Text baseline: MAE=0.20317234098911285, RMSE=0.2551981210708618。",
+        "Structure baseline: MAE=0.15103869140148163, RMSE=0.2162090688943863。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 0.0353。",
+        "structure_baseline 相对文本基线的 MAE 改进为 0.0521。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "affect_state_forecaster 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "structure_baseline 的 Pearson/Spearman 接近 0。",
+      "possible_cause": "模型可能只学到了均值附近回归，未捕捉 thread 级差异。",
+      "idea_conflict": "削弱了“早期观测足以预测未来走势”的论点。",
+      "recommendation": "需要检查标签噪声、事件切分与模型表达；若多轮如此，再考虑修订研究主线。"
+    },
+    {
+      "phenomenon": "structure_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "temporal_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "text_baseline 的 Pearson/Spearman 接近 0。",
+      "possible_cause": "模型可能只学到了均值附近回归，未捕捉 thread 级差异。",
+      "idea_conflict": "削弱了“早期观测足以预测未来走势”的论点。",
+      "recommendation": "需要检查标签噪声、事件切分与模型表达；若多轮如此，再考虑修订研究主线。"
+    },
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 0
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "import_20260319_172622_ratio_sweep_ratio_70",
+    "previous_best_model": "affect_state_forecaster",
+    "previous_best_mae": 0.14562983810901642,
+    "best_mae_delta": -0.0025
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/import_20260319_172746_cross_event_charliehebdo_model_metrics.png",
+    "event_errors": "experiments/figures/import_20260319_172746_cross_event_charliehebdo_event_errors.png",
+    "ratio_trends": "experiments/figures/import_20260319_172746_cross_event_charliehebdo_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/import_20260319_172746_cross_event_charliehebdo.json",
+  "report_path": "experiments/records/import_20260319_172746_cross_event_charliehebdo.md",
+  "html_path": "experiments/html/import_20260319_172746_cross_event_charliehebdo.html"
+}

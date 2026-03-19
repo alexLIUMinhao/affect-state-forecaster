@@ -1,0 +1,210 @@
+{
+  "run_id": "import_20260319_142904_process_doc_smoke",
+  "created_at": "2026-03-19T09:44:36.408628+00:00",
+  "run_root": "runs/20260319_142904_process_doc_smoke",
+  "log_path": "",
+  "models": [
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_142904_process_doc_smoke/text_baseline/artifacts",
+        "eval_dir": "runs/20260319_142904_process_doc_smoke/text_baseline/eval",
+        "summary_csv": "runs/20260319_142904_process_doc_smoke/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_142904_process_doc_smoke/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.1760059893131256,
+        "rmse": 0.23142583668231964,
+        "pearson": 0.09869714821373805,
+        "spearman": 0.12534934040282417,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.053046690920988716
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.1760059893131256",
+          "rmse": "0.23142583668231964",
+          "pearson": "0.09869714821373805",
+          "spearman": "0.12534934040282417",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.1349145919084549",
+          "rmse": "0.17710678279399872",
+          "pearson": "0.2563856840579765",
+          "spearman": "0.30569920271880274"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.222298726439476",
+          "rmse": "0.28166040778160095",
+          "pearson": "-0.3097259072378055",
+          "spearman": "-0.3423265984407288"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.17708291113376617",
+          "rmse": "0.2324678897857666",
+          "pearson": "0.12402071170024358",
+          "spearman": "0.14874899656847476"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2697847545146942,
+          "val_loss": 0.18004954233765602,
+          "val_mae": 0.16761140525341034,
+          "val_rmse": 0.2285304069519043,
+          "val_pearson": -0.08986959165171247,
+          "val_spearman": 0.11498451277059296,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "import_20260319_142904_process_doc_smoke",
+    "experiment_type": "历史结果导入",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "question": "回填历史实验 `20260319_142904_process_doc_smoke`，确认其对当前研究主线的支持程度。",
+    "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+    "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "七、实验设计"
+    ],
+    "dataset": "runs/20260319_142904_process_doc_smoke",
+    "ratio_labels": [],
+    "models": [],
+    "epochs": "unknown",
+    "batch_size": "unknown",
+    "device": "unknown",
+    "special_settings": "来自既有 runs 目录的历史导入"
+  },
+  "runtime_summary": {
+    "has_log": false,
+    "start_time": "",
+    "end_time": "",
+    "duration_seconds": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": []
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "部分支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 text_baseline，相对文本基线 MAE 改进 0.0000。",
+        "最佳模型相关系数表现 Pearson=0.09869714821373805, Spearman=0.12534934040282417。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "缺少 affect-state 或文本基线结果。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "缺少时间或结构基线结果。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "text_baseline 在不同事件上的 MAE 波动较大。",
+      "possible_cause": "跨事件泛化仍不稳定，数据或标签可能受事件主题影响。",
+      "idea_conflict": "提示当前证据对 event-level 泛化的支撑还有限。",
+      "recommendation": "后续优先补 cross-event 分析，不建议仅凭当前结果扩展主张。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 1
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "import_20260319_134508_smoke_ratio05",
+    "previous_best_model": "text_baseline",
+    "previous_best_mae": 0.18478477001190186,
+    "best_mae_delta": -0.0088
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/import_20260319_142904_process_doc_smoke_model_metrics.png",
+    "event_errors": "experiments/figures/import_20260319_142904_process_doc_smoke_event_errors.png",
+    "ratio_trends": "experiments/figures/import_20260319_142904_process_doc_smoke_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/import_20260319_142904_process_doc_smoke.json",
+  "report_path": "experiments/records/import_20260319_142904_process_doc_smoke.md",
+  "html_path": "experiments/html/import_20260319_142904_process_doc_smoke.html"
+}

@@ -1,0 +1,193 @@
+==> plan start_time=1773912634.2966204
+==> plan run_id=20260319_173034_cross_event_prince_toronto
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=prince-toronto 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl
+==> plan ratio_labels=prince-toronto_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.87it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 43.89it/s]
+epoch=1 train_loss=0.2250 val_loss=0.1388 val_mae=0.1980 val_rmse=0.2635 val_pearson=-0.2337 val_spearman=-0.1090 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 217.10it/s]
+epoch=2 train_loss=0.1165 val_loss=0.1040 val_mae=0.1732 val_rmse=0.2452 val_pearson=-0.2653 val_spearman=-0.0550 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 216.64it/s]
+epoch=3 train_loss=0.0917 val_loss=0.1017 val_mae=0.1764 val_rmse=0.2412 val_pearson=-0.2004 val_spearman=0.0466 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 209.03it/s]
+epoch=4 train_loss=0.0893 val_loss=0.0992 val_mae=0.1366 val_rmse=0.2317 val_pearson=-0.2719 val_spearman=-0.0296 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 212.21it/s]
+epoch=5 train_loss=0.0801 val_loss=0.0975 val_mae=0.1563 val_rmse=0.2261 val_pearson=-0.1604 val_spearman=0.0516 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt
+saved_config=runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 4.69
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model text_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/text_baseline/eval
+group=overall value=all num_threads=12 mae=0.1315 rmse=0.1587
+group=split value=test num_threads=12 mae=0.1315 rmse=0.1587
+group=observation_ratio value=0.5 num_threads=12 mae=0.1315 rmse=0.1587
+group=event value=prince-toronto num_threads=12 mae=0.1315 rmse=0.1587
+saved_predictions=runs/20260319_173034_cross_event_prince_toronto/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173034_cross_event_prince_toronto/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model text_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/text_baseline/eval returncode=0
+==> command_duration_seconds 2.98
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.73it/s]
+epoch 1/5:  57%|█████▋    | 8/14 [00:00<00:00, 21.54it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 25.47it/s]
+epoch=1 train_loss=0.2096 val_loss=0.1291 val_mae=0.2289 val_rmse=0.2841 val_pearson=-0.1035 val_spearman=0.0574 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 7/14 [00:00<00:00, 69.98it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 71.85it/s]
+epoch=2 train_loss=0.1137 val_loss=0.0884 val_mae=0.1585 val_rmse=0.2256 val_pearson=-0.1303 val_spearman=0.0091 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  50%|█████     | 7/14 [00:00<00:00, 68.01it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 71.64it/s]
+epoch=3 train_loss=0.0914 val_loss=0.0889 val_mae=0.1366 val_rmse=0.2165 val_pearson=-0.1148 val_spearman=0.0448 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 71.34it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 73.94it/s]
+epoch=4 train_loss=0.0777 val_loss=0.0944 val_mae=0.1344 val_rmse=0.2217 val_pearson=-0.1074 val_spearman=0.0342 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  57%|█████▋    | 8/14 [00:00<00:00, 67.38it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 73.26it/s]
+epoch=5 train_loss=0.0718 val_loss=0.0926 val_mae=0.1473 val_rmse=0.2286 val_pearson=-0.1117 val_spearman=0.0363 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt
+saved_config=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 5.47
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model temporal_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/eval
+group=overall value=all num_threads=12 mae=0.1284 rmse=0.1566
+group=split value=test num_threads=12 mae=0.1284 rmse=0.1566
+group=observation_ratio value=0.5 num_threads=12 mae=0.1284 rmse=0.1566
+group=event value=prince-toronto num_threads=12 mae=0.1284 rmse=0.1566
+saved_predictions=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model temporal_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.11
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.75it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 41.11it/s]
+epoch=1 train_loss=0.1652 val_loss=0.0926 val_mae=0.1112 val_rmse=0.2187 val_pearson=-0.3980 val_spearman=0.0068 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 183.67it/s]
+epoch=2 train_loss=0.1152 val_loss=0.0893 val_mae=0.1165 val_rmse=0.2071 val_pearson=-0.4622 val_spearman=0.0353 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 183.41it/s]
+epoch=3 train_loss=0.1119 val_loss=0.0937 val_mae=0.1021 val_rmse=0.2074 val_pearson=-0.3623 val_spearman=0.1740 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 186.50it/s]
+epoch=4 train_loss=0.1147 val_loss=0.1224 val_mae=0.2367 val_rmse=0.2712 val_pearson=-0.3459 val_spearman=0.1352 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 186.57it/s]
+epoch=5 train_loss=0.1019 val_loss=0.1002 val_mae=0.1798 val_rmse=0.2247 val_pearson=-0.3618 val_spearman=-0.0587 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt
+saved_config=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 4.71
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model structure_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/structure_baseline/eval
+group=overall value=all num_threads=12 mae=0.0874 rmse=0.0966
+group=split value=test num_threads=12 mae=0.0874 rmse=0.0966
+group=observation_ratio value=0.5 num_threads=12 mae=0.0874 rmse=0.0966
+group=event value=prince-toronto num_threads=12 mae=0.0874 rmse=0.0966
+saved_predictions=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173034_cross_event_prince_toronto/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model structure_baseline --model_path runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.98
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.73it/s]
+epoch 1/5:  57%|█████▋    | 8/14 [00:00<00:00, 20.29it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 23.98it/s]
+epoch=1 train_loss=0.2022 val_loss=0.0991 val_mae=0.1853 val_rmse=0.2198 val_pearson=0.4752 val_spearman=0.1346 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 7/14 [00:00<00:00, 63.20it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 60.19it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 60.58it/s]
+epoch=2 train_loss=0.1303 val_loss=0.0938 val_mae=0.1765 val_rmse=0.2146 val_pearson=0.2768 val_spearman=0.3850 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 59.38it/s]
+epoch 3/5:  86%|████████▌ | 12/14 [00:00<00:00, 58.49it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 60.08it/s]
+epoch=3 train_loss=0.1129 val_loss=0.0886 val_mae=0.1405 val_rmse=0.1925 val_pearson=-0.0165 val_spearman=0.0447 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 58.54it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 57.32it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 60.15it/s]
+epoch=4 train_loss=0.1032 val_loss=0.0876 val_mae=0.1157 val_rmse=0.1855 val_pearson=-0.0876 val_spearman=0.1284 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  43%|████▎     | 6/14 [00:00<00:00, 58.36it/s]
+epoch 5/5:  86%|████████▌ | 12/14 [00:00<00:00, 57.68it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 60.48it/s]
+epoch=5 train_loss=0.1134 val_loss=0.0870 val_mae=0.1402 val_rmse=0.1932 val_pearson=-0.0702 val_spearman=0.2100 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt
+saved_config=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 5.9
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/eval
+group=overall value=all num_threads=12 mae=0.1424 rmse=0.1433
+group=split value=test num_threads=12 mae=0.1424 rmse=0.1433
+group=observation_ratio value=0.5 num_threads=12 mae=0.1424 rmse=0.1433
+group=event value=prince-toronto num_threads=12 mae=0.1424 rmse=0.1433
+saved_predictions=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/prince-toronto_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt --config_path runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json --device cuda --output_dir runs/20260319_173034_cross_event_prince_toronto/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.14
+==> summarize completed
+==> anomaly Affect-State Forecaster 的 MAE 明显差于 structure_baseline。
+==> summarize end_time=1773912667.2839131

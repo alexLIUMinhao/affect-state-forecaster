@@ -1,0 +1,194 @@
+==> plan start_time=1773912668.3485076
+==> plan run_id=20260319_173108_cross_event_putinmissing
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=putinmissing 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl
+==> plan ratio_labels=putinmissing_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.85it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 43.46it/s]
+epoch=1 train_loss=0.2098 val_loss=0.1369 val_mae=0.1869 val_rmse=0.2627 val_pearson=-0.2794 val_spearman=-0.1861 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 215.13it/s]
+epoch=2 train_loss=0.1112 val_loss=0.1017 val_mae=0.1546 val_rmse=0.2406 val_pearson=-0.2163 val_spearman=-0.0986 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 210.26it/s]
+epoch=3 train_loss=0.0996 val_loss=0.1010 val_mae=0.1754 val_rmse=0.2425 val_pearson=-0.2000 val_spearman=-0.0500 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 214.74it/s]
+epoch=4 train_loss=0.0853 val_loss=0.1050 val_mae=0.1790 val_rmse=0.2454 val_pearson=-0.2542 val_spearman=-0.0828 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 218.33it/s]
+epoch=5 train_loss=0.0758 val_loss=0.1034 val_mae=0.1551 val_rmse=0.2346 val_pearson=-0.2579 val_spearman=-0.0829 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.pt
+saved_config=runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.json
+saved_summary=runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl returncode=0
+==> command_duration_seconds 4.64
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model text_baseline --model_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/eval
+group=overall value=all num_threads=9 mae=0.0965 rmse=0.1291
+group=split value=test num_threads=9 mae=0.0965 rmse=0.1291
+group=observation_ratio value=0.5 num_threads=9 mae=0.0965 rmse=0.1291
+group=event value=putinmissing num_threads=9 mae=0.0965 rmse=0.1291
+saved_predictions=runs/20260319_173108_cross_event_putinmissing/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173108_cross_event_putinmissing/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173108_cross_event_putinmissing/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model text_baseline --model_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/eval returncode=0
+==> command_duration_seconds 2.94
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.72it/s]
+epoch 1/5:  57%|█████▋    | 8/14 [00:00<00:00, 21.39it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 25.72it/s]
+epoch=1 train_loss=0.2226 val_loss=0.1255 val_mae=0.1691 val_rmse=0.2542 val_pearson=-0.1900 val_spearman=-0.0114 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  57%|█████▋    | 8/14 [00:00<00:00, 74.29it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 71.90it/s]
+epoch=2 train_loss=0.1153 val_loss=0.0879 val_mae=0.1368 val_rmse=0.2204 val_pearson=-0.1845 val_spearman=-0.0409 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  57%|█████▋    | 8/14 [00:00<00:00, 67.36it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 71.17it/s]
+epoch=3 train_loss=0.0949 val_loss=0.0900 val_mae=0.1364 val_rmse=0.2153 val_pearson=-0.0985 val_spearman=-0.0383 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 78.30it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 71.74it/s]
+epoch=4 train_loss=0.0776 val_loss=0.0970 val_mae=0.1596 val_rmse=0.2272 val_pearson=-0.1235 val_spearman=-0.0391 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 7/14 [00:00<00:00, 69.94it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 72.69it/s]
+epoch=5 train_loss=0.0663 val_loss=0.1068 val_mae=0.1959 val_rmse=0.2566 val_pearson=-0.2175 val_spearman=-0.1113 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.pt
+saved_config=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.json
+saved_summary=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl returncode=0
+==> command_duration_seconds 5.44
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model temporal_baseline --model_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval
+group=overall value=all num_threads=9 mae=0.1010 rmse=0.1295
+group=split value=test num_threads=9 mae=0.1010 rmse=0.1295
+group=observation_ratio value=0.5 num_threads=9 mae=0.1010 rmse=0.1295
+group=event value=putinmissing num_threads=9 mae=0.1010 rmse=0.1295
+saved_predictions=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model temporal_baseline --model_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.07
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.72it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 40.95it/s]
+epoch=1 train_loss=0.1587 val_loss=0.0911 val_mae=0.1346 val_rmse=0.2130 val_pearson=-0.3694 val_spearman=-0.1533 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 185.10it/s]
+epoch=2 train_loss=0.1171 val_loss=0.0948 val_mae=0.1286 val_rmse=0.2195 val_pearson=-0.3140 val_spearman=0.0585 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 186.62it/s]
+epoch=3 train_loss=0.1099 val_loss=0.0971 val_mae=0.1646 val_rmse=0.2203 val_pearson=-0.3058 val_spearman=0.1988 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 187.52it/s]
+epoch=4 train_loss=0.1070 val_loss=0.0887 val_mae=0.1201 val_rmse=0.2002 val_pearson=-0.4303 val_spearman=-0.0157 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 183.19it/s]
+epoch=5 train_loss=0.1023 val_loss=0.0957 val_mae=0.1584 val_rmse=0.2172 val_pearson=-0.4353 val_spearman=0.0476 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.pt
+saved_config=runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.json
+saved_summary=runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl returncode=0
+==> command_duration_seconds 4.74
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model structure_baseline --model_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval
+group=overall value=all num_threads=9 mae=0.1053 rmse=0.1265
+group=split value=test num_threads=9 mae=0.1053 rmse=0.1265
+group=observation_ratio value=0.5 num_threads=9 mae=0.1053 rmse=0.1265
+group=event value=putinmissing num_threads=9 mae=0.1053 rmse=0.1265
+saved_predictions=runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model structure_baseline --model_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.96
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.61it/s]
+epoch 1/5:  50%|█████     | 7/14 [00:00<00:00, 17.44it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 31.11it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 23.10it/s]
+epoch=1 train_loss=0.2060 val_loss=0.0974 val_mae=0.1755 val_rmse=0.2137 val_pearson=0.2191 val_spearman=-0.0021 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  43%|████▎     | 6/14 [00:00<00:00, 55.85it/s]
+epoch 2/5:  86%|████████▌ | 12/14 [00:00<00:00, 57.07it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 58.90it/s]
+epoch=2 train_loss=0.1107 val_loss=0.0829 val_mae=0.1133 val_rmse=0.1868 val_pearson=-0.1045 val_spearman=-0.1475 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 53.87it/s]
+epoch 3/5:  93%|█████████▎| 13/14 [00:00<00:00, 60.50it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 59.57it/s]
+epoch=3 train_loss=0.1050 val_loss=0.0880 val_mae=0.1439 val_rmse=0.1960 val_pearson=-0.1502 val_spearman=0.1840 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 58.80it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 58.09it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 60.72it/s]
+epoch=4 train_loss=0.1077 val_loss=0.0979 val_mae=0.1799 val_rmse=0.2202 val_pearson=-0.0992 val_spearman=0.3265 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 7/14 [00:00<00:00, 60.87it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 60.56it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 60.54it/s]
+epoch=5 train_loss=0.1061 val_loss=0.0861 val_mae=0.1179 val_rmse=0.1884 val_pearson=-0.1600 val_spearman=0.1648 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.pt
+saved_config=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.json
+saved_summary=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl returncode=0
+==> command_duration_seconds 5.85
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval
+group=overall value=all num_threads=9 mae=0.1071 rmse=0.1213
+group=split value=test num_threads=9 mae=0.1071 rmse=0.1213
+group=observation_ratio value=0.5 num_threads=9 mae=0.1071 rmse=0.1213
+group=event value=putinmissing num_threads=9 mae=0.1071 rmse=0.1213
+saved_predictions=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.16
+==> summarize completed
+==> anomaly temporal_baseline 未优于 text_baseline。
+==> summarize end_time=1773912701.159243

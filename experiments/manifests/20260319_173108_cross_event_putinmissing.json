@@ -1,0 +1,577 @@
+{
+  "run_id": "20260319_173108_cross_event_putinmissing",
+  "created_at": "2026-03-19T09:31:41.160344+00:00",
+  "run_root": "runs/20260319_173108_cross_event_putinmissing",
+  "log_path": "experiments/logs/20260319_173108_cross_event_putinmissing.log",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.10705672204494476,
+        "rmse": 0.12132436037063599,
+        "pearson": -0.6656603585936122,
+        "spearman": -0.7074749701108396,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.014719598926603794
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "9",
+          "mae": "0.10705672204494476",
+          "rmse": "0.12132436037063599",
+          "pearson": "-0.6656603585936122",
+          "spearman": "-0.7074749701108396",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.10705672204494476",
+          "rmse": "0.12132436037063599",
+          "pearson": "-0.6656603585936122",
+          "spearman": "-0.7074749701108396"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.20600908622145653,
+          "val_loss": 0.09741942211985588,
+          "val_mae": 0.17548026144504547,
+          "val_rmse": 0.2137283831834793,
+          "val_pearson": 0.21909169291979283,
+          "val_spearman": -0.002054135185257614,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11070224030741624,
+          "val_loss": 0.08289716839790344,
+          "val_mae": 0.11327497661113739,
+          "val_rmse": 0.18678252398967743,
+          "val_pearson": -0.10449452478930096,
+          "val_spearman": -0.1474535960011952,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10500273148396186,
+          "val_loss": 0.08802687227725983,
+          "val_mae": 0.14390771090984344,
+          "val_rmse": 0.1960499882698059,
+          "val_pearson": -0.1502460575732798,
+          "val_spearman": 0.18403940916564837,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10765234327742032,
+          "val_loss": 0.09789946675300598,
+          "val_mae": 0.17985127866268158,
+          "val_rmse": 0.22016334533691406,
+          "val_pearson": -0.09920419973849451,
+          "val_spearman": 0.32649646012162237,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10613524301775865,
+          "val_loss": 0.0861047349870205,
+          "val_mae": 0.11791816353797913,
+          "val_rmse": 0.18835586309432983,
+          "val_pearson": -0.16002574708612652,
+          "val_spearman": 0.16481196360274153,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts",
+        "eval_dir": "runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval",
+        "summary_csv": "runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.10525719076395035,
+        "rmse": 0.12649834156036377,
+        "pearson": -0.41196692822341535,
+        "spearman": -0.5020790110464023,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.016001829877495766
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "9",
+          "mae": "0.10525719076395035",
+          "rmse": "0.12649834156036377",
+          "pearson": "-0.41196692822341535",
+          "spearman": "-0.5020790110464023",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.10525719076395035",
+          "rmse": "0.12649834156036377",
+          "pearson": "-0.41196692822341535",
+          "spearman": "-0.5020790110464023"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.15868700402123587,
+          "val_loss": 0.09110508561134338,
+          "val_mae": 0.13462767004966736,
+          "val_rmse": 0.21300126612186432,
+          "val_pearson": -0.36938690767945426,
+          "val_spearman": -0.1532828985539533,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11706721037626266,
+          "val_loss": 0.09475490674376488,
+          "val_mae": 0.12862150371074677,
+          "val_rmse": 0.21953655779361725,
+          "val_pearson": -0.3139700724533747,
+          "val_spearman": 0.05845957702908831,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10990949241178376,
+          "val_loss": 0.0971478633582592,
+          "val_mae": 0.16459651291370392,
+          "val_rmse": 0.22025032341480255,
+          "val_pearson": -0.3058496771025765,
+          "val_spearman": 0.19882548135502529,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10701202867286545,
+          "val_loss": 0.0886976145207882,
+          "val_mae": 0.12005847692489624,
+          "val_rmse": 0.20020215213298798,
+          "val_pearson": -0.43030426929723603,
+          "val_spearman": -0.015748369753641706,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10225770755537919,
+          "val_loss": 0.0956808052957058,
+          "val_mae": 0.15841810405254364,
+          "val_rmse": 0.2172306478023529,
+          "val_pearson": -0.43528042909257025,
+          "val_spearman": 0.047615223708719276,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval",
+        "summary_csv": "runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.101011723279953,
+        "rmse": 0.12950889766216278,
+        "pearson": -0.09215715438447634,
+        "spearman": -0.13693063937629152,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.016772551462054253
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "9",
+          "mae": "0.101011723279953",
+          "rmse": "0.12950889766216278",
+          "pearson": "-0.09215715438447634",
+          "spearman": "-0.13693063937629152",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.101011723279953",
+          "rmse": "0.12950889766216278",
+          "pearson": "-0.09215715438447634",
+          "spearman": "-0.13693063937629152"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.22260396927595139,
+          "val_loss": 0.1254650428891182,
+          "val_mae": 0.16914640367031097,
+          "val_rmse": 0.25420641899108887,
+          "val_pearson": -0.19001013428266667,
+          "val_spearman": -0.01139952499206027,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11526439205876418,
+          "val_loss": 0.08789694011211395,
+          "val_mae": 0.1368207037448883,
+          "val_rmse": 0.220431849360466,
+          "val_pearson": -0.18454280107219465,
+          "val_spearman": -0.040916152203644904,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09490912966430187,
+          "val_loss": 0.08998830914497376,
+          "val_mae": 0.13635887205600739,
+          "val_rmse": 0.2152702361345291,
+          "val_pearson": -0.09850860901925278,
+          "val_spearman": -0.03834385679147546,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.07757859397679567,
+          "val_loss": 0.09699369817972184,
+          "val_mae": 0.15957768261432648,
+          "val_rmse": 0.22718948125839233,
+          "val_pearson": -0.12349571611482008,
+          "val_spearman": -0.03906557996467408,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.066314661609275,
+          "val_loss": 0.10675355046987534,
+          "val_mae": 0.19593919813632965,
+          "val_rmse": 0.25656944513320923,
+          "val_pearson": -0.21749392359203804,
+          "val_spearman": -0.11129341445170533,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts",
+        "eval_dir": "runs/20260319_173108_cross_event_putinmissing/text_baseline/eval",
+        "summary_csv": "runs/20260319_173108_cross_event_putinmissing/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_173108_cross_event_putinmissing/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.0964931771159172,
+        "rmse": 0.12905849516391754,
+        "pearson": 0.2884585138146513,
+        "spearman": 0.296683051981965,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.016656095162034035
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "9",
+          "mae": "0.0964931771159172",
+          "rmse": "0.12905849516391754",
+          "pearson": "0.2884585138146513",
+          "spearman": "0.296683051981965",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.0964931771159172",
+          "rmse": "0.12905849516391754",
+          "pearson": "0.2884585138146513",
+          "spearman": "0.296683051981965"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2097732893058232,
+          "val_loss": 0.13687199354171753,
+          "val_mae": 0.18689124286174774,
+          "val_rmse": 0.26269370317459106,
+          "val_pearson": -0.27944937278816345,
+          "val_spearman": -0.18614906151807512,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11121156492403575,
+          "val_loss": 0.1017169900238514,
+          "val_mae": 0.15456055104732513,
+          "val_rmse": 0.24060887098312378,
+          "val_pearson": -0.21627577280101945,
+          "val_spearman": -0.09863550033714488,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09958458239478725,
+          "val_loss": 0.10098808705806732,
+          "val_mae": 0.1754034012556076,
+          "val_rmse": 0.2425088882446289,
+          "val_pearson": -0.19995165044744193,
+          "val_spearman": -0.04996545045221223,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.08526489005557128,
+          "val_loss": 0.10501737743616105,
+          "val_mae": 0.1790381222963333,
+          "val_rmse": 0.24542178213596344,
+          "val_pearson": -0.25416967247899164,
+          "val_spearman": -0.08277609624916493,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07577812339046172,
+          "val_loss": 0.10337112098932266,
+          "val_mae": 0.1550508290529251,
+          "val_rmse": 0.23459741473197937,
+          "val_pearson": -0.2579447727110015,
+          "val_spearman": -0.0829426477506723,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "20260319_173108_cross_event_putinmissing",
+    "experiment_type": "主实验",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "question": "验证 held-out event=putinmissing 时各模型的 cross-event 泛化能力。",
+    "success_criteria": "affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。",
+    "failure_criteria": "若 held-out event 掉点显著，则后续优先做泛化与正则化。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "六、方法方案",
+      "七、实验设计"
+    ],
+    "dataset": "/tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl",
+    "ratio_labels": [
+      "putinmissing_train"
+    ],
+    "models": [
+      "text_baseline",
+      "temporal_baseline",
+      "structure_baseline",
+      "affect_state_forecaster"
+    ],
+    "epochs": 5,
+    "batch_size": 16,
+    "seed": 42,
+    "device": "cuda",
+    "special_settings": "heldout_event=putinmissing"
+  },
+  "runtime_summary": {
+    "has_log": true,
+    "start_time": "=> plan start_time=1773912668.3485076",
+    "end_time": "=> summarize end_time=1773912701.159243",
+    "duration_seconds": 0.0,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": [
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model text_baseline --model_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/text_baseline/artifacts/text_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/text_baseline/eval",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model temporal_baseline --model_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/temporal_baseline/artifacts/temporal_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/temporal_baseline/eval",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model structure_baseline --model_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/structure_baseline/artifacts/structure_baseline_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/structure_baseline/eval",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/putinmissing_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/putinmissing_val.jsonl",
+      "/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/putinmissing_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.pt --config_path runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/artifacts/affect_state_forecaster_putinmissing_train.json --device cuda --output_dir runs/20260319_173108_cross_event_putinmissing/affect_state_forecaster/eval"
+    ]
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "部分支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 text_baseline，相对文本基线 MAE 改进 0.0000。",
+        "最佳模型相关系数表现 Pearson=0.2884585138146513, Spearman=0.296683051981965。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "不支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.10705672204494476, RMSE=0.12132436037063599。",
+        "Text baseline: MAE=0.0964931771159172, RMSE=0.12905849516391754。",
+        "Structure baseline: MAE=0.10525719076395035, RMSE=0.12649834156036377。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "不支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 -0.0045。",
+        "structure_baseline 相对文本基线的 MAE 改进为 -0.0088。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "temporal_baseline 未优于 text_baseline。",
+      "possible_cause": "当前时序编码没有有效利用 reply 顺序，或 observation window 信息密度不足。",
+      "idea_conflict": "削弱了 `idea.md` 中时间动态应带来增益的预期。",
+      "recommendation": "优先检查时间编码与序列长度处理；单次出现不建议新建 `idea.md`。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": true,
+    "summary": "建议准备补充版研究计划文件，例如 `idea_v2.md`，因为核心假设已有多项被当前证据削弱。",
+    "num_not_supported": 2,
+    "num_partial": 1
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "Affect-State 主线被当前结果削弱，需要先确认是实现问题还是假设问题。",
+    "next_step": "优先做 affect-state 消融、正则化和去结构对比。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "20260319_173034_cross_event_prince_toronto",
+    "previous_best_model": "structure_baseline",
+    "previous_best_mae": 0.08739369362592697,
+    "best_mae_delta": 0.0091
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/20260319_173108_cross_event_putinmissing_model_metrics.png",
+    "event_errors": "experiments/figures/20260319_173108_cross_event_putinmissing_event_errors.png",
+    "ratio_trends": "experiments/figures/20260319_173108_cross_event_putinmissing_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/20260319_173108_cross_event_putinmissing.json",
+  "report_path": "experiments/records/20260319_173108_cross_event_putinmissing.md",
+  "html_path": "experiments/html/20260319_173108_cross_event_putinmissing.html"
+}

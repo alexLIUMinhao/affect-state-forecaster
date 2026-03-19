@@ -1,0 +1,198 @@
+==> plan start_time=1773912567.404154
+==> plan run_id=20260319_172927_cross_event_germanwings_crash
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=germanwings-crash 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl
+==> plan ratio_labels=germanwings-crash_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:03,  3.89it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 41.32it/s]
+epoch=1 train_loss=0.2166 val_loss=0.1402 val_mae=0.1684 val_rmse=0.2538 val_pearson=-0.2850 val_spearman=-0.1673 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 216.20it/s]
+epoch=2 train_loss=0.1166 val_loss=0.1041 val_mae=0.1732 val_rmse=0.2447 val_pearson=-0.2186 val_spearman=-0.0700 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 211.37it/s]
+epoch=3 train_loss=0.0953 val_loss=0.0970 val_mae=0.1539 val_rmse=0.2318 val_pearson=-0.2343 val_spearman=-0.1215 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 212.50it/s]
+epoch=4 train_loss=0.0852 val_loss=0.1020 val_mae=0.1724 val_rmse=0.2404 val_pearson=-0.2545 val_spearman=-0.1069 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 219.43it/s]
+epoch=5 train_loss=0.0755 val_loss=0.1020 val_mae=0.1595 val_rmse=0.2335 val_pearson=-0.2185 val_spearman=-0.0648 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt
+saved_config=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 4.62
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model text_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/text_baseline/eval
+group=overall value=all num_threads=25 mae=0.1660 rmse=0.2797
+group=split value=test num_threads=25 mae=0.1660 rmse=0.2797
+group=observation_ratio value=0.5 num_threads=25 mae=0.1660 rmse=0.2797
+group=event value=germanwings-crash num_threads=25 mae=0.1660 rmse=0.2797
+saved_predictions=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172927_cross_event_germanwings_crash/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model text_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/text_baseline/eval returncode=0
+==> command_duration_seconds 2.96
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:04,  2.81it/s]
+epoch 1/5:  62%|██████▏   | 8/13 [00:00<00:00, 21.65it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 24.49it/s]
+epoch=1 train_loss=0.2145 val_loss=0.1128 val_mae=0.1717 val_rmse=0.2273 val_pearson=0.0332 val_spearman=-0.0254 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  54%|█████▍    | 7/13 [00:00<00:00, 67.77it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 71.44it/s]
+epoch=2 train_loss=0.1204 val_loss=0.0826 val_mae=0.1385 val_rmse=0.2048 val_pearson=0.0036 val_spearman=0.0189 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  62%|██████▏   | 8/13 [00:00<00:00, 69.52it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 71.31it/s]
+epoch=3 train_loss=0.0935 val_loss=0.0829 val_mae=0.1222 val_rmse=0.2038 val_pearson=-0.0444 val_spearman=0.0819 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  62%|██████▏   | 8/13 [00:00<00:00, 70.77it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 71.73it/s]
+epoch=4 train_loss=0.0732 val_loss=0.0858 val_mae=0.1394 val_rmse=0.2102 val_pearson=-0.0978 val_spearman=0.0643 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  62%|██████▏   | 8/13 [00:00<00:00, 73.36it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 72.47it/s]
+epoch=5 train_loss=0.0650 val_loss=0.0848 val_mae=0.1370 val_rmse=0.2107 val_pearson=-0.0922 val_spearman=0.0542 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt
+saved_config=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 5.39
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model temporal_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/eval
+group=overall value=all num_threads=25 mae=0.1784 rmse=0.2541
+group=split value=test num_threads=25 mae=0.1784 rmse=0.2541
+group=observation_ratio value=0.5 num_threads=25 mae=0.1784 rmse=0.2541
+group=event value=germanwings-crash num_threads=25 mae=0.1784 rmse=0.2541
+saved_predictions=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model temporal_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.02
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:03,  3.74it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 38.65it/s]
+epoch=1 train_loss=0.1795 val_loss=0.0948 val_mae=0.1093 val_rmse=0.2169 val_pearson=-0.4166 val_spearman=0.1723 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 182.78it/s]
+epoch=2 train_loss=0.1184 val_loss=0.0949 val_mae=0.1050 val_rmse=0.2218 val_pearson=-0.4123 val_spearman=0.2380 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 185.14it/s]
+epoch=3 train_loss=0.1173 val_loss=0.0922 val_mae=0.1315 val_rmse=0.2126 val_pearson=-0.3391 val_spearman=0.2235 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 181.23it/s]
+epoch=4 train_loss=0.1048 val_loss=0.0984 val_mae=0.1484 val_rmse=0.2146 val_pearson=-0.4292 val_spearman=0.1710 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 185.17it/s]
+epoch=5 train_loss=0.1027 val_loss=0.0910 val_mae=0.1123 val_rmse=0.2052 val_pearson=-0.3962 val_spearman=0.2106 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt
+saved_config=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 4.69
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model structure_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/eval
+group=overall value=all num_threads=25 mae=0.1153 rmse=0.2254
+group=split value=test num_threads=25 mae=0.1153 rmse=0.2254
+group=observation_ratio value=0.5 num_threads=25 mae=0.1153 rmse=0.2254
+group=event value=germanwings-crash num_threads=25 mae=0.1153 rmse=0.2254
+saved_predictions=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model structure_baseline --model_path runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.98
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:04,  2.62it/s]
+epoch 1/5:  62%|██████▏   | 8/13 [00:00<00:00, 20.01it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 22.09it/s]
+epoch=1 train_loss=0.2288 val_loss=0.0922 val_mae=0.1495 val_rmse=0.1963 val_pearson=0.2326 val_spearman=0.3079 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  46%|████▌     | 6/13 [00:00<00:00, 52.17it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 59.60it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 58.40it/s]
+epoch=2 train_loss=0.1038 val_loss=0.0823 val_mae=0.1202 val_rmse=0.1855 val_pearson=0.0587 val_spearman=0.0587 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  46%|████▌     | 6/13 [00:00<00:00, 55.33it/s]
+epoch 3/5:  92%|█████████▏| 12/13 [00:00<00:00, 57.25it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 57.98it/s]
+epoch=3 train_loss=0.1018 val_loss=0.0863 val_mae=0.1383 val_rmse=0.1933 val_pearson=-0.0482 val_spearman=0.0925 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  46%|████▌     | 6/13 [00:00<00:00, 55.96it/s]
+epoch 4/5:  92%|█████████▏| 12/13 [00:00<00:00, 56.17it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 57.53it/s]
+epoch=4 train_loss=0.1049 val_loss=0.0892 val_mae=0.1466 val_rmse=0.1978 val_pearson=-0.0858 val_spearman=0.0667 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  46%|████▌     | 6/13 [00:00<00:00, 59.79it/s]
+epoch 5/5:  92%|█████████▏| 12/13 [00:00<00:00, 59.88it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 59.21it/s]
+epoch=5 train_loss=0.1050 val_loss=0.0862 val_mae=0.1273 val_rmse=0.1906 val_pearson=-0.1093 val_spearman=0.1888 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt
+saved_config=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 5.75
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/eval
+group=overall value=all num_threads=25 mae=0.1362 rmse=0.2200
+group=split value=test num_threads=25 mae=0.1362 rmse=0.2200
+group=observation_ratio value=0.5 num_threads=25 mae=0.1362 rmse=0.2200
+group=event value=germanwings-crash num_threads=25 mae=0.1362 rmse=0.2200
+saved_predictions=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/germanwings-crash_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt --config_path runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json --device cuda --output_dir runs/20260319_172927_cross_event_germanwings_crash/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.11
+==> summarize completed
+==> anomaly Affect-State Forecaster 的 MAE 明显差于 structure_baseline。
+==> anomaly temporal_baseline 未优于 text_baseline。
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773912599.9384475
