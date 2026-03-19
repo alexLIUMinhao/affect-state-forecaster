@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experiment Progress Dashboard</title>
+  <style>
+    body { margin: 0; font-family: Georgia, "Noto Serif SC", serif; background: #f4f1e8; color: #1e293b; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 48px; }
+    .hero { background: linear-gradient(135deg, #f8e7cf, #f7f5ef); border: 1px solid #d8d1c2; border-radius: 22px; padding: 28px; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { background: #fffdf8; border: 1px solid #d8d1c2; border-radius: 18px; padding: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.04); }
+    h1, h2 { margin: 0 0 10px; }
+    p { line-height: 1.55; }
+    .meta { color: #667085; font-size: 13px; margin-bottom: 8px; }
+    a { color: #8c3b2f; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>实验进展 HTML 总览</h1>
+      <p>以后查看实验进展，以这个 HTML 首页和每轮 HTML 报告为主。这里会按时间展示每一轮实验验证了什么、当前最优方向是什么，以及下一步为什么这样做。</p>
+    </section>
+    <section class="grid">
+      <article class='card'><div class='meta'>2026-03-19T06:31:02.738632+00:00</div><h2>20260319_143055_process_doc_smoke_v2</h2><p><strong>实验目标:</strong> 确认过程文档中的耗时和异常计数准确。</p><p><strong>最佳模型:</strong> text_baseline | MAE=0.17285220324993134</p><p><strong>研究判断:</strong> H1=部分支持; H2=证据不足; H3=证据不足; H4=证据不足</p><p><strong>当前动作:</strong> 继续，但先做诊断</p><p><a href='20260319_143055_process_doc_smoke_v2.html'>打开 HTML 报告</a></p></article><article class='card'><div class='meta'>2026-03-19T06:29:11.377703+00:00</div><h2>20260319_142904_process_doc_smoke</h2><p><strong>实验目标:</strong> 检查单模型 tracked 实验是否能完整记录过程与决策。</p><p><strong>最佳模型:</strong> text_baseline | MAE=0.1760059893131256</p><p><strong>研究判断:</strong> H1=部分支持; H2=证据不足; H3=证据不足; H4=证据不足</p><p><strong>当前动作:</strong> 继续，但先做诊断</p></article><article class='card'><div class='meta'>2026-03-19T06:29:03.193550+00:00</div><h2>import_first_round_ratio_05</h2><p><strong>实验目标:</strong> 回填历史实验 `first_round_ratio_05`，确认其对当前研究主线的支持程度。</p><p><strong>最佳模型:</strong> structure_baseline | MAE=0.11702784150838852</p><p><strong>研究判断:</strong> H1=支持; H2=部分支持; H3=支持; H4=证据不足</p><p><strong>当前动作:</strong> 继续，但先做诊断</p><p><a href='import_first_round_ratio_05.html'>打开 HTML 报告</a></p></article><article class='card'><div class='meta'>2026-03-19T05:45:15.174546+00:00</div><h2>20260319_134508_smoke_ratio05</h2><p><strong>实验目标:</strong> </p><p><strong>最佳模型:</strong> text_baseline | MAE=0.18478477001190186</p><p><strong>研究判断:</strong> H1=部分支持; H2=证据不足; H3=证据不足; H4=证据不足</p><p><strong>当前动作:</strong> </p></article>
+    </section>
+  </div>
+</body>
+</html>
