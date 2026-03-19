@@ -140,9 +140,10 @@ def summarize_runtime(log_path: Path) -> dict[str, Any]:
                 parts = line.split(" returncode=")
                 if len(parts) == 2 and parts[1] != "0":
                     summary["failed_commands"].append(parts[0].replace("==> command_exit command=", "", 1))
-            if "warning" in line.lower():
+            lowered = line.lower()
+            if "warning" in lowered:
                 summary["warning_count"] += 1
-            if "error" in line.lower() or "traceback" in line.lower():
+            if lowered.startswith("traceback") or " error:" in lowered or lowered.startswith("error:"):
                 summary["error_count"] += 1
 
     if start_epoch is not None and end_epoch is not None:

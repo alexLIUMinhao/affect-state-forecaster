@@ -129,8 +129,9 @@ def main() -> None:
         if eval_code != 0 and not args.continue_on_error:
             raise SystemExit(eval_code)
 
+    preliminary_manifest = build_manifest(run_id=run_id, run_root=run_root, config=config, log_path=log_path, experiment_plan=plan)
+    finalize_log(log_path, preliminary_manifest["anomalies"])
     manifest = build_manifest(run_id=run_id, run_root=run_root, config=config, log_path=log_path, experiment_plan=plan)
-    finalize_log(log_path, manifest["anomalies"])
     persist_manifest_outputs(paths, manifest)
     print(f"completed_run={run_id}")
     print(f"saved_manifest={manifest['manifest_path']}")
