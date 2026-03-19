@@ -83,6 +83,12 @@ Import existing `runs/` results into the experiment journal:
 python scripts/sync_experiment_records.py --runs_root runs
 ```
 
+Open the HTML progress dashboard after experiments finish:
+
+```bash
+open experiments/html/index.html
+```
+
 Validate server CUDA and benchmark files before training:
 
 ```bash

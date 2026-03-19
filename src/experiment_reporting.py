@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import html
 import json
 import math
 import os
@@ -24,6 +25,7 @@ class ExperimentPaths:
     records: Path
     figures: Path
     manifests: Path
+    html: Path
 
 
 def ensure_experiment_paths(root: str | Path = "experiments") -> ExperimentPaths:
@@ -34,8 +36,9 @@ def ensure_experiment_paths(root: str | Path = "experiments") -> ExperimentPaths
         records=root_path / "records",
         figures=root_path / "figures",
         manifests=root_path / "manifests",
+        html=root_path / "html",
     )
-    for path in (paths.root, paths.logs, paths.records, paths.figures, paths.manifests):
+    for path in (paths.root, paths.logs, paths.records, paths.figures, paths.manifests, paths.html):
         path.mkdir(parents=True, exist_ok=True)
     return paths
 
@@ -148,6 +151,11 @@ def summarize_runtime(log_path: Path) -> dict[str, Any]:
 
     if start_epoch is not None and end_epoch is not None:
         summary["duration_seconds"] = round(end_epoch - start_epoch, 2)
+    elif log_path.exists():
+        try:
+            summary["duration_seconds"] = round(log_path.stat().st_mtime - log_path.stat().st_ctime, 2)
+        except OSError:
+            summary["duration_seconds"] = None
     return summary
 
 
@@ -201,6 +209,283 @@ def describe_figure(manifest: dict[str, Any], figure_key: str) -> str:
             return "当前只有一个 observation ratio，因此该图主要起到占位作用，尚不能判断趋势。"
         return "该图用于观察 observation ratio 变化时模型误差是否呈现可解释趋势。"
     return ""
+
+
+def explain_progress(manifest: dict[str, Any]) -> list[str]:
+    statements: list[str] = []
+    best = best_model_by_metric(manifest, "mae")
+    if best:
+        statements.append(
+            f"当前主实验里，`{best['model']}` 是 MAE 最优模型，说明这一轮最有用的建模方向暂时偏向 `{best['model']}`。"
+        )
+    verdicts = {item["id"]: item["verdict"] for item in manifest.get("hypothesis_analysis", [])}
+    if verdicts.get("H1") in {"支持", "部分支持"}:
+        statements.append("已经验证：早期观测对未来情绪预测是有信息量的，任务本身可以继续做。")
+    if verdicts.get("H2") == "部分支持":
+        statements.append("当前只部分验证了 affect-state 主线：它优于最弱基线，但还没有稳定压过结构基线。")
+    elif verdicts.get("H2") == "不支持":
+        statements.append("当前没有验证 affect-state 主线，需要先做诊断，再决定是否保留它作为论文核心方法。")
+    if verdicts.get("H3") in {"支持", "部分支持"}:
+        statements.append("已经验证：时间或结构信息至少有一部分是有效的，尤其需要关注结构特征的稳定贡献。")
+    if verdicts.get("H4") == "证据不足":
+        statements.append("目前还没有足够的多 ratio 证据，因此还不能判断早观察和晚观察之间的规律。")
+    if manifest.get("anomalies"):
+        statements.append("这轮实验存在需要优先解释的异常现象，因此后续应先做诊断实验，而不是直接扩大模型复杂度。")
+    return statements
+
+
+def _html_badge(verdict: str) -> str:
+    color_map = {
+        "支持": "#1f7a4f",
+        "部分支持": "#ad7c14",
+        "不支持": "#b42318",
+        "证据不足": "#667085",
+    }
+    color = color_map.get(verdict, "#344054")
+    return (
+        f'<span style="display:inline-block;padding:4px 10px;border-radius:999px;'
+        f'background:{color};color:#fff;font-size:12px;font-weight:700;">{html.escape(verdict)}</span>'
+    )
+
+
+def _html_escape(value: Any) -> str:
+    return html.escape("" if value is None else str(value))
+
+
+def _html_list(items: list[str]) -> str:
+    if not items:
+        return "<p>无。</p>"
+    return "<ul>" + "".join(f"<li>{_html_escape(item)}</li>" for item in items) + "</ul>"
+
+
+def _figure_rel_path(paths: ExperimentPaths, target: str) -> str:
+    try:
+        return os.path.relpath(target, start=paths.html)
+    except ValueError:
+        return target
+
+
+def build_report_html(manifest: dict[str, Any], paths: ExperimentPaths) -> str:
+    plan = manifest.get("experiment_plan", {})
+    runtime = manifest.get("runtime_summary", {})
+    decision = manifest.get("decision", {})
+    best = best_model_by_metric(manifest, "mae")
+    comparison = manifest.get("comparison_to_previous", {})
+    progress_notes = explain_progress(manifest)
+
+    model_rows = []
+    for entry in manifest.get("models", []):
+        metrics = entry.get("overall_metrics", {})
+        model_rows.append(
+            "<tr>"
+            f"<td>{_html_escape(entry['model'])}</td>"
+            f"<td>{_html_escape(entry['status'])}</td>"
+            f"<td>{_html_escape(metrics.get('mae'))}</td>"
+            f"<td>{_html_escape(metrics.get('rmse'))}</td>"
+            f"<td>{_html_escape(metrics.get('pearson'))}</td>"
+            f"<td>{_html_escape(metrics.get('spearman'))}</td>"
+            "</tr>"
+        )
+
+    hypothesis_blocks = []
+    for item in manifest.get("hypothesis_analysis", []):
+        evidence_html = "".join(f"<li>{_html_escape(evidence)}</li>" for evidence in item.get("evidence", []))
+        hypothesis_blocks.append(
+            "<section class='card'>"
+            f"<h3>{_html_escape(item['id'])} {_html_escape(item['title'])}</h3>"
+            f"{_html_badge(item['verdict'])}"
+            f"<ul>{evidence_html}</ul>"
+            "</section>"
+        )
+
+    anomaly_blocks = []
+    for item in manifest.get("anomalies", []):
+        anomaly_blocks.append(
+            "<section class='card anomaly'>"
+            f"<h3>{_html_escape(item['phenomenon'])}</h3>"
+            f"<p><strong>可能原因:</strong> {_html_escape(item['possible_cause'])}</p>"
+            f"<p><strong>与 idea.md 的关系:</strong> {_html_escape(item['idea_conflict'])}</p>"
+            f"<p><strong>建议:</strong> {_html_escape(item['recommendation'])}</p>"
+            "</section>"
+        )
+
+    figures = manifest.get("figures", {})
+    figure_cards = []
+    for key, title in (
+        ("model_metrics", "模型误差对比"),
+        ("event_errors", "事件级误差对比"),
+        ("ratio_trends", "Observation Ratio 趋势"),
+    ):
+        figure_path = figures.get(key, "")
+        rel = _figure_rel_path(paths, figure_path) if figure_path else ""
+        figure_cards.append(
+            "<section class='card figure'>"
+            f"<h3>{title}</h3>"
+            f"<p>{_html_escape(describe_figure(manifest, key))}</p>"
+            + (f"<img src='{_html_escape(rel)}' alt='{_html_escape(title)}' />" if rel else "<p>暂无图表。</p>")
+            + "</section>"
+        )
+
+    return f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experiment {html.escape(manifest['run_id'])}</title>
+  <style>
+    :root {{
+      --bg: #f4f1e8;
+      --panel: #fffdf8;
+      --ink: #1e293b;
+      --muted: #6b7280;
+      --line: #d6d3c8;
+      --accent: #8c3b2f;
+      --accent-soft: #f6ddd6;
+      --warning: #fff4d6;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{ margin: 0; font-family: Georgia, "Noto Serif SC", serif; background: linear-gradient(180deg, #ece7db 0%, var(--bg) 100%); color: var(--ink); }}
+    .wrap {{ max-width: 1180px; margin: 0 auto; padding: 32px 20px 56px; }}
+    .hero {{ background: radial-gradient(circle at top left, #f9efe0, #f6f3ec 55%, #efe6d5); border: 1px solid var(--line); border-radius: 24px; padding: 28px; box-shadow: 0 14px 30px rgba(59, 47, 31, 0.08); }}
+    h1, h2, h3 {{ margin: 0 0 12px; }}
+    p {{ line-height: 1.6; }}
+    .sub {{ color: var(--muted); }}
+    .grid {{ display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 18px; }}
+    .card {{ background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: 0 8px 24px rgba(30, 41, 59, 0.05); }}
+    .span-4 {{ grid-column: span 4; }}
+    .span-6 {{ grid-column: span 6; }}
+    .span-8 {{ grid-column: span 8; }}
+    .span-12 {{ grid-column: span 12; }}
+    .metric {{ font-size: 28px; font-weight: 700; color: var(--accent); }}
+    .label {{ color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }}
+    table {{ width: 100%; border-collapse: collapse; }}
+    th, td {{ text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }}
+    th {{ font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }}
+    ul {{ margin: 10px 0 0 18px; }}
+    .figure img {{ width: 100%; border-radius: 12px; border: 1px solid var(--line); background: #fff; }}
+    .anomaly {{ background: var(--warning); }}
+    .banner {{ display: inline-block; background: var(--accent-soft); color: var(--accent); padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 10px; }}
+    .decision {{ border-left: 6px solid var(--accent); }}
+    .mini {{ font-size: 14px; color: var(--muted); }}
+    @media (max-width: 900px) {{
+      .span-4, .span-6, .span-8, .span-12 {{ grid-column: span 12; }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="banner">HTML 实验进展展示</div>
+      <h1>{_html_escape(manifest['run_id'])}</h1>
+      <p class="sub">这个页面用于回答三件事：这轮实验为什么做、当前研究进展到了哪里、下一步为什么应该这样推进。</p>
+      <div class="grid">
+        <div class="card span-4"><div class="label">实验类型</div><div class="metric" style="font-size:22px">{_html_escape(plan.get('experiment_type', 'unknown'))}</div></div>
+        <div class="card span-4"><div class="label">目标假设</div><div class="metric" style="font-size:22px">{_html_escape(', '.join(plan.get('target_hypotheses', [])) or 'unknown')}</div></div>
+        <div class="card span-4"><div class="label">当前决策</div><div class="metric" style="font-size:22px">{_html_escape(decision.get('action', '未定义'))}</div></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card span-8">
+        <h2>这轮实验在验证什么</h2>
+        <p><strong>实验问题:</strong> {_html_escape(plan.get('question', '未提供'))}</p>
+        <p><strong>成功标准:</strong> {_html_escape(plan.get('success_criteria', '未提供'))}</p>
+        <p><strong>失败标准:</strong> {_html_escape(plan.get('failure_criteria', '未提供'))}</p>
+        <p><strong>对应 idea.md:</strong> {_html_escape(', '.join(plan.get('idea_sections', [])) or '未提供')}</p>
+      </section>
+      <section class="card span-4">
+        <h2>运行摘要</h2>
+        <p><strong>数据:</strong> {_html_escape(plan.get('dataset', 'unknown'))}</p>
+        <p><strong>Ratio:</strong> {_html_escape(', '.join(plan.get('ratio_labels', [])) or 'unknown')}</p>
+        <p><strong>模型:</strong> {_html_escape(', '.join(entry['model'] for entry in manifest.get('models', [])) or 'none')}</p>
+        <p><strong>参数:</strong> epochs={_html_escape(plan.get('epochs'))}, batch={_html_escape(plan.get('batch_size'))}, device={_html_escape(plan.get('device'))}</p>
+        <p><strong>总耗时(秒):</strong> {_html_escape(runtime.get('duration_seconds'))}</p>
+        <p><strong>Warning 数:</strong> {_html_escape(runtime.get('warning_count'))}</p>
+        <p><strong>Error 数:</strong> {_html_escape(runtime.get('error_count'))}</p>
+      </section>
+      <section class="card span-12">
+        <h2>当前实验进展解释</h2>
+        {_html_list(progress_notes)}
+      </section>
+      <section class="card span-12">
+        <h2>结果总览</h2>
+        <p class="mini">最优模型: {_html_escape(best['model']) if best else 'unknown'}；与上一轮相比的最佳 MAE 变化: {_html_escape(comparison.get('best_mae_delta'))}</p>
+        <table>
+          <thead><tr><th>Model</th><th>Status</th><th>MAE</th><th>RMSE</th><th>Pearson</th><th>Spearman</th></tr></thead>
+          <tbody>{''.join(model_rows)}</tbody>
+        </table>
+      </section>
+      <section class="span-12">
+        <div class="grid">{''.join(f"<div class='span-4'>{card}</div>" for card in figure_cards)}</div>
+      </section>
+      <section class="span-12">
+        <h2>验证了哪些研究问题</h2>
+        <div class="grid">{''.join(f"<div class='span-6'>{block}</div>" for block in hypothesis_blocks)}</div>
+      </section>
+      <section class="span-12">
+        <h2>不一致现象与风险</h2>
+        <div class="grid">{''.join(f"<div class='span-6'>{block}</div>" for block in anomaly_blocks) if anomaly_blocks else "<div class='card span-12'><p>当前没有检测到显著异常。</p></div>"}</div>
+      </section>
+      <section class="card span-12 decision">
+        <h2>为什么下一步这样做</h2>
+        <p><strong>决策:</strong> {_html_escape(decision.get('action', '未定义'))}</p>
+        <p><strong>原因:</strong> {_html_escape(decision.get('reason', manifest.get('idea_followup', {}).get('summary', '未定义')))}</p>
+        <p><strong>下一步:</strong> 因此下一步是 {_html_escape(decision.get('next_step', '未定义'))}，而不是继续无选择地堆实验。</p>
+        <p><strong>是否建议新增 idea:</strong> {'是' if manifest.get('idea_followup', {}).get('suggest_new_idea') else '否'}</p>
+      </section>
+    </section>
+  </div>
+</body>
+</html>
+"""
+
+
+def build_index_html(index_rows: list[dict[str, Any]]) -> str:
+    cards = []
+    for row in sorted(index_rows, key=lambda item: item.get("created_at", ""), reverse=True):
+        html_path = row.get("html_path", "")
+        cards.append(
+            "<article class='card'>"
+            f"<div class='meta'>{_html_escape(row.get('created_at', ''))}</div>"
+            f"<h2>{_html_escape(row.get('run_id', ''))}</h2>"
+            f"<p><strong>实验目标:</strong> {_html_escape(row.get('experiment_goal', ''))}</p>"
+            f"<p><strong>最佳模型:</strong> {_html_escape(row.get('best_model', ''))} | MAE={_html_escape(row.get('best_mae', ''))}</p>"
+            f"<p><strong>研究判断:</strong> {_html_escape(row.get('hypothesis_summary', ''))}</p>"
+            f"<p><strong>当前动作:</strong> {_html_escape(row.get('decision_action', ''))}</p>"
+            + (f"<p><a href='{_html_escape(os.path.basename(html_path))}'>打开 HTML 报告</a></p>" if html_path else "")
+            + "</article>"
+        )
+    return f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experiment Progress Dashboard</title>
+  <style>
+    body {{ margin: 0; font-family: Georgia, "Noto Serif SC", serif; background: #f4f1e8; color: #1e293b; }}
+    .wrap {{ max-width: 1100px; margin: 0 auto; padding: 32px 20px 48px; }}
+    .hero {{ background: linear-gradient(135deg, #f8e7cf, #f7f5ef); border: 1px solid #d8d1c2; border-radius: 22px; padding: 28px; margin-bottom: 20px; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }}
+    .card {{ background: #fffdf8; border: 1px solid #d8d1c2; border-radius: 18px; padding: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.04); }}
+    h1, h2 {{ margin: 0 0 10px; }}
+    p {{ line-height: 1.55; }}
+    .meta {{ color: #667085; font-size: 13px; margin-bottom: 8px; }}
+    a {{ color: #8c3b2f; text-decoration: none; font-weight: 700; }}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>实验进展 HTML 总览</h1>
+      <p>以后查看实验进展，以这个 HTML 首页和每轮 HTML 报告为主。这里会按时间展示每一轮实验验证了什么、当前最优方向是什么，以及下一步为什么这样做。</p>
+    </section>
+    <section class="grid">
+      {''.join(cards) if cards else '<div class="card"><p>暂无实验记录。</p></div>'}
+    </section>
+  </div>
+</body>
+</html>
+"""
 
 
 def discover_run_models(run_root: Path) -> list[str]:
@@ -748,6 +1033,7 @@ def upsert_index(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
         "decision_action",
         "hypothesis_summary",
         "suggest_new_idea",
+        "html_path",
         "report_path",
         "manifest_path",
     ]
@@ -764,6 +1050,7 @@ def upsert_index(paths: ExperimentPaths, manifest: dict[str, Any]) -> None:
         "decision_action": manifest.get("decision", {}).get("action", ""),
         "hypothesis_summary": "; ".join(f"{item['id']}={item['verdict']}" for item in manifest.get("hypothesis_analysis", [])),
         "suggest_new_idea": str(manifest["idea_followup"]["suggest_new_idea"]),
+        "html_path": manifest.get("html_path", ""),
         "report_path": manifest["report_path"],
         "manifest_path": manifest["manifest_path"],
     }
@@ -827,12 +1114,17 @@ def persist_manifest_outputs(paths: ExperimentPaths, manifest: dict[str, Any]) -
     manifest["figures"] = figures
     manifest_path = paths.manifests / f"{manifest['run_id']}.json"
     report_path = paths.records / f"{manifest['run_id']}.md"
+    html_path = paths.html / f"{manifest['run_id']}.html"
     manifest["manifest_path"] = str(manifest_path)
     manifest["report_path"] = str(report_path)
+    manifest["html_path"] = str(html_path)
     write_json(manifest_path, manifest)
     report_path.write_text(build_report_markdown(manifest), encoding="utf-8")
+    html_path.write_text(build_report_html(manifest, paths), encoding="utf-8")
     append_journal(paths, manifest)
     upsert_index(paths, manifest)
+    index_rows = read_csv_rows(paths.records / "experiment_index.csv")
+    (paths.html / "index.html").write_text(build_index_html(index_rows), encoding="utf-8")
     return manifest
 
 

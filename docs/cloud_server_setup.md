@@ -137,3 +137,9 @@ Recompute report and figures for an existing manifest:
 python scripts/analyze_experiment_progress.py \
   --run_manifest experiments/manifests/<run_id>.json
 ```
+
+Primary viewing entry for experiment progress:
+
+```text
+experiments/html/index.html
+```
