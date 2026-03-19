@@ -81,7 +81,7 @@ Initialize a local repository after verifying the full pipeline:
 
 ```bash
 git init -b main
-git remote add origin https://github.com/<your-username>/multimodal-event-affect-forecasting.git
+git remote add origin https://github.com/alexLIUMinhao/affect-state-forecaster.git
 ```
 
 ## Notes
