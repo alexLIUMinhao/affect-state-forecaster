@@ -59,6 +59,31 @@ class GenerateProgressHtmlTests(unittest.TestCase):
         self.assertIn("仍需进一步诊断", joined)
         self.assertNotIn("初步支持", joined)
 
+    def test_metric_reading_handles_split_winners(self) -> None:
+        evidence = {
+            "best_model": "structure_baseline",
+            "best_mae_model": "structure_baseline",
+            "best_mae": 0.1170,
+            "best_rmse_model": "affect_state_forecaster",
+            "best_rmse": 0.1775,
+            "best_corr_model": "affect_state_forecaster",
+            "mae_gain_vs_text": 0.0608,
+            "ours_vs_structure": -0.0125,
+            "ours_vs_temporal": 0.0395,
+            "evidence_status": "diagnostic_needed",
+            "anomalies": [],
+        }
+        results = {
+            "models": {
+                "structure_baseline": {"metrics": {"pearson": -0.2484, "spearman": 0.0661}},
+                "affect_state_forecaster": {"metrics": {"pearson": 0.0126, "spearman": 0.2499}},
+            }
+        }
+        reading = MODULE.build_metric_reading(evidence, results)
+        self.assertIn("MAE 更低", reading)
+        self.assertIn("RMSE 更低", reading)
+        self.assertIn("相关性偏弱", reading)
+
     def test_generate_html_contains_table_and_plan(self) -> None:
         args = argparse.Namespace(
             idea_path=PROJECT_ROOT / "idea.md",
@@ -77,6 +102,11 @@ class GenerateProgressHtmlTests(unittest.TestCase):
         self.assertIn("模型架构", html_text)
         self.assertIn("输入", html_text)
         self.assertIn("输出", html_text)
+        self.assertIn("MAE", html_text)
+        self.assertIn("RMSE", html_text)
+        self.assertIn("Pearson", html_text)
+        self.assertIn("Spearman", html_text)
+        self.assertIn("Metric Reading", html_text)
 
 
 if __name__ == "__main__":

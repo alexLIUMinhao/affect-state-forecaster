@@ -504,6 +504,7 @@ def collect_run_results(run_root: str | Path) -> dict[str, Any]:
         summary_rows = read_csv_rows(eval_dir / "results_summary.csv")
         event_rows = read_csv_rows(eval_dir / "error_analysis_by_event.csv")
         history_payload = read_json(next(iter(sorted(artifact_dir.glob("*_summary.json"))), artifact_dir / "missing.json")) if list(artifact_dir.glob("*_summary.json")) else {"history": []}
+        config_payload = read_json(next(iter(sorted(path for path in artifact_dir.glob("*.json") if not path.name.endswith("_summary.json"))), artifact_dir / "missing.json")) if list(path for path in artifact_dir.glob("*.json") if not path.name.endswith("_summary.json")) else {}
         overall_row = next((row for row in summary_rows if row.get("group_name") == "overall"), None)
         ratio_rows = [row for row in summary_rows if row.get("group_name") == "observation_ratio"]
         for ratio_row in ratio_rows:
@@ -514,6 +515,9 @@ def collect_run_results(run_root: str | Path) -> dict[str, Any]:
             {
                 "model": model_dir,
                 "status": "completed" if overall_row else "failed",
+                "param_count": config_payload.get("param_count") or history_payload.get("param_count"),
+                "capacity_group": config_payload.get("capacity_group", "default"),
+                "config": config_payload,
                 "paths": {
                     "artifact_dir": str(artifact_dir),
                     "eval_dir": str(eval_dir),

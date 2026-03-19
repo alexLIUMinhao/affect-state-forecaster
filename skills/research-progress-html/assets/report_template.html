@@ -169,6 +169,22 @@
       border-radius: 16px;
       background: #fff;
     }
+    .metric-guide {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .metric-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.56);
+      border: 1px solid var(--line);
+    }
+    .metric-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
     .mini {
       color: var(--muted);
       font-size: 14px;
@@ -176,6 +192,7 @@
     @media (max-width: 900px) {
       .meta-grid { grid-template-columns: 1fr; }
       .spec-grid { grid-template-columns: 1fr; }
+      .metric-guide { grid-template-columns: 1fr; }
       .span-7, .span-5, .span-6 { grid-column: span 12; }
       h1 { font-size: 32px; }
     }
@@ -241,9 +258,19 @@
         <div class="section-tag">Current Progress</div>
         <h2>当前实验进展</h2>
         <p>${progress_summary}</p>
+        <div class="metric-guide">
+          ${metric_guide_html}
+        </div>
         ${table_html}
+        ${secondary_tables_html}
         <div class="note">
           <strong>结果解释：</strong> ${table_note}
+        </div>
+        <div class="note">
+          <strong>Metric Reading：</strong> ${metric_reading}
+        </div>
+        <div class="note">
+          <strong>事件级摘要：</strong> ${event_summary}
         </div>
         ${figures_html}
       </section>

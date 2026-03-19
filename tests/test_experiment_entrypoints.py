@@ -23,6 +23,7 @@ def load_module(relative_path: str, module_name: str):
 ratio_sweep = load_module("scripts/run_ratio_sweep.py", "run_ratio_sweep")
 cross_event = load_module("scripts/run_cross_event_suite.py", "run_cross_event_suite")
 labeler_robustness = load_module("scripts/run_labeler_robustness_suite.py", "run_labeler_robustness_suite")
+capacity_matched = load_module("scripts/run_capacity_matched_suite.py", "run_capacity_matched_suite")
 
 
 class ExperimentEntrypointTests(unittest.TestCase):
@@ -55,6 +56,23 @@ class ExperimentEntrypointTests(unittest.TestCase):
         self.assertEqual(labeler_robustness.ratio_suffix("30"), "03")
         self.assertEqual(labeler_robustness.ratio_suffix("50"), "05")
         self.assertEqual(labeler_robustness.ratio_suffix("70"), "07")
+
+    def test_capacity_matched_search_targets_structure_baseline_window(self) -> None:
+        args = type(
+            "Args",
+            (),
+            {
+                "target_model": "structure_baseline",
+                "target_param_tolerance": 0.05,
+                "search_hidden_dim": [64, 72, 80, 88, 96, 104, 112, 120, 128],
+                "search_affect_state_dim": [8, 16, 24, 32, 40],
+            },
+        )()
+        matched = capacity_matched.choose_matched_asf_config(args)
+        target = matched["target_param_count"]
+        gap_ratio = abs(matched["param_count"] - target) / target
+        self.assertLessEqual(gap_ratio, 0.05)
+        self.assertLess(matched["hidden_dim"], 128)
 
 
 if __name__ == "__main__":

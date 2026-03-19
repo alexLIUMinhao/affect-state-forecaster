@@ -39,6 +39,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable_temporal", action="store_true")
     parser.add_argument("--disable_structure", action="store_true")
     parser.add_argument("--disable_affect_state", action="store_true")
+    parser.add_argument("--capacity_group", type=str, default="default")
     return parser.parse_args()
 
 
@@ -58,6 +59,7 @@ def maybe_load_config(args: argparse.Namespace) -> argparse.Namespace:
     args.disable_temporal = bool(config.get("disable_temporal", args.disable_temporal))
     args.disable_structure = bool(config.get("disable_structure", args.disable_structure))
     args.disable_affect_state = bool(config.get("disable_affect_state", args.disable_affect_state))
+    args.capacity_group = str(config.get("capacity_group", args.capacity_group))
     return args
 
 

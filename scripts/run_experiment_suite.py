@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -46,7 +47,47 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--failure_criteria", type=str, default="若核心假设被削弱或结果无法解释，则转入诊断实验。")
     parser.add_argument("--idea_sections", nargs="+", default=["三、核心研究问题", "六、方法方案", "七、实验设计"])
     parser.add_argument("--special_settings", type=str, default="")
+    parser.add_argument("--model_configs_path", type=Path, default=Path(""))
+    parser.add_argument("--capacity_group", type=str, default="default")
     return parser.parse_args()
+
+
+OVERRIDABLE_MODEL_ARGS = (
+    "hidden_dim",
+    "vocab_size",
+    "dropout",
+    "affect_state_dim",
+    "classification_loss_weight",
+    "affect_state_weight",
+    "input_view",
+    "disable_temporal",
+    "disable_structure",
+    "disable_affect_state",
+    "capacity_group",
+)
+
+
+def load_model_configs(path: Path) -> dict[str, dict[str, object]]:
+    if not str(path) or not path.exists():
+        return {}
+    with path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return payload if isinstance(payload, dict) else {}
+
+
+def apply_model_overrides(command: list[str], overrides: dict[str, object]) -> list[str]:
+    merged = list(command)
+    for key in OVERRIDABLE_MODEL_ARGS:
+        if key not in overrides:
+            continue
+        value = overrides[key]
+        flag = f"--{key}"
+        if isinstance(value, bool):
+            if value:
+                merged.append(flag)
+            continue
+        merged.extend([flag, str(value)])
+    return merged
 
 
 def main() -> None:
@@ -55,6 +96,7 @@ def main() -> None:
     run_root = args.runs_root / run_id
     paths = ensure_experiment_paths(args.experiments_root)
     config = load_hypothesis_config(args.config_path)
+    model_configs = load_model_configs(args.model_configs_path)
     log_path = paths.logs / f"{run_id}.log"
     ratio_label = args.train_path.stem.replace("pheme_forecast_ratio_", "ratio_")
     plan = {
@@ -73,6 +115,9 @@ def main() -> None:
         "seed": args.seed,
         "device": args.device,
         "special_settings": args.special_settings or "无",
+        "capacity_group": args.capacity_group,
+        "model_configs_path": str(args.model_configs_path) if str(args.model_configs_path) else "",
+        "model_configs": model_configs,
     }
     initialize_log(log_path, plan)
 
@@ -99,9 +144,12 @@ def main() -> None:
             str(args.batch_size),
             "--seed",
             str(args.seed),
+            "--capacity_group",
+            args.capacity_group,
             "--output_dir",
             str(artifact_dir),
         ]
+        train_cmd = apply_model_overrides(train_cmd, model_configs.get(model, {}))
         if str(args.val_path):
             train_cmd.extend(["--val_path", str(args.val_path)])
         train_code = run_command_with_logging(train_cmd, log_path, PROJECT_ROOT)
@@ -129,6 +177,7 @@ def main() -> None:
             "--output_dir",
             str(eval_dir),
         ]
+        eval_cmd = apply_model_overrides(eval_cmd, model_configs.get(model, {}))
         eval_code = run_command_with_logging(eval_cmd, log_path, PROJECT_ROOT)
         if eval_code != 0 and not args.continue_on_error:
             raise SystemExit(eval_code)

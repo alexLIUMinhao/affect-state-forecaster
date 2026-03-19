@@ -127,10 +127,31 @@ def derive_idea_context(idea_text: str) -> dict[str, str]:
 
 
 def collect_structured_results(project_root: Path) -> dict[str, Any]:
+    experiments_root = project_root / "experiments"
+    records_root = experiments_root / "records"
+    manifests_root = experiments_root / "manifests"
+    figures_root = experiments_root / "figures"
+    figure_candidates: list[str] = []
+    if figures_root.exists():
+        for image in sorted(figures_root.glob("*.png"), key=slug_sort_key, reverse=True):
+            figure_candidates.append(str(image))
+            if len(figure_candidates) == 3:
+                break
+
+    summary_candidates = sorted(records_root.glob("*capacity_summary.csv"), key=slug_sort_key, reverse=True)
+    if summary_candidates:
+        return collect_capacity_summary_results(summary_candidates[0], figure_candidates)
+
+    latest_main_summary = records_root / "latest_main_results.csv"
+    if latest_main_summary.exists():
+        return collect_capacity_summary_results(latest_main_summary, figure_candidates)
+
+    manifest_path = select_main_manifest(manifests_root)
+    if manifest_path:
+        return collect_manifest_results(manifest_path, figure_candidates)
+
     outputs_root = project_root / "outputs"
     models: dict[str, dict[str, Any]] = {}
-    figure_candidates: list[str] = []
-
     for model in DEFAULT_OUTPUT_MODELS:
         summary_path = outputs_root / model / "results_summary.csv"
         rows = read_csv_rows(summary_path)
@@ -140,6 +161,9 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
         models[model] = {
             "model": model,
             "dataset": "PHEME",
+            "param_count": None,
+            "capacity_group": "default",
+            "event_metrics": [],
             "metrics": {
                 "mae": to_float(overall.get("mae")),
                 "rmse": to_float(overall.get("rmse")),
@@ -147,15 +171,115 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
                 "spearman": to_float(overall.get("spearman")),
             },
         }
+    return {
+        "models": models,
+        "tables": [{"key": "default", "title": "Table 1. 当前主实验（默认配置）", "models": models}],
+        "current_group": "default",
+        "figures": figure_candidates,
+        "source_label": "outputs",
+    }
 
-    figures_root = project_root / "experiments" / "figures"
-    if figures_root.exists():
-        for image in sorted(figures_root.glob("*.png"), key=slug_sort_key, reverse=True):
-            figure_candidates.append(str(image))
-            if len(figure_candidates) == 3:
-                break
 
-    return {"models": models, "figures": figure_candidates}
+def select_main_manifest(manifests_root: Path) -> Path | None:
+    preferred = manifests_root / "import_first_round_ratio_05.json"
+    if preferred.exists():
+        return preferred
+    candidates = []
+    for path in manifests_root.glob("*.json"):
+        if any(token in path.name for token in ("labeler", "cross_event", "seed", "ablation")):
+            continue
+        try:
+            import json
+
+            payload = json.loads(read_text(path))
+        except Exception:
+            continue
+        model_names = {entry.get("model") for entry in payload.get("models", [])}
+        if model_names == set(DEFAULT_OUTPUT_MODELS):
+            candidates.append(path)
+    if not candidates:
+        return None
+    return sorted(candidates, key=slug_sort_key, reverse=True)[0]
+
+
+def collect_manifest_results(manifest_path: Path, figure_candidates: list[str]) -> dict[str, Any]:
+    import json
+
+    payload = json.loads(read_text(manifest_path))
+    models: dict[str, dict[str, Any]] = {}
+    for entry in payload.get("models", []):
+        name = entry.get("model", "")
+        models[name] = {
+            "model": name,
+            "dataset": "PHEME",
+            "param_count": entry.get("param_count"),
+            "capacity_group": entry.get("capacity_group", "default"),
+            "event_metrics": entry.get("event_metrics", []),
+            "metrics": {
+                "mae": to_float(entry.get("overall_metrics", {}).get("mae")),
+                "rmse": to_float(entry.get("overall_metrics", {}).get("rmse")),
+                "pearson": to_float(entry.get("overall_metrics", {}).get("pearson")),
+                "spearman": to_float(entry.get("overall_metrics", {}).get("spearman")),
+            },
+        }
+    return {
+        "models": models,
+        "tables": [{"key": "default", "title": "Table 1. 当前主实验（默认配置）", "models": models}],
+        "current_group": "default",
+        "figures": figure_candidates,
+        "source_label": manifest_path.name,
+    }
+
+
+def collect_capacity_summary_results(summary_path: Path, figure_candidates: list[str]) -> dict[str, Any]:
+    rows = read_csv_rows(summary_path)
+    tables: list[dict[str, Any]] = []
+    grouped: dict[str, dict[str, Any]] = {}
+    run_ids = {row.get("run_id", "") for row in rows if row.get("run_id")}
+    manifest_payloads: dict[str, Any] = {}
+    manifests_root = summary_path.parents[1] / "manifests"
+    for run_id in run_ids:
+        manifest_path = manifests_root / f"{run_id}.json"
+        if manifest_path.exists():
+            import json
+
+            manifest_payloads[run_id] = json.loads(read_text(manifest_path))
+    for row in rows:
+        capacity_group = row.get("capacity_group", "default") or "default"
+        grouped.setdefault(capacity_group, {})
+        model_name = row.get("model_name", "")
+        event_metrics: list[dict[str, Any]] = []
+        manifest_payload = manifest_payloads.get(row.get("run_id", ""))
+        if manifest_payload:
+            for entry in manifest_payload.get("models", []):
+                if entry.get("model") == model_name:
+                    event_metrics = entry.get("event_metrics", [])
+                    break
+        grouped[capacity_group][model_name] = {
+            "model": model_name,
+            "dataset": "PHEME",
+            "param_count": int(float(row["param_count"])) if row.get("param_count") not in {"", None} else None,
+            "capacity_group": capacity_group,
+            "event_metrics": event_metrics,
+            "metrics": {
+                "mae": to_float(row.get("mae")),
+                "rmse": to_float(row.get("rmse")),
+                "pearson": to_float(row.get("pearson")),
+                "spearman": to_float(row.get("spearman")),
+            },
+        }
+    for key in ("default", "matched"):
+        if key in grouped:
+            title = "Table 1. 当前主实验（默认配置）" if key == "default" else "Table 2. 参数量对齐结果"
+            tables.append({"key": key, "title": title, "models": grouped[key]})
+    current_group = "matched" if "matched" in grouped else "default"
+    return {
+        "models": grouped.get(current_group, {}),
+        "tables": tables,
+        "current_group": current_group,
+        "figures": figure_candidates,
+        "source_label": summary_path.name,
+    }
 
 
 def strip_tags(raw_html: str) -> str:
@@ -179,9 +303,11 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
     if not html_dir.exists():
         return {"models": models, "figures": figures}
 
-    candidates = [path for path in html_dir.glob("*.html") if path.name not in {"index.html", "paper_progress.html"}]
+    candidates = [path for path in html_dir.glob("*paper_progress.html") if path.name != "index.html"]
     if not candidates:
-        return {"models": models, "figures": figures}
+        candidates = [path for path in html_dir.glob("*.html") if path.name not in {"index.html", "paper_progress.html"}]
+    if not candidates:
+        return {"models": models, "tables": [], "current_group": "default", "figures": figures, "source_label": "html"}
     latest = sorted(candidates, key=slug_sort_key, reverse=True)[0]
     page = read_text(latest)
 
@@ -190,6 +316,9 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
         models[model_name] = {
             "model": model_name,
             "dataset": "PHEME",
+            "param_count": None,
+            "capacity_group": "default",
+            "event_metrics": [],
             "metrics": {
                 "mae": to_float(mae),
                 "rmse": to_float(rmse),
@@ -200,7 +329,13 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
 
     for src in re.findall(r"<img src='([^']+)'", page):
         figures.append(str((html_dir / src).resolve()))
-    return {"models": models, "figures": figures}
+    return {
+        "models": models,
+        "tables": [{"key": "default", "title": "Table 1. 当前主实验（默认配置）", "models": models}],
+        "current_group": "default",
+        "figures": figures,
+        "source_label": latest.name,
+    }
 
 
 def select_result_source(project_root: Path, experiments_root: Path, result_source: str) -> dict[str, Any]:
@@ -224,13 +359,26 @@ def compute_evidence(results: dict[str, Any]) -> dict[str, Any]:
 
     best_model = "Pending"
     best_mae = None
+    best_rmse_model = "Pending"
+    best_rmse = None
+    best_corr_model = "Pending"
+    best_corr_score = None
     for name, payload in models.items():
-        mae = payload.get("metrics", {}).get("mae")
-        if mae is None:
-            continue
-        if best_mae is None or mae < best_mae:
+        metrics = payload.get("metrics", {})
+        mae = metrics.get("mae")
+        rmse = metrics.get("rmse")
+        corr_score = max(value for value in (metrics.get("pearson"), metrics.get("spearman")) if value is not None) if any(
+            value is not None for value in (metrics.get("pearson"), metrics.get("spearman"))
+        ) else None
+        if mae is not None and (best_mae is None or mae < best_mae):
             best_model = name
             best_mae = mae
+        if rmse is not None and (best_rmse is None or rmse < best_rmse):
+            best_rmse_model = name
+            best_rmse = rmse
+        if corr_score is not None and (best_corr_score is None or corr_score > best_corr_score):
+            best_corr_model = name
+            best_corr_score = corr_score
 
     text_mae = text_metrics.get("mae")
     ours_mae = ours_metrics.get("mae")
@@ -263,10 +411,19 @@ def compute_evidence(results: dict[str, Any]) -> dict[str, Any]:
         anomalies.append("当前最优模型不是 affect_state_forecaster，方法主线仍需诊断。")
     if best_model == "structure_baseline":
         anomalies.append("结构基线领先，说明结构信息有效，但 affect-state 叙事尚未闭合。")
+    if best_model != "Pending" and best_rmse_model != "Pending" and best_model != best_rmse_model:
+        anomalies.append("MAE 与 RMSE 的最优模型不一致，说明平均误差和极端误差控制可能分裂。")
+    if any((metrics.get("pearson") or 0.0) <= 0.0 or (metrics.get("spearman") or 0.0) <= 0.0 for metrics in (text_metrics, temporal_metrics, structure_metrics, ours_metrics)):
+        anomalies.append("部分模型的相关性接近 0 或为负，说明排序关系学习仍然偏弱。")
 
     return {
         "best_model": best_model,
         "best_mae": best_mae,
+        "best_mae_model": best_model,
+        "best_rmse_model": best_rmse_model,
+        "best_rmse": best_rmse,
+        "best_corr_model": best_corr_model,
+        "best_corr_score": best_corr_score,
         "mae_gain_vs_text": mae_gain_vs_text,
         "ours_model": "affect_state_forecaster",
         "ours_vs_structure": ours_vs_structure,
@@ -291,6 +448,8 @@ def build_introduction(context: dict[str, str], evidence: dict[str, Any]) -> lis
     ours_vs_temporal = evidence["ours_vs_temporal"]
     status = evidence["evidence_status"]
     anomaly_count = len(evidence["anomalies"])
+    best_rmse_model = evidence.get("best_rmse_model", best_model)
+    best_corr_model = evidence.get("best_corr_model", best_model)
 
     if status == "ours_supported":
         paragraph_two = (
@@ -300,13 +459,22 @@ def build_introduction(context: dict[str, str], evidence: dict[str, Any]) -> lis
             f"{format_metric(ours_vs_temporal)}，因此现阶段可以把论文叙事重心放在“情绪状态作为中间驱动变量”的有效性上。"
         )
     elif status in {"diagnostic_needed", "task_supported"}:
-        paragraph_two = (
-            f"当前结果首先支持了任务本身的可做性：最佳模型为 {best_model}，其 MAE={format_metric(evidence['best_mae'])}，"
-            f"相对文本基线的改进幅度为 {format_metric(mae_gain)}。但 {method} 还没有稳定领先，"
-            f"其相对结构基线与时序基线的 MAE 差分别为 {format_metric(ours_vs_structure)} 和 {format_metric(ours_vs_temporal)}；"
-            f"再加上当前检测到 {anomaly_count} 个需要解释的风险信号，因此更稳妥的叙事应是“任务成立、结构/时序信息有效、"
-            f"而 affect-state 主线仍需进一步诊断”。"
-        )
+        if best_model == "structure_baseline" and best_rmse_model == "affect_state_forecaster":
+            paragraph_two = (
+                f"当前结果首先支持了任务本身的可做性：最佳 MAE 模型为 {best_model}，其 MAE={format_metric(evidence['best_mae'])}，"
+                f"相对文本基线的改进幅度为 {format_metric(mae_gain)}；但最佳 RMSE 模型是 {best_rmse_model}，"
+                f"说明结构基线在点预测平均误差上更强，而 {method} 在极端误差控制上呈现局部优势。"
+                f"再结合当前相关性最优模型为 {best_corr_model}，更稳妥的叙事应是“多模态 affect-state 路线仍值得在公平容量下继续诊断”，"
+                f"而不是直接宣称方法已经稳定领先。"
+            )
+        else:
+            paragraph_two = (
+                f"当前结果首先支持了任务本身的可做性：最佳模型为 {best_model}，其 MAE={format_metric(evidence['best_mae'])}，"
+                f"相对文本基线的改进幅度为 {format_metric(mae_gain)}。但 {method} 还没有稳定领先，"
+                f"其相对结构基线与时序基线的 MAE 差分别为 {format_metric(ours_vs_structure)} 和 {format_metric(ours_vs_temporal)}；"
+                f"再加上当前检测到 {anomaly_count} 个需要解释的风险信号，因此更稳妥的叙事应是“任务成立、结构/时序信息有效、"
+                f"而 affect-state 主线仍需进一步诊断”。"
+            )
     else:
         paragraph_two = (
             f"当前证据仍不充分，现阶段更适合将结果表述为 benchmark 与实验设定的可行性验证，而不是方法优势的定论。"
@@ -319,10 +487,12 @@ def build_introduction(context: dict[str, str], evidence: dict[str, Any]) -> lis
 
 def build_signal_items(evidence: dict[str, Any]) -> list[str]:
     items = [
-        f"当前最优模型：<span class='mono'>{html.escape(evidence['best_model'])}</span>，MAE={format_metric(evidence['best_mae'])}。",
+        f"当前 MAE 最优模型：<span class='mono'>{html.escape(evidence['best_mae_model'])}</span>，MAE={format_metric(evidence['best_mae'])}。",
+        f"当前 RMSE 最优模型：<span class='mono'>{html.escape(evidence['best_rmse_model'])}</span>，RMSE={format_metric(evidence['best_rmse'])}。",
         f"相对文本基线的 MAE 改进：{format_metric(evidence['mae_gain_vs_text'])}。",
         f"`affect_state_forecaster` 相对结构基线的 MAE 差：{format_metric(evidence['ours_vs_structure'])}。",
         f"`affect_state_forecaster` 相对时序基线的 MAE 差：{format_metric(evidence['ours_vs_temporal'])}。",
+        f"当前相关性最优模型：<span class='mono'>{html.escape(evidence['best_corr_model'])}</span>。",
         f"当前证据状态：{html.escape(evidence['evidence_status'])}。",
     ]
     if evidence["anomalies"]:
@@ -330,7 +500,17 @@ def build_signal_items(evidence: dict[str, Any]) -> list[str]:
     return items
 
 
-def table_row(dataset: str, baseline: str, ours: str, metrics: dict[str, float | None]) -> str:
+def format_param_count(value: int | None) -> str:
+    if value is None:
+        return "TODO"
+    if value >= 1_000_000:
+        return f"{value / 1_000_000:.2f}M"
+    if value >= 1_000:
+        return f"{value / 1_000:.1f}K"
+    return str(value)
+
+
+def table_row(dataset: str, baseline: str, ours: str, metrics: dict[str, float | None], param_count: int | None) -> str:
     metric_text = (
         f"MAE={format_metric(metrics.get('mae'))}, "
         f"RMSE={format_metric(metrics.get('rmse'))}, "
@@ -342,13 +522,14 @@ def table_row(dataset: str, baseline: str, ours: str, metrics: dict[str, float |
         f"<td>{html.escape(dataset)}</td>"
         f"<td>{html.escape(baseline)}</td>"
         f"<td>{html.escape(ours)}</td>"
+        f"<td class='mono'>{html.escape(format_param_count(param_count))}</td>"
         f"<td class='mono'>{html.escape(metric_text)}</td>"
         "</tr>"
     )
 
 
-def build_table_html(context: dict[str, str], results: dict[str, Any]) -> str:
-    models = results.get("models", {})
+def render_table(context: dict[str, str], table: dict[str, Any]) -> str:
+    models = table.get("models", {})
     dataset = context["dataset"]
     rows = []
 
@@ -361,6 +542,7 @@ def build_table_html(context: dict[str, str], results: dict[str, Any]) -> str:
                 baseline,
                 "—",
                 payload.get("metrics", {}) if payload else {},
+                payload.get("param_count") if payload else None,
             )
         )
 
@@ -371,15 +553,26 @@ def build_table_html(context: dict[str, str], results: dict[str, Any]) -> str:
             "—",
             "affect_state_forecaster",
             ours_payload.get("metrics", {}) if ours_payload else {},
+            ours_payload.get("param_count") if ours_payload else None,
         )
     )
 
     return (
+        f"<h3>{html.escape(table.get('title', 'Table 1'))}</h3>"
         "<table>"
-        "<thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Metrics</th></tr></thead>"
+        "<thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead>"
         f"<tbody>{''.join(rows)}</tbody>"
         "</table>"
     )
+
+
+def build_table_html(context: dict[str, str], results: dict[str, Any]) -> tuple[str, str]:
+    tables = results.get("tables", [])
+    if not tables:
+        return render_table(context, {"title": "Table 1. 当前主实验（默认配置）", "models": results.get("models", {})}), ""
+    primary = render_table(context, tables[0])
+    secondary = "".join(render_table(context, table) for table in tables[1:])
+    return primary, secondary
 
 
 def build_progress_summary(evidence: dict[str, Any]) -> str:
@@ -387,6 +580,8 @@ def build_progress_summary(evidence: dict[str, Any]) -> str:
         return (
             "当前主实验已经形成可用于论文原型叙事的正向证据：ours 暂时领先，且相对文本基线存在明确改进。"
         )
+    if evidence["best_mae_model"] != evidence["best_rmse_model"]:
+        return "当前主实验呈现指标分裂：structure 在平均误差上更优，而 ASF 在大误差惩罚上更稳，因此需要用容量对齐实验继续诊断。"
     if evidence["evidence_status"] in {"diagnostic_needed", "task_supported"}:
         return (
             "当前主实验首先证明了任务成立，但优势主要来自结构或时序线索，ours 仍需要通过诊断实验进一步澄清。"
@@ -395,6 +590,12 @@ def build_progress_summary(evidence: dict[str, Any]) -> str:
 
 
 def build_table_note(evidence: dict[str, Any]) -> str:
+    if evidence["best_mae_model"] != evidence["best_rmse_model"]:
+        return (
+            f"当前结果存在 MAE/RMSE 分裂：{evidence['best_mae_model']} 的平均误差最低，"
+            f"而 {evidence['best_rmse_model']} 对大误差更稳。这通常意味着两类模型分别擅长“均值拟合”与“极端误差控制”，"
+            "不能只靠单一指标下结论。"
+        )
     if evidence["best_model"] == "affect_state_forecaster":
         return (
             "Table 1 显示 affect_state_forecaster 当前领先，说明显式情绪状态建模已具备进入多 ratio 与泛化验证的基础。"
@@ -407,7 +608,68 @@ def build_table_note(evidence: dict[str, Any]) -> str:
     return "Table 1 当前仍包含占位项，适合作为实验记录入口，但还不应承载过强论文结论。"
 
 
+def build_metric_reading(evidence: dict[str, Any], results: dict[str, Any]) -> str:
+    models = results.get("models", {})
+    structure = models.get("structure_baseline", {}).get("metrics", {})
+    ours = models.get("affect_state_forecaster", {}).get("metrics", {})
+    warnings: list[str] = []
+    if evidence["best_mae_model"] != evidence["best_rmse_model"]:
+        warnings.append(
+            f"{evidence['best_mae_model']} 的 MAE 更低，但 {evidence['best_rmse_model']} 的 RMSE 更低，说明平均误差与极端误差控制分裂。"
+        )
+    if (structure.get("pearson") or 0.0) <= 0.0 or (structure.get("spearman") or 0.0) <= 0.0:
+        warnings.append("structure_baseline 的相关性偏弱，说明它虽然误差较低，但未必学到了稳定的排序关系。")
+    if (ours.get("pearson") or 0.0) <= 0.0 or (ours.get("spearman") or 0.0) <= 0.0:
+        warnings.append("affect_state_forecaster 的相关性仍不够稳，需要结合容量对齐和校准诊断一起解释。")
+    if not warnings:
+        warnings.append("当前误差和相关性方向基本一致，可以把主叙事建立在同一组指标上。")
+    return " ".join(warnings)
+
+
+def summarize_event_head_to_head(results: dict[str, Any]) -> str:
+    models = results.get("models", {})
+    structure_rows = models.get("structure_baseline", {}).get("event_metrics", [])
+    ours_rows = models.get("affect_state_forecaster", {}).get("event_metrics", [])
+    if not structure_rows or not ours_rows:
+        return "当前结构化结果未包含事件级误差细节，暂时无法判断哪些事件更偏向结构建模、哪些事件更偏向 affect-state。"
+    structure_map = {row.get("event_name"): row for row in structure_rows}
+    ours_map = {row.get("event_name"): row for row in ours_rows}
+    structure_better: list[str] = []
+    ours_rmse_better: list[str] = []
+    for event_name in sorted(set(structure_map) & set(ours_map)):
+        structure_mae = to_float(structure_map[event_name].get("mae"))
+        ours_mae = to_float(ours_map[event_name].get("mae"))
+        structure_rmse = to_float(structure_map[event_name].get("rmse"))
+        ours_rmse = to_float(ours_map[event_name].get("rmse"))
+        if structure_mae is not None and ours_mae is not None and structure_mae < ours_mae:
+            structure_better.append(event_name)
+        if structure_rmse is not None and ours_rmse is not None and ours_rmse < structure_rmse:
+            ours_rmse_better.append(event_name)
+    structure_text = "、".join(structure_better) if structure_better else "暂无明显事件"
+    ours_text = "、".join(ours_rmse_better) if ours_rmse_better else "暂无明显事件"
+    return f"按当前事件级结果，structure_baseline 在 {structure_text} 上的平均误差更稳；affect_state_forecaster 在 {ours_text} 上更能控制极端误差。"
+
+
+def build_metric_guide_html() -> str:
+    items = [
+        ("MAE", "平均绝对误差，反映平均偏差大小。越低越好。"),
+        ("RMSE", "均方根误差，对大误差更敏感。越低越好。"),
+        ("Pearson", "线性相关性，越接近 1 越说明预测值与真实值线性同步。越高越好。"),
+        ("Spearman", "秩相关性，越接近 1 越说明排序趋势一致。越高越好。"),
+    ]
+    return "".join(
+        f"<section class='metric-item'><strong>{html.escape(name)}</strong><span>{html.escape(desc)}</span></section>"
+        for name, desc in items
+    )
+
+
 def build_next_plan(evidence: dict[str, Any]) -> list[str]:
+    if evidence["best_mae_model"] != evidence["best_rmse_model"]:
+        return [
+            "先做参数量对齐实验，以 structure_baseline 为容量锚点，检查 ASF 在公平容量下是否仍保留 RMSE 或趋势优势。",
+            "补充残差分位统计和事件级 head-to-head，对“平均误差更优”与“极端误差更稳”的分裂现象做诊断。",
+            "若对齐后 ASF 仍未在 MAE 上领先，则收缩论文叙事，避免把优势过早归因于 affect-state 建模。",
+        ]
     if evidence["evidence_status"] == "ours_supported":
         return [
             "扩展到多 observation ratio，检查 affect-state 优势是否在 30/70、50/50、70/30 三种设置下保持稳定。",
@@ -452,6 +714,7 @@ def generate_html(args: argparse.Namespace) -> tuple[str, dict[str, Any], dict[s
     introduction = build_introduction(context, evidence)
     signals = build_signal_items(evidence)
     plan_items = build_next_plan(evidence)
+    table_html, secondary_tables_html = build_table_html(context, results)
 
     payload = {
         "page_title": f"{context['title']} - 研究进展",
@@ -467,8 +730,12 @@ def generate_html(args: argparse.Namespace) -> tuple[str, dict[str, Any], dict[s
         "input_text": html.escape(context["input"]),
         "output_text": html.escape(context["output"]),
         "progress_summary": html.escape(build_progress_summary(evidence)),
-        "table_html": build_table_html(context, results),
+        "metric_guide_html": build_metric_guide_html(),
+        "table_html": table_html,
+        "secondary_tables_html": secondary_tables_html,
         "table_note": html.escape(build_table_note(evidence)),
+        "metric_reading": html.escape(build_metric_reading(evidence, results)),
+        "event_summary": html.escape(summarize_event_head_to_head(results)),
         "figures_html": build_figures_html(args.output_html, results.get("figures", [])),
         "plan_html": "".join(f"<li>{html.escape(item)}</li>" for item in plan_items),
     }
