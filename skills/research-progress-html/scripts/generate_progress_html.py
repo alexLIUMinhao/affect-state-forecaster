@@ -139,7 +139,15 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
                 break
 
     base_results: dict[str, Any] | None = None
-    summary_candidates = sorted(records_root.glob("*capacity_summary.csv"), key=slug_sort_key, reverse=True)
+    summary_candidates = sorted(
+        (
+            path
+            for path in records_root.glob("*capacity_summary.csv")
+            if "fusion_capacity" not in path.name
+        ),
+        key=slug_sort_key,
+        reverse=True,
+    )
     if summary_candidates:
         base_results = collect_capacity_summary_results(summary_candidates[0], figure_candidates)
     else:
