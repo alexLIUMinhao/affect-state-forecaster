@@ -1,4 +1,4 @@
-# multimodal-event-affect-forecasting
+# affect-state-forecaster
 
 Research codebase for multimodal event affect forecasting on public-event conversation threads.
 
@@ -18,6 +18,7 @@ Given the early-stage observations of an event thread, predict the future group 
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e .
 ```
@@ -60,6 +61,18 @@ Supported models:
 - `structure_baseline`
 - `affect_state_forecaster`
 
+Run the first-round `50/50` experiment suite on a GPU server:
+
+```bash
+bash scripts/run_first_round_experiments.sh
+```
+
+Validate server CUDA and benchmark files before training:
+
+```bash
+python scripts/check_server_env.py
+```
+
 ## Evaluation
 
 ```bash
@@ -75,13 +88,36 @@ Evaluation outputs:
 - `outputs/results_summary.csv`
 - `outputs/error_analysis_by_event.csv`
 
+For batch runs, per-model outputs are stored under:
+
+- `runs/first_round_ratio_05/<model>/artifacts/`
+- `runs/first_round_ratio_05/<model>/eval/`
+
+## Cloud Server Workflow
+
+The deployment target is a Linux GPU server with `/home/alexmhliu/affect-state-forecaster` as the project root.
+
+Minimal workflow:
+
+```bash
+cd /home/alexmhliu
+git clone git@github.com:alexLIUMinhao/affect-state-forecaster.git
+cd affect-state-forecaster
+bash scripts/setup_server_env.sh
+source .venv/bin/activate
+python scripts/check_server_env.py
+bash scripts/run_first_round_experiments.sh
+```
+
+Detailed server instructions are in [docs/cloud_server_setup.md](/Users/minhaoliu/Desktop/project/sentimentF/docs/cloud_server_setup.md).
+
 ## Git Setup
 
 Initialize a local repository after verifying the full pipeline:
 
 ```bash
 git init -b main
-git remote add origin https://github.com/alexLIUMinhao/affect-state-forecaster.git
+git remote add origin git@github.com:alexLIUMinhao/affect-state-forecaster.git
 ```
 
 ## Notes

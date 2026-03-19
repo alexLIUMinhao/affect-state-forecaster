@@ -16,6 +16,14 @@ data/processed/pheme_forecast_ratio_05.jsonl
 data/processed/pheme_forecast_ratio_07.jsonl
 ```
 
+For the first GPU-server experiment, only the `ratio_05` split files are required:
+
+```text
+data/processed/pheme_forecast_ratio_05_train.jsonl
+data/processed/pheme_forecast_ratio_05_val.jsonl
+data/processed/pheme_forecast_ratio_05_test.jsonl
+```
+
 ## Expected Workflow
 
 ```bash
