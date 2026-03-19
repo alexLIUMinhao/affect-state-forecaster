@@ -160,3 +160,10 @@ git remote add origin git@github.com:alexLIUMinhao/affect-state-forecaster.git
 - The PHEME benchmark is reconstructed with weak reply-level sentiment labels.
 - The primary paper target is thread-level `future_neg_ratio` forecasting.
 - Majority-sentiment classification is treated as an auxiliary output for analysis and reporting.
+
+## Model Architecture Diagrams
+
+- [docs/text_baseline_architecture.png](/Users/minhaoliu/Desktop/project/sentimentF/docs/text_baseline_architecture.png)
+- [docs/temporal_baseline_architecture.png](/Users/minhaoliu/Desktop/project/sentimentF/docs/temporal_baseline_architecture.png)
+- [docs/structure_baseline_architecture.png](/Users/minhaoliu/Desktop/project/sentimentF/docs/structure_baseline_architecture.png)
+- [docs/affect_state_forecaster_architecture.png](/Users/minhaoliu/Desktop/project/sentimentF/docs/affect_state_forecaster_architecture.png)
