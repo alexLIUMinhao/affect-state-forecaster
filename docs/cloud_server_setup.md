@@ -17,6 +17,21 @@ This project can be moved to a Linux GPU server with the repository as the singl
 
 ## 1. Clone Repository
 
+## 0. Connect to the Server
+
+Server access currently uses SSH to `root`, then a switch to the project user.
+
+```bash
+ssh root@36.138.18.243
+su - alexmhliu
+cd /home/alexmhliu/affect-state-forecaster
+```
+
+For security, plaintext passwords are intentionally not stored in this repository.
+Use the currently managed credentials when prompted for `ssh` and `su`.
+
+After switching to `alexmhliu`, all experiment commands below should be run as that user.
+
 ```bash
 cd /home/alexmhliu
 git clone git@github.com:alexLIUMinhao/affect-state-forecaster.git
@@ -103,6 +118,19 @@ After the first-round run succeeds, expand to:
 - ablations for time, structure, and affect-state
 - alternate weak sentiment labelers
 - cross-dataset experiments with a new RumourEval pipeline
+
+Recommended next-stage commands on the server:
+
+```bash
+source .venv/bin/activate
+python scripts/run_ratio_sweep.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_affect_ablation_suite.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_cross_event_suite.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_seed_sweep.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_labeler_robustness_suite.py --device cuda --epochs 5 --batch_size 16
+```
+
+Tracked experiment runs and generated HTML reports use timestamp-based names by default.
 
 ## 7. Experiment Tracking
 
