@@ -152,11 +152,15 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
                 base_results = collect_manifest_results(manifest_path, figure_candidates)
 
     fusion_candidates = sorted(records_root.glob("*fusion_diagnostic_summary.csv"), key=slug_sort_key, reverse=True)
+    fusion_capacity_candidates = sorted(records_root.glob("*fusion_capacity_summary.csv"), key=slug_sort_key, reverse=True)
     if base_results and fusion_candidates:
         base_results["fusion_diagnostic"] = collect_fusion_diagnostic_results(fusion_candidates[0])
         base_results["tables"].append(build_fusion_table(base_results["fusion_diagnostic"]))
         base_results["source_label"] = f"{base_results['source_label']} + {fusion_candidates[0].name}"
-        return base_results
+    if base_results and fusion_capacity_candidates:
+        base_results["fusion_capacity_control"] = collect_fusion_capacity_results(fusion_capacity_candidates[0])
+        base_results["tables"].append(build_fusion_capacity_table(base_results["fusion_capacity_control"]))
+        base_results["source_label"] = f"{base_results['source_label']} + {fusion_capacity_candidates[0].name}"
     if base_results:
         return base_results
 
@@ -188,6 +192,7 @@ def collect_structured_results(project_root: Path) -> dict[str, Any]:
         "figures": figure_candidates,
         "source_label": "outputs",
         "fusion_diagnostic": None,
+        "fusion_capacity_control": None,
     }
 
 
@@ -240,6 +245,7 @@ def collect_manifest_results(manifest_path: Path, figure_candidates: list[str]) 
         "figures": figure_candidates,
         "source_label": manifest_path.name,
         "fusion_diagnostic": None,
+        "fusion_capacity_control": None,
     }
 
 
@@ -292,6 +298,7 @@ def collect_capacity_summary_results(summary_path: Path, figure_candidates: list
         "figures": figure_candidates,
         "source_label": summary_path.name,
         "fusion_diagnostic": None,
+        "fusion_capacity_control": None,
     }
 
 
@@ -345,6 +352,62 @@ def build_fusion_table(fusion_results: dict[str, Any]) -> dict[str, Any]:
     return {
         "key": "fusion_diagnostic",
         "title": "Table 3. 融合筛选诊断结果",
+        "headers": ["Variant", "Model", "Params", "Metrics", "Gate Means"],
+        "rows": rows,
+    }
+
+
+def collect_fusion_capacity_results(summary_path: Path) -> dict[str, Any]:
+    rows = read_csv_rows(summary_path)
+    variants: list[dict[str, Any]] = []
+    for row in rows:
+        variants.append(
+            {
+                "capacity_group": row.get("capacity_group", ""),
+                "model_name": row.get("model_name", ""),
+                "fusion_variant": row.get("fusion_variant", ""),
+                "param_count": int(float(row["param_count"])) if row.get("param_count") not in {"", None} else None,
+                "metrics": {
+                    "mae": to_float(row.get("mae")),
+                    "rmse": to_float(row.get("rmse")),
+                    "pearson": to_float(row.get("pearson")),
+                    "spearman": to_float(row.get("spearman")),
+                },
+                "gate_means": {
+                    "source": to_float(row.get("gate_source_mean")),
+                    "temporal": to_float(row.get("gate_temporal_mean")),
+                    "structure": to_float(row.get("gate_structure_mean")),
+                },
+            }
+        )
+    return {"summary_path": str(summary_path), "variants": variants}
+
+
+def build_fusion_capacity_table(fusion_capacity_results: dict[str, Any]) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    for item in fusion_capacity_results.get("variants", []):
+        gate = item.get("gate_means", {})
+        rows.append(
+            {
+                "variant": f"{item.get('capacity_group', '')}:{item.get('fusion_variant', '')}",
+                "model_name": item.get("model_name", ""),
+                "param_count": item.get("param_count"),
+                "metric_text": (
+                    f"MAE={format_metric(item['metrics'].get('mae'))}, "
+                    f"RMSE={format_metric(item['metrics'].get('rmse'))}, "
+                    f"Pearson={format_metric(item['metrics'].get('pearson'))}, "
+                    f"Spearman={format_metric(item['metrics'].get('spearman'))}"
+                ),
+                "gate_text": (
+                    f"source={format_metric(gate.get('source'))}, "
+                    f"temporal={format_metric(gate.get('temporal'))}, "
+                    f"structure={format_metric(gate.get('structure'))}"
+                ),
+            }
+        )
+    return {
+        "key": "fusion_capacity_control",
+        "title": "Table 4. 门控变体的公平容量控制结果",
         "headers": ["Variant", "Model", "Params", "Metrics", "Gate Means"],
         "rows": rows,
     }
@@ -406,6 +469,7 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
         "figures": figures,
         "source_label": latest.name,
         "fusion_diagnostic": None,
+        "fusion_capacity_control": None,
     }
 
 
@@ -507,6 +571,8 @@ def compute_evidence(results: dict[str, Any]) -> dict[str, Any]:
 def compute_reason_diagnosis(results: dict[str, Any], evidence: dict[str, Any]) -> list[dict[str, str]]:
     fusion = results.get("fusion_diagnostic") or {}
     variants = fusion.get("variants", [])
+    fusion_capacity = results.get("fusion_capacity_control") or {}
+    fusion_capacity_variants = fusion_capacity.get("variants", [])
     asf_full = next((item for item in variants if item.get("fusion_variant") == "full"), None)
     best_gate = None
     for item in variants:
@@ -533,6 +599,27 @@ def compute_reason_diagnosis(results: dict[str, Any], evidence: dict[str, Any]) 
         else:
             fusion_status = "待削弱"
             fusion_reason = "现有门控变体没有稳定优于 asf_full，融合筛选问题仍需谨慎判断。"
+        if fusion_status in {"当前证据最强", "部分成立"} and fusion_capacity_variants:
+            matched_full = next(
+                (item for item in fusion_capacity_variants if item.get("capacity_group") == "matched" and item.get("fusion_variant") == "full"),
+                None,
+            )
+            matched_best_gate = next(
+                (
+                    item
+                    for item in fusion_capacity_variants
+                    if item.get("capacity_group") == "matched" and item.get("fusion_variant") == best_gate.get("fusion_variant")
+                ),
+                None,
+            )
+            if matched_full and matched_best_gate:
+                matched_full_mae = matched_full["metrics"].get("mae")
+                matched_gate_mae = matched_best_gate["metrics"].get("mae")
+                if matched_full_mae is not None and matched_gate_mae is not None:
+                    if matched_gate_mae < matched_full_mae:
+                        fusion_reason += f" 在公平容量下，{best_gate['fusion_variant']} 仍优于 matched full，说明筛选机制收益并不完全依赖更大容量。"
+                    else:
+                        fusion_reason += f" 但在公平容量下，{best_gate['fusion_variant']} 不再优于 matched full，说明筛选机制有效但仍依赖较大容量承载多模态特征。"
 
     capacity_status = "部分成立"
     capacity_reason = "容量对齐后 ASF 明显变弱，说明多模态表征确实受模型容量影响，但这不足以单独解释全部现象。"
