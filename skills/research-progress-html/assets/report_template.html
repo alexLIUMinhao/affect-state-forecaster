@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${page_title}</title>
+  <style>
+    :root {
+      --bg: #f5efe4;
+      --panel: rgba(255, 252, 247, 0.92);
+      --ink: #1d2433;
+      --muted: #5f6978;
+      --line: #d9cfbf;
+      --accent: #8f3d2e;
+      --accent-soft: #f6dfd7;
+      --gold: #c98d2b;
+      --shadow: 0 14px 36px rgba(48, 39, 26, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Georgia, "Noto Serif SC", serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 34%),
+        linear-gradient(180deg, #ece4d7 0%, var(--bg) 100%);
+    }
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+    .hero, .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+    }
+    .hero {
+      padding: 28px;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(246, 223, 215, 0.9), transparent 24%),
+        linear-gradient(135deg, rgba(255,251,244,0.95), rgba(245,236,224,0.88));
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 40px; line-height: 1.08; }
+    h2 { font-size: 26px; }
+    h3 { font-size: 18px; }
+    p { line-height: 1.7; margin: 0 0 12px; }
+    .sub { color: var(--muted); max-width: 900px; }
+    .meta-grid, .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .meta-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: start;
+    }
+    .card {
+      padding: 20px;
+      grid-column: span 12;
+    }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.55);
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .stat-value {
+      margin-top: 8px;
+      font-size: 24px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .intro p:last-child,
+    .plan li:last-child,
+    .notes li:last-child { margin-bottom: 0; }
+    .section-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mono { font-family: "SFMono-Regular", Consolas, monospace; font-size: 14px; }
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+    li {
+      margin: 0 0 10px;
+      line-height: 1.65;
+    }
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: rgba(143, 61, 46, 0.06);
+      border: 1px solid rgba(143, 61, 46, 0.12);
+      border-radius: 16px;
+    }
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .figure-grid img {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+    .mini {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .span-7, .span-5, .span-6 { grid-column: span 12; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">${hero_eyebrow}</div>
+      <h1>${hero_title}</h1>
+      <p class="sub">${hero_subtitle}</p>
+      <div class="meta-grid">
+        <div class="stat">
+          <div class="stat-label">Current Stage</div>
+          <div class="stat-value">${current_stage}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Experiment Type</div>
+          <div class="stat-value">${experiment_type}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Best Model</div>
+          <div class="stat-value">${best_model}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card span-7 intro">
+        <div class="section-tag">Introduction Prototype</div>
+        <h2>研究引言原型</h2>
+        ${introduction_html}
+      </section>
+
+      <section class="card span-5">
+        <div class="section-tag">Evidence Snapshot</div>
+        <h2>关键结果信号</h2>
+        <ul class="notes">
+          ${signals_html}
+        </ul>
+      </section>
+
+      <section class="card span-12">
+        <div class="section-tag">Current Progress</div>
+        <h2>当前实验进展</h2>
+        <p>${progress_summary}</p>
+        ${table_html}
+        <div class="note">
+          <strong>结果解释：</strong> ${table_note}
+        </div>
+        ${figures_html}
+      </section>
+
+      <section class="card span-12">
+        <div class="section-tag">Next Experiment Plan</div>
+        <h2>下一步实验计划</h2>
+        <ul class="plan">
+          ${plan_html}
+        </ul>
+      </section>
+    </section>
+  </div>
+</body>
+</html>
