@@ -1,0 +1,23 @@
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_05_train.jsonl --model text_baseline --device cuda --epochs 1 --batch_size 16 --output_dir runs/20260319_134508_smoke_ratio05/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/1:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/1:  10%|█         | 1/10 [00:00<00:02,  3.64it/s]
+epoch 1/1: 100%|██████████| 10/10 [00:00<00:00, 31.33it/s]
+epoch=1 train_loss=0.2559 val_loss=0.1646 val_mae=0.1453 val_rmse=0.1906 val_pearson=0.2777 val_spearman=0.2705 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260319_134508_smoke_ratio05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_134508_smoke_ratio05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_134508_smoke_ratio05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train_summary.json
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_05_test.jsonl --model text_baseline --model_path runs/20260319_134508_smoke_ratio05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_134508_smoke_ratio05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_134508_smoke_ratio05/text_baseline/eval
+/home/alexmhliu/affect-state-forecaster/src/evaluate.py:185: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=92 mae=0.1848 rmse=0.2387
+group=split value=test num_threads=92 mae=0.1848 rmse=0.2387
+group=observation_ratio value=0.5 num_threads=92 mae=0.1848 rmse=0.2387
+group=event value=prince-toronto num_threads=12 mae=0.1770 rmse=0.2259
+group=event value=putinmissing num_threads=9 mae=0.1890 rmse=0.2145
+group=event value=sydneysiege num_threads=71 mae=0.1856 rmse=0.2436
+saved_predictions=runs/20260319_134508_smoke_ratio05/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_134508_smoke_ratio05/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_134508_smoke_ratio05/text_baseline/eval/error_analysis_by_event.csv

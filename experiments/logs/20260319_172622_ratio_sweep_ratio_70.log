@@ -1,0 +1,201 @@
+==> plan start_time=1773912382.3797102
+==> plan run_id=20260319_172622_ratio_sweep_ratio_70
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证四个模型在 observation ratio 70 下对 future_neg_ratio 的预测表现。
+==> plan success_criteria=affect_state_forecaster 在主要回归指标上稳定优于文本基线，并最好保持最优。
+==> plan failure_criteria=如果 affect_state_forecaster 不能稳定领先，则转入诊断与消融实验。
+==> plan dataset=data/processed/pheme_forecast_ratio_70_train.jsonl
+==> plan ratio_labels=ratio_70_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.70it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 30.88it/s]
+epoch=1 train_loss=0.2552 val_loss=0.1829 val_mae=0.2113 val_rmse=0.2494 val_pearson=-0.0440 val_spearman=-0.0438 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 174.25it/s]
+epoch=2 train_loss=0.1386 val_loss=0.1431 val_mae=0.2278 val_rmse=0.2612 val_pearson=-0.0164 val_spearman=-0.0325 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 173.25it/s]
+epoch=3 train_loss=0.1007 val_loss=0.1113 val_mae=0.1859 val_rmse=0.2183 val_pearson=0.0183 val_spearman=0.0041 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 172.52it/s]
+epoch=4 train_loss=0.0931 val_loss=0.1255 val_mae=0.2138 val_rmse=0.2484 val_pearson=0.0052 val_spearman=-0.0193 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 176.17it/s]
+epoch=5 train_loss=0.0836 val_loss=0.1326 val_mae=0.2236 val_rmse=0.2590 val_pearson=0.0233 val_spearman=0.0362 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+saved_model=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.pt
+saved_config=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.json
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl returncode=0
+==> command_duration_seconds 4.61
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model text_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/eval
+group=overall value=all num_threads=92 mae=0.1722 rmse=0.2361
+group=split value=test num_threads=92 mae=0.1722 rmse=0.2361
+group=observation_ratio value=0.7 num_threads=92 mae=0.1722 rmse=0.2361
+group=event value=prince-toronto num_threads=12 mae=0.1534 rmse=0.1781
+group=event value=putinmissing num_threads=9 mae=0.1225 rmse=0.1479
+group=event value=sydneysiege num_threads=71 mae=0.1816 rmse=0.2531
+saved_predictions=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model text_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/text_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.72it/s]
+epoch 1/5:  70%|███████   | 7/10 [00:00<00:00, 17.81it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 18.67it/s]
+epoch=1 train_loss=0.2717 val_loss=0.1547 val_mae=0.1570 val_rmse=0.2097 val_pearson=-0.0279 val_spearman=-0.0472 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 5/10 [00:00<00:00, 47.49it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 53.72it/s]
+epoch=2 train_loss=0.1424 val_loss=0.1384 val_mae=0.2110 val_rmse=0.2445 val_pearson=0.0220 val_spearman=0.0307 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  50%|█████     | 5/10 [00:00<00:00, 49.71it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 53.28it/s]
+epoch=3 train_loss=0.1223 val_loss=0.1217 val_mae=0.1783 val_rmse=0.2119 val_pearson=0.0189 val_spearman=0.0438 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  50%|█████     | 5/10 [00:00<00:00, 49.80it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 52.85it/s]
+epoch=4 train_loss=0.0886 val_loss=0.1201 val_mae=0.1597 val_rmse=0.1963 val_pearson=-0.0251 val_spearman=-0.0503 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 5/10 [00:00<00:00, 48.40it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 53.24it/s]
+epoch=5 train_loss=0.0802 val_loss=0.1499 val_mae=0.2311 val_rmse=0.2613 val_pearson=-0.0519 val_spearman=-0.0330 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+saved_model=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.pt
+saved_config=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.json
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl returncode=0
+==> command_duration_seconds 5.44
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model temporal_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/eval
+group=overall value=all num_threads=92 mae=0.1508 rmse=0.2256
+group=split value=test num_threads=92 mae=0.1508 rmse=0.2256
+group=observation_ratio value=0.7 num_threads=92 mae=0.1508 rmse=0.2256
+group=event value=prince-toronto num_threads=12 mae=0.1146 rmse=0.1351
+group=event value=putinmissing num_threads=9 mae=0.1242 rmse=0.1455
+group=event value=sydneysiege num_threads=71 mae=0.1603 rmse=0.2453
+saved_predictions=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model temporal_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.08
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.71it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 30.27it/s]
+epoch=1 train_loss=0.2128 val_loss=0.1070 val_mae=0.1672 val_rmse=0.1861 val_pearson=-0.0417 val_spearman=-0.0535 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 150.85it/s]
+epoch=2 train_loss=0.1379 val_loss=0.1086 val_mae=0.1877 val_rmse=0.2032 val_pearson=-0.0969 val_spearman=-0.1955 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 153.16it/s]
+epoch=3 train_loss=0.1245 val_loss=0.1125 val_mae=0.1958 val_rmse=0.2093 val_pearson=-0.0293 val_spearman=-0.0793 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 153.84it/s]
+epoch=4 train_loss=0.1162 val_loss=0.1083 val_mae=0.1775 val_rmse=0.1921 val_pearson=0.0084 val_spearman=0.0445 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 154.33it/s]
+epoch=5 train_loss=0.1147 val_loss=0.1145 val_mae=0.1912 val_rmse=0.2037 val_pearson=0.0015 val_spearman=0.0214 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+saved_model=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.pt
+saved_config=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.json
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl returncode=0
+==> command_duration_seconds 4.63
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model structure_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/eval
+group=overall value=all num_threads=92 mae=0.1723 rmse=0.2248
+group=split value=test num_threads=92 mae=0.1723 rmse=0.2248
+group=observation_ratio value=0.7 num_threads=92 mae=0.1723 rmse=0.2248
+group=event value=prince-toronto num_threads=12 mae=0.1579 rmse=0.1719
+group=event value=putinmissing num_threads=9 mae=0.1346 rmse=0.1552
+group=event value=sydneysiege num_threads=71 mae=0.1795 rmse=0.2397
+saved_predictions=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model structure_baseline --model_path runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/structure_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.62it/s]
+epoch 1/5:  60%|██████    | 6/10 [00:00<00:00, 14.77it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 17.26it/s]
+epoch=1 train_loss=0.2518 val_loss=0.1020 val_mae=0.1018 val_rmse=0.1381 val_pearson=0.0920 val_spearman=0.1958 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 5/10 [00:00<00:00, 41.54it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 45.62it/s]
+epoch=2 train_loss=0.1473 val_loss=0.0992 val_mae=0.1686 val_rmse=0.1805 val_pearson=0.1891 val_spearman=0.2816 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  50%|█████     | 5/10 [00:00<00:00, 40.94it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 45.20it/s]
+epoch=3 train_loss=0.1097 val_loss=0.0925 val_mae=0.1357 val_rmse=0.1539 val_pearson=0.0404 val_spearman=-0.0416 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  50%|█████     | 5/10 [00:00<00:00, 46.88it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 45.33it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 45.51it/s]
+epoch=4 train_loss=0.1255 val_loss=0.1058 val_mae=0.1754 val_rmse=0.1874 val_pearson=0.0700 val_spearman=0.0007 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 5/10 [00:00<00:00, 42.70it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 46.33it/s]
+epoch=5 train_loss=0.1376 val_loss=0.1112 val_mae=0.1770 val_rmse=0.1882 val_pearson=0.1207 val_spearman=0.1380 val_majority_sentiment_accuracy=0.9138 val_majority_sentiment_macro_f1=0.3183 val_majority_sentiment_weighted_f1=0.8726
+saved_model=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.pt
+saved_config=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.json
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_70_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts --val_path data/processed/pheme_forecast_ratio_70_val.jsonl returncode=0
+==> command_duration_seconds 5.77
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/eval
+group=overall value=all num_threads=92 mae=0.1456 rmse=0.1918
+group=split value=test num_threads=92 mae=0.1456 rmse=0.1918
+group=observation_ratio value=0.7 num_threads=92 mae=0.1456 rmse=0.1918
+group=event value=prince-toronto num_threads=12 mae=0.1232 rmse=0.1263
+group=event value=putinmissing num_threads=9 mae=0.1189 rmse=0.1206
+group=event value=sydneysiege num_threads=71 mae=0.1528 rmse=0.2076
+saved_predictions=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_70_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.pt --config_path runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_70_train.json --device cuda --output_dir runs/20260319_172622_ratio_sweep_ratio_70/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.14
+==> summarize completed
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773912415.0751784

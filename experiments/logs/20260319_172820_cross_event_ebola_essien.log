@@ -1,0 +1,193 @@
+==> plan start_time=1773912500.2200103
+==> plan run_id=20260319_172820_cross_event_ebola_essien
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=ebola-essien 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl
+==> plan ratio_labels=ebola-essien_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.86it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 43.57it/s]
+epoch=1 train_loss=0.2214 val_loss=0.1332 val_mae=0.1743 val_rmse=0.2499 val_pearson=-0.2335 val_spearman=-0.1828 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 217.66it/s]
+epoch=2 train_loss=0.1182 val_loss=0.0982 val_mae=0.1587 val_rmse=0.2324 val_pearson=-0.2030 val_spearman=-0.0800 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 213.37it/s]
+epoch=3 train_loss=0.0958 val_loss=0.0931 val_mae=0.1495 val_rmse=0.2246 val_pearson=-0.1648 val_spearman=0.0016 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 215.29it/s]
+epoch=4 train_loss=0.0868 val_loss=0.0931 val_mae=0.1344 val_rmse=0.2162 val_pearson=-0.1433 val_spearman=-0.0074 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 219.02it/s]
+epoch=5 train_loss=0.0761 val_loss=0.0970 val_mae=0.1585 val_rmse=0.2256 val_pearson=-0.1833 val_spearman=-0.0313 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.pt
+saved_config=runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.json
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl returncode=0
+==> command_duration_seconds 4.64
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model text_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/text_baseline/eval
+group=overall value=all num_threads=2 mae=0.3117 rmse=0.3416
+group=split value=test num_threads=2 mae=0.3117 rmse=0.3416
+group=observation_ratio value=0.5 num_threads=2 mae=0.3117 rmse=0.3416
+group=event value=ebola-essien num_threads=2 mae=0.3117 rmse=0.3416
+saved_predictions=runs/20260319_172820_cross_event_ebola_essien/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172820_cross_event_ebola_essien/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model text_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/text_baseline/artifacts/text_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/text_baseline/eval returncode=0
+==> command_duration_seconds 2.97
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.73it/s]
+epoch 1/5:  64%|██████▍   | 9/14 [00:00<00:00, 23.68it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 25.27it/s]
+epoch=1 train_loss=0.2174 val_loss=0.1171 val_mae=0.1881 val_rmse=0.2516 val_pearson=-0.1282 val_spearman=-0.0524 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  57%|█████▋    | 8/14 [00:00<00:00, 72.59it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 71.45it/s]
+epoch=2 train_loss=0.1051 val_loss=0.0918 val_mae=0.1756 val_rmse=0.2368 val_pearson=-0.2005 val_spearman=-0.0438 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  57%|█████▋    | 8/14 [00:00<00:00, 69.53it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 71.03it/s]
+epoch=3 train_loss=0.0899 val_loss=0.0919 val_mae=0.1625 val_rmse=0.2326 val_pearson=-0.1119 val_spearman=0.1213 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 76.05it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 72.45it/s]
+epoch=4 train_loss=0.0784 val_loss=0.0960 val_mae=0.1545 val_rmse=0.2223 val_pearson=-0.0862 val_spearman=0.0800 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  57%|█████▋    | 8/14 [00:00<00:00, 72.31it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 72.18it/s]
+epoch=5 train_loss=0.0651 val_loss=0.0939 val_mae=0.1614 val_rmse=0.2293 val_pearson=-0.1230 val_spearman=0.0122 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.pt
+saved_config=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.json
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl returncode=0
+==> command_duration_seconds 5.47
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model temporal_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/eval
+group=overall value=all num_threads=2 mae=0.0597 rmse=0.0698
+group=split value=test num_threads=2 mae=0.0597 rmse=0.0698
+group=observation_ratio value=0.5 num_threads=2 mae=0.0597 rmse=0.0698
+group=event value=ebola-essien num_threads=2 mae=0.0597 rmse=0.0698
+saved_predictions=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model temporal_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/artifacts/temporal_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.11
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.73it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 41.00it/s]
+epoch=1 train_loss=0.1698 val_loss=0.0934 val_mae=0.1181 val_rmse=0.2195 val_pearson=-0.4072 val_spearman=-0.1053 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 182.77it/s]
+epoch=2 train_loss=0.1261 val_loss=0.0974 val_mae=0.1644 val_rmse=0.2260 val_pearson=-0.4298 val_spearman=0.0932 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 184.94it/s]
+epoch=3 train_loss=0.1068 val_loss=0.0942 val_mae=0.1426 val_rmse=0.2101 val_pearson=-0.3321 val_spearman=0.1640 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 186.28it/s]
+epoch=4 train_loss=0.1012 val_loss=0.0914 val_mae=0.1263 val_rmse=0.2062 val_pearson=-0.3446 val_spearman=0.0492 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 183.53it/s]
+epoch=5 train_loss=0.1009 val_loss=0.0878 val_mae=0.1160 val_rmse=0.1990 val_pearson=-0.3308 val_spearman=0.0364 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.pt
+saved_config=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.json
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl returncode=0
+==> command_duration_seconds 4.74
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model structure_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/structure_baseline/eval
+group=overall value=all num_threads=2 mae=0.0958 rmse=0.1162
+group=split value=test num_threads=2 mae=0.0958 rmse=0.1162
+group=observation_ratio value=0.5 num_threads=2 mae=0.0958 rmse=0.1162
+group=event value=ebola-essien num_threads=2 mae=0.0958 rmse=0.1162
+saved_predictions=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172820_cross_event_ebola_essien/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model structure_baseline --model_path runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/structure_baseline/artifacts/structure_baseline_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.97
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.73it/s]
+epoch 1/5:  50%|█████     | 7/14 [00:00<00:00, 18.60it/s]
+epoch 1/5:  93%|█████████▎| 13/14 [00:00<00:00, 29.91it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 23.62it/s]
+epoch=1 train_loss=0.2112 val_loss=0.0956 val_mae=0.1663 val_rmse=0.2079 val_pearson=0.0636 val_spearman=0.0383 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 7/14 [00:00<00:00, 61.75it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 59.25it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 59.54it/s]
+epoch=2 train_loss=0.1119 val_loss=0.0859 val_mae=0.1462 val_rmse=0.1951 val_pearson=0.1284 val_spearman=0.3222 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  50%|█████     | 7/14 [00:00<00:00, 61.21it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 58.54it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 58.84it/s]
+epoch=3 train_loss=0.1065 val_loss=0.0916 val_mae=0.1558 val_rmse=0.2023 val_pearson=-0.0991 val_spearman=0.0880 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 59.13it/s]
+epoch 4/5:  93%|█████████▎| 13/14 [00:00<00:00, 59.64it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 59.32it/s]
+epoch=4 train_loss=0.1024 val_loss=0.0843 val_mae=0.1248 val_rmse=0.1889 val_pearson=-0.1749 val_spearman=0.0734 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  43%|████▎     | 6/14 [00:00<00:00, 59.92it/s]
+epoch 5/5:  86%|████████▌ | 12/14 [00:00<00:00, 59.44it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 58.40it/s]
+epoch=5 train_loss=0.0997 val_loss=0.0849 val_mae=0.1148 val_rmse=0.1878 val_pearson=-0.1720 val_spearman=0.1276 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.pt
+saved_config=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.json
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_val.jsonl returncode=0
+==> command_duration_seconds 5.81
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/eval
+group=overall value=all num_threads=2 mae=0.0917 rmse=0.0982
+group=split value=test num_threads=2 mae=0.0917 rmse=0.0982
+group=observation_ratio value=0.5 num_threads=2 mae=0.0917 rmse=0.0982
+group=event value=ebola-essien num_threads=2 mae=0.0917 rmse=0.0982
+saved_predictions=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/ebola-essien_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.pt --config_path runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/artifacts/affect_state_forecaster_ebola-essien_train.json --device cuda --output_dir runs/20260319_172820_cross_event_ebola_essien/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.12
+==> summarize completed
+==> summarize end_time=1773912533.061589

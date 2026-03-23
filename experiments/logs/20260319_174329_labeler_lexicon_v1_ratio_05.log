@@ -1,0 +1,201 @@
+==> plan start_time=1773913409.2407742
+==> plan run_id=20260319_174329_labeler_lexicon_v1_ratio_05
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=比较 weak labeler=lexicon_v1 时主实验结果是否稳定。
+==> plan success_criteria=主结论对不同弱标注策略保持一致。
+==> plan failure_criteria=若主结论随 labeler 明显波动，则需要先修正弱标注策略。
+==> plan dataset=data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl
+==> plan ratio_labels=ratio_05_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.62it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 31.13it/s]
+epoch=1 train_loss=0.2494 val_loss=0.1831 val_mae=0.1977 val_rmse=0.2479 val_pearson=-0.0541 val_spearman=0.0761 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 207.74it/s]
+epoch=2 train_loss=0.1311 val_loss=0.1435 val_mae=0.2031 val_rmse=0.2498 val_pearson=-0.0313 val_spearman=0.0699 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 205.09it/s]
+epoch=3 train_loss=0.0987 val_loss=0.1197 val_mae=0.1566 val_rmse=0.2177 val_pearson=-0.0207 val_spearman=0.0763 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 208.24it/s]
+epoch=4 train_loss=0.0904 val_loss=0.1374 val_mae=0.2057 val_rmse=0.2502 val_pearson=-0.0236 val_spearman=0.0994 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 211.79it/s]
+epoch=5 train_loss=0.0809 val_loss=0.1315 val_mae=0.1869 val_rmse=0.2356 val_pearson=-0.0223 val_spearman=0.1267 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 4.64
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model text_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval
+group=overall value=all num_threads=92 mae=0.1523 rmse=0.2243
+group=split value=test num_threads=92 mae=0.1523 rmse=0.2243
+group=observation_ratio value=0.5 num_threads=92 mae=0.1523 rmse=0.2243
+group=event value=prince-toronto num_threads=12 mae=0.1374 rmse=0.1622
+group=event value=putinmissing num_threads=9 mae=0.1279 rmse=0.1504
+group=event value=sydneysiege num_threads=71 mae=0.1580 rmse=0.2405
+saved_predictions=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model text_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.73it/s]
+epoch 1/5:  80%|████████  | 8/10 [00:00<00:00, 21.02it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 20.01it/s]
+epoch=1 train_loss=0.2365 val_loss=0.1654 val_mae=0.1804 val_rmse=0.2350 val_pearson=0.1727 val_spearman=-0.0219 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  70%|███████   | 7/10 [00:00<00:00, 61.98it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 68.07it/s]
+epoch=2 train_loss=0.1425 val_loss=0.1231 val_mae=0.1540 val_rmse=0.1870 val_pearson=0.2541 val_spearman=0.1067 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  70%|███████   | 7/10 [00:00<00:00, 61.28it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 67.54it/s]
+epoch=3 train_loss=0.1076 val_loss=0.1220 val_mae=0.1530 val_rmse=0.1821 val_pearson=0.2720 val_spearman=0.1331 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  70%|███████   | 7/10 [00:00<00:00, 63.09it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 67.57it/s]
+epoch=4 train_loss=0.0784 val_loss=0.1220 val_mae=0.1445 val_rmse=0.1802 val_pearson=0.1832 val_spearman=-0.0070 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  70%|███████   | 7/10 [00:00<00:00, 62.12it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 68.84it/s]
+epoch=5 train_loss=0.0766 val_loss=0.1374 val_mae=0.1826 val_rmse=0.2151 val_pearson=0.2149 val_spearman=0.1071 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 5.19
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model temporal_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval
+group=overall value=all num_threads=92 mae=0.1762 rmse=0.2321
+group=split value=test num_threads=92 mae=0.1762 rmse=0.2321
+group=observation_ratio value=0.5 num_threads=92 mae=0.1762 rmse=0.2321
+group=event value=prince-toronto num_threads=12 mae=0.1187 rmse=0.1451
+group=event value=putinmissing num_threads=9 mae=0.1623 rmse=0.1774
+group=event value=sydneysiege num_threads=71 mae=0.1877 rmse=0.2495
+saved_predictions=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model temporal_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts/temporal_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.05
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.71it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 31.05it/s]
+epoch=1 train_loss=0.2089 val_loss=0.1228 val_mae=0.1793 val_rmse=0.2112 val_pearson=-0.0264 val_spearman=0.1520 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 175.20it/s]
+epoch=2 train_loss=0.1239 val_loss=0.1160 val_mae=0.1532 val_rmse=0.1914 val_pearson=-0.0666 val_spearman=0.1572 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 175.69it/s]
+epoch=3 train_loss=0.1082 val_loss=0.1181 val_mae=0.1552 val_rmse=0.1924 val_pearson=-0.0680 val_spearman=0.1405 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 178.83it/s]
+epoch=4 train_loss=0.1036 val_loss=0.1102 val_mae=0.1315 val_rmse=0.1778 val_pearson=-0.0497 val_spearman=0.1936 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 174.39it/s]
+epoch=5 train_loss=0.0977 val_loss=0.1274 val_mae=0.1900 val_rmse=0.2158 val_pearson=-0.0182 val_spearman=0.2377 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 4.61
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model structure_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval
+group=overall value=all num_threads=92 mae=0.1339 rmse=0.1948
+group=split value=test num_threads=92 mae=0.1339 rmse=0.1948
+group=observation_ratio value=0.5 num_threads=92 mae=0.1339 rmse=0.1948
+group=event value=prince-toronto num_threads=12 mae=0.1214 rmse=0.1314
+group=event value=putinmissing num_threads=9 mae=0.1179 rmse=0.1492
+group=event value=sydneysiege num_threads=71 mae=0.1381 rmse=0.2084
+saved_predictions=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model structure_baseline --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts/structure_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.61it/s]
+epoch 1/5:  70%|███████   | 7/10 [00:00<00:00, 17.78it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 18.51it/s]
+epoch=1 train_loss=0.2457 val_loss=0.1123 val_mae=0.1120 val_rmse=0.1615 val_pearson=0.1256 val_spearman=0.2967 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  60%|██████    | 6/10 [00:00<00:00, 54.42it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 57.53it/s]
+epoch=2 train_loss=0.1381 val_loss=0.1116 val_mae=0.1598 val_rmse=0.1872 val_pearson=0.1925 val_spearman=0.3973 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  60%|██████    | 6/10 [00:00<00:00, 53.04it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 55.74it/s]
+epoch=3 train_loss=0.0975 val_loss=0.1060 val_mae=0.1231 val_rmse=0.1635 val_pearson=0.1714 val_spearman=0.4007 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  60%|██████    | 6/10 [00:00<00:00, 56.22it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 56.82it/s]
+epoch=4 train_loss=0.0999 val_loss=0.1190 val_mae=0.1678 val_rmse=0.1940 val_pearson=0.1453 val_spearman=0.3412 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  60%|██████    | 6/10 [00:00<00:00, 51.96it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 58.13it/s]
+epoch=5 train_loss=0.1281 val_loss=0.1149 val_mae=0.1521 val_rmse=0.1818 val_pearson=0.1303 val_spearman=0.3738 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts --val_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 5.48
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model affect_state_forecaster --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval
+group=overall value=all num_threads=92 mae=0.1174 rmse=0.1729
+group=split value=test num_threads=92 mae=0.1174 rmse=0.1729
+group=observation_ratio value=0.5 num_threads=92 mae=0.1174 rmse=0.1729
+group=event value=prince-toronto num_threads=12 mae=0.1079 rmse=0.1085
+group=event value=putinmissing num_threads=9 mae=0.1112 rmse=0.1218
+group=event value=sydneysiege num_threads=71 mae=0.1197 rmse=0.1868
+saved_predictions=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path data/processed/robustness/lexicon_v1/pheme_forecast_ratio_05_test.jsonl --model affect_state_forecaster --model_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts/affect_state_forecaster_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.14
+==> summarize completed
+==> anomaly temporal_baseline 未优于 text_baseline。
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773913441.382988

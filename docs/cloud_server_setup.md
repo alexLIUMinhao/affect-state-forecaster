@@ -6,7 +6,7 @@ This project can be moved to a Linux GPU server with the repository as the singl
 
 ```text
 /home/alexmhliu/affect-state-forecaster
-├── .venv/
+├── runs in conda env asf311
 ├── artifacts/
 ├── outputs/
 ├── runs/
@@ -31,8 +31,10 @@ For security, plaintext passwords are intentionally not stored in this repositor
 Use the currently managed credentials when prompted for `ssh` and `su`.
 
 After switching to `alexmhliu`, all experiment commands below should be run as that user.
+All server-side experiment commands should run inside the existing conda environment `asf311`.
 
 ```bash
+conda activate asf311
 cd /home/alexmhliu
 git clone git@github.com:alexLIUMinhao/affect-state-forecaster.git
 cd affect-state-forecaster
@@ -40,9 +42,10 @@ cd affect-state-forecaster
 
 ## 2. Create Python Environment
 
+The server already has the managed experiment environment `asf311`. Use it for all training, evaluation, and reporting.
+
 ```bash
-bash scripts/setup_server_env.sh
-source .venv/bin/activate
+conda activate asf311
 ```
 
 ## 3. Check GPU and Data
@@ -122,7 +125,7 @@ After the first-round run succeeds, expand to:
 Recommended next-stage commands on the server:
 
 ```bash
-source .venv/bin/activate
+conda activate asf311
 python scripts/run_ratio_sweep.py --device cuda --epochs 5 --batch_size 16
 python scripts/run_affect_ablation_suite.py --device cuda --epochs 5 --batch_size 16
 python scripts/run_cross_event_suite.py --device cuda --epochs 5 --batch_size 16
@@ -131,6 +134,17 @@ python scripts/run_labeler_robustness_suite.py --device cuda --epochs 5 --batch_
 ```
 
 Tracked experiment runs and generated HTML reports use timestamp-based names by default.
+After each experiment batch, regenerate the HTML summary and sync the updated experiment artifacts to GitHub.
+
+```bash
+python scripts/sync_experiment_records.py --runs_root runs
+python skills/research-progress-html/scripts/generate_progress_html.py \
+  --result-source html \
+  --output-html experiments/html/$(date +%Y%m%d_%H%M%S)_paper_progress.html
+git add experiments/html experiments/figures experiments/manifests experiments/records
+git commit -m "Update experiment HTML and records"
+git push
+```
 
 ## 7. Experiment Tracking
 

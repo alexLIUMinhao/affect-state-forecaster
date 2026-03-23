@@ -1,0 +1,197 @@
+==> plan start_time=1773912702.2076917
+==> plan run_id=20260319_173142_cross_event_sydneysiege
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=sydneysiege 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl
+==> plan ratio_labels=sydneysiege_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.84it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 43.35it/s]
+epoch=1 train_loss=0.2098 val_loss=0.0776 val_mae=0.1324 val_rmse=0.1548 val_pearson=0.0586 val_spearman=-0.0228 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 216.93it/s]
+epoch=2 train_loss=0.1112 val_loss=0.0376 val_mae=0.1211 val_rmse=0.1400 val_pearson=0.1612 val_spearman=0.0685 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 214.92it/s]
+epoch=3 train_loss=0.0996 val_loss=0.0310 val_mae=0.0965 val_rmse=0.1291 val_pearson=0.2885 val_spearman=0.2967 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 216.17it/s]
+epoch=4 train_loss=0.0853 val_loss=0.0340 val_mae=0.0980 val_rmse=0.1285 val_pearson=0.3741 val_spearman=0.3195 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 219.95it/s]
+epoch=5 train_loss=0.0758 val_loss=0.0327 val_mae=0.0823 val_rmse=0.1081 val_pearson=0.4086 val_spearman=0.3195 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+saved_model=runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.pt
+saved_config=runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.json
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl returncode=0
+==> command_duration_seconds 4.6
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model text_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/text_baseline/eval
+group=overall value=all num_threads=71 mae=0.1754 rmse=0.2425
+group=split value=test num_threads=71 mae=0.1754 rmse=0.2425
+group=observation_ratio value=0.5 num_threads=71 mae=0.1754 rmse=0.2425
+group=event value=sydneysiege num_threads=71 mae=0.1754 rmse=0.2425
+saved_predictions=runs/20260319_173142_cross_event_sydneysiege/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173142_cross_event_sydneysiege/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model text_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/text_baseline/artifacts/text_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/text_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.73it/s]
+epoch 1/5:  57%|█████▋    | 8/14 [00:00<00:00, 21.51it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 25.85it/s]
+epoch=1 train_loss=0.2226 val_loss=0.0770 val_mae=0.1328 val_rmse=0.1512 val_pearson=-0.0054 val_spearman=-0.2282 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  57%|█████▋    | 8/14 [00:00<00:00, 74.46it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 71.98it/s]
+epoch=2 train_loss=0.1153 val_loss=0.0350 val_mae=0.1010 val_rmse=0.1295 val_pearson=-0.0922 val_spearman=-0.1369 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  57%|█████▋    | 8/14 [00:00<00:00, 67.48it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 71.66it/s]
+epoch=3 train_loss=0.0949 val_loss=0.0443 val_mae=0.1159 val_rmse=0.1440 val_pearson=-0.3106 val_spearman=-0.1598 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 78.92it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 72.28it/s]
+epoch=4 train_loss=0.0776 val_loss=0.0491 val_mae=0.1261 val_rmse=0.1523 val_pearson=-0.2787 val_spearman=-0.1598 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  57%|█████▋    | 8/14 [00:00<00:00, 73.02it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 73.04it/s]
+epoch=5 train_loss=0.0663 val_loss=0.0499 val_mae=0.1594 val_rmse=0.1743 val_pearson=-0.2848 val_spearman=-0.1598 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+saved_model=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.pt
+saved_config=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.json
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl returncode=0
+==> command_duration_seconds 5.32
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model temporal_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/eval
+group=overall value=all num_threads=71 mae=0.1368 rmse=0.2204
+group=split value=test num_threads=71 mae=0.1368 rmse=0.2204
+group=observation_ratio value=0.5 num_threads=71 mae=0.1368 rmse=0.2204
+group=event value=sydneysiege num_threads=71 mae=0.1368 rmse=0.2204
+saved_predictions=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model temporal_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/artifacts/temporal_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.14
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.63it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 39.98it/s]
+epoch=1 train_loss=0.1587 val_loss=0.0415 val_mae=0.1369 val_rmse=0.1709 val_pearson=-0.7902 val_spearman=-0.7303 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 182.10it/s]
+epoch=2 train_loss=0.1171 val_loss=0.0391 val_mae=0.1220 val_rmse=0.1665 val_pearson=-0.4914 val_spearman=-0.5477 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 178.17it/s]
+epoch=3 train_loss=0.1099 val_loss=0.0377 val_mae=0.1248 val_rmse=0.1376 val_pearson=0.0104 val_spearman=0.0913 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 179.83it/s]
+epoch=4 train_loss=0.1070 val_loss=0.0334 val_mae=0.1053 val_rmse=0.1265 val_pearson=-0.4120 val_spearman=-0.5021 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 179.46it/s]
+epoch=5 train_loss=0.1023 val_loss=0.0434 val_mae=0.1405 val_rmse=0.1547 val_pearson=-0.4562 val_spearman=-0.4336 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+saved_model=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.pt
+saved_config=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.json
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl returncode=0
+==> command_duration_seconds 4.72
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model structure_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/structure_baseline/eval
+group=overall value=all num_threads=71 mae=0.1201 rmse=0.2002
+group=split value=test num_threads=71 mae=0.1201 rmse=0.2002
+group=observation_ratio value=0.5 num_threads=71 mae=0.1201 rmse=0.2002
+group=event value=sydneysiege num_threads=71 mae=0.1201 rmse=0.2002
+saved_predictions=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_173142_cross_event_sydneysiege/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model structure_baseline --model_path runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/structure_baseline/artifacts/structure_baseline_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/structure_baseline/eval returncode=0
+==> command_duration_seconds 3.03
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.70it/s]
+epoch 1/5:  50%|█████     | 7/14 [00:00<00:00, 17.96it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 31.84it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 23.72it/s]
+epoch=1 train_loss=0.2060 val_loss=0.0631 val_mae=0.1864 val_rmse=0.1937 val_pearson=-0.6743 val_spearman=-0.6390 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  43%|████▎     | 6/14 [00:00<00:00, 56.37it/s]
+epoch 2/5:  93%|█████████▎| 13/14 [00:00<00:00, 59.37it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 60.49it/s]
+epoch=2 train_loss=0.1107 val_loss=0.0271 val_mae=0.1071 val_rmse=0.1213 val_pearson=-0.6657 val_spearman=-0.7075 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 55.15it/s]
+epoch 3/5:  93%|█████████▎| 13/14 [00:00<00:00, 61.26it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 60.32it/s]
+epoch=3 train_loss=0.1050 val_loss=0.0396 val_mae=0.1358 val_rmse=0.1445 val_pearson=-0.1351 val_spearman=-0.0456 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 58.99it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 58.13it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 60.70it/s]
+epoch=4 train_loss=0.1077 val_loss=0.0495 val_mae=0.1739 val_rmse=0.1790 val_pearson=-0.0164 val_spearman=0.1369 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 7/14 [00:00<00:00, 60.92it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 61.00it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 60.94it/s]
+epoch=5 train_loss=0.1061 val_loss=0.0350 val_mae=0.1038 val_rmse=0.1194 val_pearson=-0.0938 val_spearman=-0.0456 val_majority_sentiment_accuracy=1.0000 val_majority_sentiment_macro_f1=1.0000 val_majority_sentiment_weighted_f1=1.0000
+saved_model=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.pt
+saved_config=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.json
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_val.jsonl returncode=0
+==> command_duration_seconds 5.62
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/eval
+group=overall value=all num_threads=71 mae=0.1133 rmse=0.1868
+group=split value=test num_threads=71 mae=0.1133 rmse=0.1868
+group=observation_ratio value=0.5 num_threads=71 mae=0.1133 rmse=0.1868
+group=event value=sydneysiege num_threads=71 mae=0.1133 rmse=0.1868
+saved_predictions=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/sydneysiege_test.jsonl --model affect_state_forecaster --model_path runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.pt --config_path runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/artifacts/affect_state_forecaster_sydneysiege_train.json --device cuda --output_dir runs/20260319_173142_cross_event_sydneysiege/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.16
+==> summarize completed
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773912734.804824

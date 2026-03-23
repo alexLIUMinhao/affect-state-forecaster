@@ -1,0 +1,648 @@
+{
+  "run_id": "import_20260319_174329_labeler_lexicon_v1_ratio_05",
+  "created_at": "2026-03-19T09:44:45.884811+00:00",
+  "run_root": "runs/20260319_174329_labeler_lexicon_v1_ratio_05",
+  "log_path": "",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.11735665053129196,
+        "rmse": 0.17294029891490936,
+        "pearson": -0.04726908080453998,
+        "spearman": 0.19641030880448201,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.029130438963572185
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.11735665053129196",
+          "rmse": "0.17294029891490936",
+          "pearson": "-0.04726908080453998",
+          "spearman": "0.19641030880448201",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.10789048671722412",
+          "rmse": "0.10853628069162369",
+          "pearson": "0.36550515827321006",
+          "spearman": "0.4803844614152615"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.11115607619285583",
+          "rmse": "0.12179530411958694",
+          "pearson": "-0.1873431336722343",
+          "spearman": "-0.22821773229381923"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.11974255740642548",
+          "rmse": "0.18677015602588654",
+          "pearson": "-0.12677261614726623",
+          "spearman": "0.12237834216314056"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.24569547846913337,
+          "val_loss": 0.11233491823077202,
+          "val_mae": 0.11195135861635208,
+          "val_rmse": 0.16152581572532654,
+          "val_pearson": 0.12561851645999622,
+          "val_spearman": 0.2966857857494964,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1381450414657593,
+          "val_loss": 0.11156313493847847,
+          "val_mae": 0.15975159406661987,
+          "val_rmse": 0.1871514916419983,
+          "val_pearson": 0.1925400087287596,
+          "val_spearman": 0.39733298831455205,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09754090700298548,
+          "val_loss": 0.10599872469902039,
+          "val_mae": 0.12308211624622345,
+          "val_rmse": 0.1635173261165619,
+          "val_pearson": 0.171436676002473,
+          "val_spearman": 0.4007296079393053,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.09990701153874397,
+          "val_loss": 0.119030287489295,
+          "val_mae": 0.16781169176101685,
+          "val_rmse": 0.1939961463212967,
+          "val_pearson": 0.14525875580192052,
+          "val_spearman": 0.34123513366994374,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.12810276485979558,
+          "val_loss": 0.1148669682443142,
+          "val_mae": 0.1521092802286148,
+          "val_rmse": 0.1817699372768402,
+          "val_pearson": 0.1303181087710096,
+          "val_spearman": 0.3737711742860008,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/artifacts",
+        "eval_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval",
+        "summary_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.13394805788993835,
+        "rmse": 0.19480757415294647,
+        "pearson": -0.242204696061105,
+        "spearman": 0.07177318056303753,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.03692728901902834
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.13394805788993835",
+          "rmse": "0.19480757415294647",
+          "pearson": "-0.242204696061105",
+          "spearman": "0.07177318056303753",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.12137608975172043",
+          "rmse": "0.1313564032316208",
+          "pearson": "0.1229685710635613",
+          "spearman": "0.13101394402234404"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.11791566014289856",
+          "rmse": "0.1492280215024948",
+          "pearson": "-0.394002289850314",
+          "spearman": "-0.3423265984407288"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.13810518383979797",
+          "rmse": "0.20841197669506073",
+          "pearson": "-0.3629081626188618",
+          "spearman": "0.07542932446045077"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2088518038392067,
+          "val_loss": 0.12282700091600418,
+          "val_mae": 0.17928777635097504,
+          "val_rmse": 0.21116507053375244,
+          "val_pearson": -0.026397416062228375,
+          "val_spearman": 0.15198978973500954,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12386118322610855,
+          "val_loss": 0.1160303633660078,
+          "val_mae": 0.15320856869220734,
+          "val_rmse": 0.1914411038160324,
+          "val_pearson": -0.06661011082497098,
+          "val_spearman": 0.15717410389910652,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10816798247396946,
+          "val_loss": 0.11811664886772633,
+          "val_mae": 0.1551600843667984,
+          "val_rmse": 0.19237984716892242,
+          "val_pearson": -0.06804673911451331,
+          "val_spearman": 0.1404770369016355,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.1036209486424923,
+          "val_loss": 0.11021998524665833,
+          "val_mae": 0.1314556896686554,
+          "val_rmse": 0.17781153321266174,
+          "val_pearson": -0.04972508101498761,
+          "val_spearman": 0.19360731861093308,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.09765030853450299,
+          "val_loss": 0.1274032909423113,
+          "val_mae": 0.1900489628314972,
+          "val_rmse": 0.21578097343444824,
+          "val_pearson": -0.018183994720377062,
+          "val_spearman": 0.23765611206036422,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval",
+        "summary_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.17618349194526672,
+        "rmse": 0.23209477961063385,
+        "pearson": -0.14436276237490098,
+        "spearman": -0.02886239783991164,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.05313485488295555
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.17618349194526672",
+          "rmse": "0.23209477961063385",
+          "pearson": "-0.14436276237490098",
+          "spearman": "-0.02886239783991164",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.1187099739909172",
+          "rmse": "0.14506173133850098",
+          "pearson": "-0.001582371391298035",
+          "spearman": "-0.13101394402234404"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.16227534413337708",
+          "rmse": "0.1773729771375656",
+          "pearson": "-0.07926527049771748",
+          "spearman": "-0.04564354645876384"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.1876603364944458",
+          "rmse": "0.24951191246509552",
+          "pearson": "-0.19714139339807804",
+          "spearman": "-0.09578561908912982"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2364572159945965,
+          "val_loss": 0.1653670370578766,
+          "val_mae": 0.18035033345222473,
+          "val_rmse": 0.2350258082151413,
+          "val_pearson": 0.17267651225321384,
+          "val_spearman": -0.021881381161568063,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1425463631749153,
+          "val_loss": 0.12308499403297901,
+          "val_mae": 0.15396282076835632,
+          "val_rmse": 0.18702077865600586,
+          "val_pearson": 0.2540505324986359,
+          "val_spearman": 0.10672536399882461,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.1076451912522316,
+          "val_loss": 0.1219779597595334,
+          "val_mae": 0.15304438769817352,
+          "val_rmse": 0.18205463886260986,
+          "val_pearson": 0.2720083765175237,
+          "val_spearman": 0.1331474892903259,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.07844282686710358,
+          "val_loss": 0.12200761400163174,
+          "val_mae": 0.1444518119096756,
+          "val_rmse": 0.18020294606685638,
+          "val_pearson": 0.18319158354704976,
+          "val_spearman": -0.007007762594227681,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07660556249320508,
+          "val_loss": 0.1373503226786852,
+          "val_mae": 0.1825539916753769,
+          "val_rmse": 0.21508991718292236,
+          "val_pearson": 0.2149296061302203,
+          "val_spearman": 0.10708290290669337,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/artifacts",
+        "eval_dir": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval",
+        "summary_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_174329_labeler_lexicon_v1_ratio_05/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.15234892070293427,
+        "rmse": 0.22426491975784302,
+        "pearson": -0.19935475299358962,
+        "spearman": -0.11695413955056115,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.049376518155137696
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.15234892070293427",
+          "rmse": "0.22426491975784302",
+          "pearson": "-0.19935475299358962",
+          "spearman": "-0.11695413955056115",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.13742564618587494",
+          "rmse": "0.16221465170383453",
+          "pearson": "-0.037754560051241885",
+          "spearman": "-0.13101394402234404"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.1278974711894989",
+          "rmse": "0.15040233731269836",
+          "pearson": "0.08831150528550981",
+          "spearman": "0.18257418583505536"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.1579706370830536",
+          "rmse": "0.24053244292736053",
+          "pearson": "-0.2176036615177737",
+          "spearman": "-0.13405545299104643"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2494273766875267,
+          "val_loss": 0.18306367844343185,
+          "val_mae": 0.1977318525314331,
+          "val_rmse": 0.2479385882616043,
+          "val_pearson": -0.054118435860181335,
+          "val_spearman": 0.07608427959447195,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1311068832874298,
+          "val_loss": 0.14348709769546986,
+          "val_mae": 0.20306438207626343,
+          "val_rmse": 0.24976123869419098,
+          "val_pearson": -0.031277117204907896,
+          "val_spearman": 0.06993461037912929,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09872484244406224,
+          "val_loss": 0.1196883600205183,
+          "val_mae": 0.1566113531589508,
+          "val_rmse": 0.2176763117313385,
+          "val_pearson": -0.02071976572782329,
+          "val_spearman": 0.07626304904840633,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.09037249218672513,
+          "val_loss": 0.13738428056240082,
+          "val_mae": 0.20570436120033264,
+          "val_rmse": 0.2502487897872925,
+          "val_pearson": -0.023554045381410725,
+          "val_spearman": 0.09936006249672819,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.08085588589310647,
+          "val_loss": 0.13149999268352985,
+          "val_mae": 0.1869133859872818,
+          "val_rmse": 0.2356061041355133,
+          "val_pearson": -0.022282214203511112,
+          "val_spearman": 0.12667603505790137,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "import_20260319_174329_labeler_lexicon_v1_ratio_05",
+    "experiment_type": "历史结果导入",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "question": "回填历史实验 `20260319_174329_labeler_lexicon_v1_ratio_05`，确认其对当前研究主线的支持程度。",
+    "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+    "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "七、实验设计"
+    ],
+    "dataset": "runs/20260319_174329_labeler_lexicon_v1_ratio_05",
+    "ratio_labels": [],
+    "models": [],
+    "epochs": "unknown",
+    "batch_size": "unknown",
+    "device": "unknown",
+    "special_settings": "来自既有 runs 目录的历史导入"
+  },
+  "runtime_summary": {
+    "has_log": false,
+    "start_time": "",
+    "end_time": "",
+    "duration_seconds": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": []
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 affect_state_forecaster，相对文本基线 MAE 改进 0.0350。",
+        "最佳模型相关系数表现 Pearson=-0.04726908080453998, Spearman=0.19641030880448201。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.11735665053129196, RMSE=0.17294029891490936。",
+        "Text baseline: MAE=0.15234892070293427, RMSE=0.22426491975784302。",
+        "Structure baseline: MAE=0.13394805788993835, RMSE=0.19480757415294647。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 -0.0238。",
+        "structure_baseline 相对文本基线的 MAE 改进为 0.0184。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "temporal_baseline 未优于 text_baseline。",
+      "possible_cause": "当前时序编码没有有效利用 reply 顺序，或 observation window 信息密度不足。",
+      "idea_conflict": "削弱了 `idea.md` 中时间动态应带来增益的预期。",
+      "recommendation": "优先检查时间编码与序列长度处理；单次出现不建议新建 `idea.md`。"
+    },
+    {
+      "phenomenon": "affect_state_forecaster 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "structure_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "temporal_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 0
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "import_20260319_174149_labeler_lexicon_v1_ratio_50",
+    "previous_best_model": "",
+    "previous_best_mae": null,
+    "best_mae_delta": null
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/import_20260319_174329_labeler_lexicon_v1_ratio_05_model_metrics.png",
+    "event_errors": "experiments/figures/import_20260319_174329_labeler_lexicon_v1_ratio_05_event_errors.png",
+    "ratio_trends": "experiments/figures/import_20260319_174329_labeler_lexicon_v1_ratio_05_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/import_20260319_174329_labeler_lexicon_v1_ratio_05.json",
+  "report_path": "experiments/records/import_20260319_174329_labeler_lexicon_v1_ratio_05.md",
+  "html_path": "experiments/html/import_20260319_174329_labeler_lexicon_v1_ratio_05.html"
+}

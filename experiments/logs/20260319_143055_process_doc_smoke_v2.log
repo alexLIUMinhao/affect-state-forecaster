@@ -1,0 +1,47 @@
+==> plan start_time=1773901855.7620726
+==> plan run_id=20260319_143055_process_doc_smoke_v2
+==> plan experiment_type=诊断实验
+==> plan target_hypotheses=H1,H3
+==> plan question=确认过程文档中的耗时和异常计数准确。
+==> plan success_criteria=运行摘要中总耗时非空，error 计数不误报。
+==> plan failure_criteria=若耗时为空或 error 误报，则继续修复记录系统。
+==> plan dataset=data/processed/pheme_forecast_ratio_05_train.jsonl
+==> plan ratio_labels=ratio_05_train
+==> plan models=text_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_05_train.jsonl --model text_baseline --device cuda --epochs 1 --batch_size 16 --output_dir runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/1:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/1:  10%|█         | 1/10 [00:00<00:02,  4.08it/s]
+epoch 1/1: 100%|██████████| 10/10 [00:00<00:00, 34.53it/s]
+epoch=1 train_loss=0.2386 val_loss=0.1689 val_mae=0.1741 val_rmse=0.2163 val_pearson=0.0416 val_spearman=0.0362 val_majority_sentiment_accuracy=0.8793 val_majority_sentiment_macro_f1=0.3119 val_majority_sentiment_weighted_f1=0.8390
+saved_model=runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train_summary.json
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_05_train.jsonl --model text_baseline --device cuda --epochs 1 --batch_size 16 --output_dir runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 4.09
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_05_test.jsonl --model text_baseline --model_path runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_143055_process_doc_smoke_v2/text_baseline/eval
+/home/alexmhliu/affect-state-forecaster/src/evaluate.py:185: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=92 mae=0.1729 rmse=0.2189
+group=split value=test num_threads=92 mae=0.1729 rmse=0.2189
+group=observation_ratio value=0.5 num_threads=92 mae=0.1729 rmse=0.2189
+group=event value=prince-toronto num_threads=12 mae=0.1298 rmse=0.1615
+group=event value=putinmissing num_threads=9 mae=0.1484 rmse=0.1656
+group=event value=sydneysiege num_threads=71 mae=0.1832 rmse=0.2328
+saved_predictions=runs/20260319_143055_process_doc_smoke_v2/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_143055_process_doc_smoke_v2/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_143055_process_doc_smoke_v2/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path data/processed/pheme_forecast_ratio_05_test.jsonl --model text_baseline --model_path runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260319_143055_process_doc_smoke_v2/text_baseline/artifacts/text_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260319_143055_process_doc_smoke_v2/text_baseline/eval returncode=0
+==> command_duration_seconds 2.88
+==> summarize completed
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773901862.7383447
+==> summarize completed
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773902432.0782409

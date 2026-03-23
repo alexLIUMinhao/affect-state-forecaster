@@ -169,6 +169,22 @@
       border-radius: 16px;
       background: #fff;
     }
+    .metric-guide {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .metric-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.56);
+      border: 1px solid var(--line);
+    }
+    .metric-item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
     .mini {
       color: var(--muted);
       font-size: 14px;
@@ -176,6 +192,7 @@
     @media (max-width: 900px) {
       .meta-grid { grid-template-columns: 1fr; }
       .spec-grid { grid-template-columns: 1fr; }
+      .metric-guide { grid-template-columns: 1fr; }
       .span-7, .span-5, .span-6 { grid-column: span 12; }
       h1 { font-size: 32px; }
     }
@@ -198,7 +215,7 @@
         </div>
         <div class="stat">
           <div class="stat-label">Best Model</div>
-          <div class="stat-value">affect_state_forecaster</div>
+          <div class="stat-value">structure_baseline</div>
         </div>
       </div>
     </section>
@@ -207,14 +224,14 @@
       <section class="card span-7 intro">
         <div class="section-tag">Introduction Prototype</div>
         <h2>研究引言原型</h2>
-        <p>本研究面向公共事件线程中的群体情绪演化预测，目标是在早期观测阶段利用文本、时间与传播结构线索，对后续窗口中的群体情绪走势进行前瞻预测。当前主任务围绕 以 future_neg_ratio 为主任务，预测未来窗口中的负面情绪比例 展开，并以 PHEME 作为第一阶段 benchmark 重构与验证的主要数据基础。</p><p>从当前关键结果看，affect_state_forecaster 已经取得本轮最优 MAE=0.0917，相对文本基线的 MAE 改进为 0.1822。这说明 Affect-State Forecaster 所依赖的显式 affect-state 建模获得了初步支持；同时，方法相对结构基线和时序基线的比较分别为 0.0269 与 0.0621，因此现阶段可以把论文叙事重心放在“情绪状态作为中间驱动变量”的有效性上。</p>
+        <p>本研究面向公共事件线程中的群体情绪演化预测，目标是在早期观测阶段利用文本、时间与传播结构线索，对后续窗口中的群体情绪走势进行前瞻预测。当前主任务围绕 以 future_neg_ratio 为主任务，预测未来窗口中的负面情绪比例 展开，并以 PHEME 作为第一阶段 benchmark 重构与验证的主要数据基础。</p><p>当前结果首先支持了任务本身的可做性：最佳 MAE 模型为 structure_baseline，其 MAE=0.1170，相对文本基线的改进幅度为 0.0608；但最佳 RMSE 模型是 affect_state_forecaster，说明结构基线在点预测平均误差上更强，而 Affect-State Forecaster 在极端误差控制上呈现局部优势。再结合当前相关性最优模型为 affect_state_forecaster，更稳妥的叙事应是“多模态 affect-state 路线仍值得在公平容量下继续诊断”，而不是直接宣称方法已经稳定领先。</p>
       </section>
 
       <section class="card span-5">
         <div class="section-tag">Evidence Snapshot</div>
         <h2>关键结果信号</h2>
         <ul class="notes">
-          <li>当前最优模型：<span class='mono'>affect_state_forecaster</span>，MAE=0.0917。</li><li>相对文本基线的 MAE 改进：0.1822。</li><li>`affect_state_forecaster` 相对结构基线的 MAE 差：0.0269。</li><li>`affect_state_forecaster` 相对时序基线的 MAE 差：0.0621。</li><li>当前证据状态：ours_supported。</li>
+          <li>当前 MAE 最优模型：<span class='mono'>structure_baseline</span>，MAE=0.1170。</li><li>当前 RMSE 最优模型：<span class='mono'>affect_state_forecaster</span>，RMSE=0.1775。</li><li>相对文本基线的 MAE 改进：0.0608。</li><li>`affect_state_forecaster` 相对结构基线的 MAE 差：-0.0125。</li><li>`affect_state_forecaster` 相对时序基线的 MAE 差：0.0395。</li><li>当前相关性最优模型：<span class='mono'>affect_state_forecaster</span>。</li><li>当前证据状态：diagnostic_needed。</li><li>主要风险：当前最优模型不是 affect_state_forecaster，方法主线仍需诊断。</li>
         </ul>
       </section>
 
@@ -240,19 +257,29 @@
       <section class="card span-12">
         <div class="section-tag">Current Progress</div>
         <h2>当前实验进展</h2>
-        <p>当前主实验已经形成可用于论文原型叙事的正向证据：ours 暂时领先，且相对文本基线存在明确改进。</p>
-        <table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>MAE=0.2739, RMSE=0.3243, Pearson=-0.0309, Spearman=-0.1024</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>MAE=0.1538, RMSE=0.2135, Pearson=-0.0167, Spearman=-0.1567</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>MAE=0.1187, RMSE=0.1814, Pearson=-0.1033, Spearman=-0.2206</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>MAE=0.0917, RMSE=0.1730, Pearson=0.4015, Spearman=0.0401</td></tr></tbody></table>
-        <div class="note">
-          <strong>结果解释：</strong> Table 1 显示 affect_state_forecaster 当前领先，说明显式情绪状态建模已具备进入多 ratio 与泛化验证的基础。
+        <p>当前主实验呈现指标分裂：structure 在平均误差上更优，而 ASF 在大误差惩罚上更稳，因此需要用容量对齐实验继续诊断。</p>
+        <div class="metric-guide">
+          <section class='metric-item'><strong>MAE</strong><span>平均绝对误差，反映平均偏差大小。越低越好。</span></section><section class='metric-item'><strong>RMSE</strong><span>均方根误差，对大误差更敏感。越低越好。</span></section><section class='metric-item'><strong>Pearson</strong><span>线性相关性，越接近 1 越说明预测值与真实值线性同步。越高越好。</span></section><section class='metric-item'><strong>Spearman</strong><span>秩相关性，越接近 1 越说明排序趋势一致。越高越好。</span></section>
         </div>
-        <div class='figure-grid'><img src='../figures/import_first_round_ratio_05_model_metrics.png' alt='import_first_round_ratio_05_model_metrics' /><img src='../figures/20260319_143055_process_doc_smoke_v2_ratio_trends.png' alt='20260319_143055_process_doc_smoke_v2_ratio_trends' /><img src='../figures/20260319_134508_smoke_ratio05_ratio_trends.png' alt='20260319_134508_smoke_ratio05_ratio_trends' /></div>
+        <h3>Table 1. 当前主实验（默认配置）</h3><table><thead><tr><th>Dataset</th><th>Compared Baselines</th><th>Ours</th><th>Params</th><th>Metrics</th></tr></thead><tbody><tr><td>PHEME</td><td>text_baseline</td><td>—</td><td class='mono'>2.58M</td><td class='mono'>MAE=0.1778, RMSE=0.2362, Pearson=0.0646, Spearman=0.1386</td></tr><tr><td>PHEME</td><td>temporal_baseline</td><td>—</td><td class='mono'>2.71M</td><td class='mono'>MAE=0.1691, RMSE=0.2341, Pearson=-0.1120, Spearman=-0.0872</td></tr><tr><td>PHEME</td><td>structure_baseline</td><td>—</td><td class='mono'>2.60M</td><td class='mono'>MAE=0.1170, RMSE=0.1876, Pearson=-0.2484, Spearman=0.0661</td></tr><tr><td>PHEME</td><td>—</td><td>affect_state_forecaster</td><td class='mono'>5.37M</td><td class='mono'>MAE=0.1296, RMSE=0.1775, Pearson=0.0126, Spearman=0.2499</td></tr></tbody></table>
+        
+        <div class="note">
+          <strong>结果解释：</strong> 当前结果存在 MAE/RMSE 分裂：structure_baseline 的平均误差最低，而 affect_state_forecaster 对大误差更稳。这通常意味着两类模型分别擅长“均值拟合”与“极端误差控制”，不能只靠单一指标下结论。
+        </div>
+        <div class="note">
+          <strong>Metric Reading：</strong> structure_baseline 的 MAE 更低，但 affect_state_forecaster 的 RMSE 更低，说明平均误差与极端误差控制分裂。 structure_baseline 的相关性偏弱，说明它虽然误差较低，但未必学到了稳定的排序关系。
+        </div>
+        <div class="note">
+          <strong>事件级摘要：</strong> 按当前事件级结果，structure_baseline 在 prince-toronto、putinmissing、sydneysiege 上的平均误差更稳；affect_state_forecaster 在 sydneysiege 上更能控制极端误差。
+        </div>
+        <div class='figure-grid'><img src='../figures/import_first_round_ratio_05_ratio_trends.png' alt='import_first_round_ratio_05_ratio_trends' /><img src='../figures/import_first_round_ratio_05_model_metrics.png' alt='import_first_round_ratio_05_model_metrics' /><img src='../figures/import_first_round_ratio_05_event_errors.png' alt='import_first_round_ratio_05_event_errors' /></div>
       </section>
 
       <section class="card span-12">
         <div class="section-tag">Next Experiment Plan</div>
         <h2>下一步实验计划</h2>
         <ul class="plan">
-          <li>扩展到多 observation ratio，检查 affect-state 优势是否在 30/70、50/50、70/30 三种设置下保持稳定。</li><li>补做 cross-event 或跨数据集验证，确认当前优势不是由少数事件模式驱动。</li><li>增加稳健性分析，例如不同 sentiment labeler 或随机种子的重复实验。</li>
+          <li>先做参数量对齐实验，以 structure_baseline 为容量锚点，检查 ASF 在公平容量下是否仍保留 RMSE 或趋势优势。</li><li>补充残差分位统计和事件级 head-to-head，对“平均误差更优”与“极端误差更稳”的分裂现象做诊断。</li><li>若对齐后 ASF 仍未在 MAE 上领先，则收缩论文叙事，避免把优势过早归因于 affect-state 建模。</li>
         </ul>
       </section>
     </section>

@@ -1,0 +1,158 @@
+{
+  "run_id": "20260319_134508_smoke_ratio05",
+  "created_at": "2026-03-19T05:45:15.174546+00:00",
+  "run_root": "runs/20260319_134508_smoke_ratio05",
+  "log_path": "experiments/logs/20260319_134508_smoke_ratio05.log",
+  "models": [
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "paths": {
+        "artifact_dir": "runs/20260319_134508_smoke_ratio05/text_baseline/artifacts",
+        "eval_dir": "runs/20260319_134508_smoke_ratio05/text_baseline/eval",
+        "summary_csv": "runs/20260319_134508_smoke_ratio05/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260319_134508_smoke_ratio05/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.18478477001190186,
+        "rmse": 0.23866532742977142,
+        "pearson": 0.06986813859546552,
+        "spearman": 0.09815173849013753,
+        "accuracy": 0.9782608695652174,
+        "macro_f1": 0.5518518518518518,
+        "weighted_f1": 0.9711352657004831,
+        "loss": 0.056398206700881325
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.18478477001190186",
+          "rmse": "0.23866532742977142",
+          "pearson": "0.06986813859546552",
+          "spearman": "0.09815173849013753",
+          "majority_sentiment_accuracy": "0.9782608695652174",
+          "majority_sentiment_macro_f1": "0.5518518518518518",
+          "majority_sentiment_weighted_f1": "0.9711352657004831",
+          "loss": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.1770017296075821",
+          "rmse": "0.2259342521429062",
+          "pearson": "-0.16579983084894084",
+          "spearman": "-0.2183565733705734"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.18903043866157532",
+          "rmse": "0.2144523561000824",
+          "pearson": "-0.4459343471248258",
+          "spearman": "-0.4336136913582565"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.18556199967861176",
+          "rmse": "0.24362175166606903",
+          "pearson": "0.08465943159333117",
+          "spearman": "0.13694234568384095"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.25592655390501023,
+          "val_loss": 0.164616446942091,
+          "val_mae": 0.14525192975997925,
+          "val_rmse": 0.19062688946723938,
+          "val_pearson": 0.27771966808127835,
+          "val_spearman": 0.27054969158429004,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "部分支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 text_baseline，相对文本基线 MAE 改进 0.0000。",
+        "最佳模型相关系数表现 Pearson=0.06986813859546552, Spearman=0.09815173849013753。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "缺少 affect-state 或文本基线结果。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "缺少时间或结构基线结果。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 1
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/20260319_134508_smoke_ratio05_model_metrics.png",
+    "event_errors": "experiments/figures/20260319_134508_smoke_ratio05_event_errors.png",
+    "ratio_trends": "experiments/figures/20260319_134508_smoke_ratio05_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/20260319_134508_smoke_ratio05.json",
+  "report_path": "experiments/records/20260319_134508_smoke_ratio05.md"
+}

@@ -1,0 +1,194 @@
+==> plan start_time=1773912466.8964436
+==> plan run_id=20260319_172746_cross_event_charliehebdo
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=charliehebdo 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl
+==> plan ratio_labels=charliehebdo_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster
+==> plan python=base:/home/alexmhliu/affect-state-forecaster/.venv/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.90it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 33.25it/s]
+epoch=1 train_loss=0.2159 val_loss=0.1602 val_mae=0.1910 val_rmse=0.2643 val_pearson=-0.1892 val_spearman=-0.1991 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 214.36it/s]
+epoch=2 train_loss=0.1098 val_loss=0.1205 val_mae=0.2044 val_rmse=0.2739 val_pearson=-0.2727 val_spearman=-0.2149 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 213.30it/s]
+epoch=3 train_loss=0.0732 val_loss=0.0999 val_mae=0.1576 val_rmse=0.2463 val_pearson=-0.1798 val_spearman=-0.0693 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 211.92it/s]
+epoch=4 train_loss=0.0667 val_loss=0.0990 val_mae=0.1714 val_rmse=0.2468 val_pearson=-0.1703 val_spearman=-0.0150 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 212.35it/s]
+epoch=5 train_loss=0.0549 val_loss=0.0978 val_mae=0.1701 val_rmse=0.2438 val_pearson=-0.2439 val_spearman=-0.1660 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt
+saved_config=runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 4.58
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model text_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval
+group=overall value=all num_threads=74 mae=0.2032 rmse=0.2552
+group=split value=test num_threads=74 mae=0.2032 rmse=0.2552
+group=observation_ratio value=0.5 num_threads=74 mae=0.2032 rmse=0.2552
+group=event value=charliehebdo num_threads=74 mae=0.2032 rmse=0.2552
+saved_predictions=runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model text_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/text_baseline/eval returncode=0
+==> command_duration_seconds 2.97
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.74it/s]
+epoch 1/5:  80%|████████  | 8/10 [00:00<00:00, 20.86it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 20.18it/s]
+epoch=1 train_loss=0.2294 val_loss=0.1517 val_mae=0.1848 val_rmse=0.2696 val_pearson=0.0935 val_spearman=0.1045 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  70%|███████   | 7/10 [00:00<00:00, 66.06it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 71.95it/s]
+epoch=2 train_loss=0.1235 val_loss=0.0962 val_mae=0.1838 val_rmse=0.2385 val_pearson=0.0214 val_spearman=0.1402 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  80%|████████  | 8/10 [00:00<00:00, 72.15it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 71.17it/s]
+epoch=3 train_loss=0.0790 val_loss=0.0810 val_mae=0.1318 val_rmse=0.2055 val_pearson=0.0628 val_spearman=0.1428 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  70%|███████   | 7/10 [00:00<00:00, 65.50it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 71.92it/s]
+epoch=4 train_loss=0.0665 val_loss=0.0859 val_mae=0.1472 val_rmse=0.2173 val_pearson=-0.0080 val_spearman=0.0583 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  80%|████████  | 8/10 [00:00<00:00, 72.30it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 72.27it/s]
+epoch=5 train_loss=0.0537 val_loss=0.0889 val_mae=0.1652 val_rmse=0.2256 val_pearson=-0.0418 val_spearman=0.0773 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt
+saved_config=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 5.28
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model temporal_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval
+group=overall value=all num_threads=74 mae=0.1679 rmse=0.2211
+group=split value=test num_threads=74 mae=0.1679 rmse=0.2211
+group=observation_ratio value=0.5 num_threads=74 mae=0.1679 rmse=0.2211
+group=event value=charliehebdo num_threads=74 mae=0.1679 rmse=0.2211
+saved_predictions=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model temporal_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.14
+==> train model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.68it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 31.07it/s]
+epoch=1 train_loss=0.2037 val_loss=0.1130 val_mae=0.1958 val_rmse=0.2383 val_pearson=-0.2988 val_spearman=0.0187 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 186.14it/s]
+epoch=2 train_loss=0.0994 val_loss=0.0913 val_mae=0.1472 val_rmse=0.2102 val_pearson=-0.5090 val_spearman=-0.2004 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 185.10it/s]
+epoch=3 train_loss=0.0883 val_loss=0.0895 val_mae=0.1176 val_rmse=0.2041 val_pearson=-0.4571 val_spearman=0.0121 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 183.60it/s]
+epoch=4 train_loss=0.0837 val_loss=0.0878 val_mae=0.1097 val_rmse=0.2039 val_pearson=-0.3762 val_spearman=0.0452 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 183.15it/s]
+epoch=5 train_loss=0.0757 val_loss=0.0883 val_mae=0.1409 val_rmse=0.2050 val_pearson=-0.4240 val_spearman=-0.0794 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt
+saved_config=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 4.66
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model structure_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval
+group=overall value=all num_threads=74 mae=0.1510 rmse=0.2162
+group=split value=test num_threads=74 mae=0.1510 rmse=0.2162
+group=observation_ratio value=0.5 num_threads=74 mae=0.1510 rmse=0.2162
+group=event value=charliehebdo num_threads=74 mae=0.1510 rmse=0.2162
+saved_predictions=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model structure_baseline --model_path runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/structure_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.69it/s]
+epoch 1/5:  70%|███████   | 7/10 [00:00<00:00, 18.16it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 19.18it/s]
+epoch=1 train_loss=0.2201 val_loss=0.0951 val_mae=0.1127 val_rmse=0.1818 val_pearson=0.2680 val_spearman=0.0552 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  70%|███████   | 7/10 [00:00<00:00, 57.69it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 61.31it/s]
+epoch=2 train_loss=0.0978 val_loss=0.0807 val_mae=0.1193 val_rmse=0.1838 val_pearson=0.2283 val_spearman=0.1097 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  60%|██████    | 6/10 [00:00<00:00, 57.26it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 61.01it/s]
+epoch=3 train_loss=0.0852 val_loss=0.0827 val_mae=0.1057 val_rmse=0.1864 val_pearson=0.1109 val_spearman=0.2364 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  60%|██████    | 6/10 [00:00<00:00, 58.55it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 62.92it/s]
+epoch=4 train_loss=0.0947 val_loss=0.0872 val_mae=0.1522 val_rmse=0.1992 val_pearson=0.0632 val_spearman=0.3023 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  60%|██████    | 6/10 [00:00<00:00, 59.62it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 62.02it/s]
+epoch=5 train_loss=0.0791 val_loss=0.0827 val_mae=0.1015 val_rmse=0.1874 val_pearson=0.1272 val_spearman=0.3566 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt
+saved_config=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train_summary.json
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/train.py --train_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --output_dir runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 5.4
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval
+group=overall value=all num_threads=74 mae=0.1431 rmse=0.1911
+group=split value=test num_threads=74 mae=0.1431 rmse=0.1911
+group=observation_ratio value=0.5 num_threads=74 mae=0.1431 rmse=0.1911
+group=event value=charliehebdo num_threads=74 mae=0.1431 rmse=0.1911
+saved_predictions=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/affect-state-forecaster/.venv/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_nzz5m343/charliehebdo_test.jsonl --model affect_state_forecaster --model_path runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt --config_path runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json --device cuda --output_dir runs/20260319_172746_cross_event_charliehebdo/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.22
+==> summarize completed
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Pearson/Spearman 接近 0。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Pearson/Spearman 接近 0。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1773912499.15883
