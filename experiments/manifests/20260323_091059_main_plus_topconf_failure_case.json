@@ -1,0 +1,20 @@
+{
+  "run_id": "20260323_091059_main_plus_topconf_failure_case",
+  "created_at": "2026-03-23T08:56:32.164490+00:00",
+  "source_run_id": "20260323_091059_main_plus_topconf",
+  "models": [
+    "affect_state_forecaster",
+    "patchtst_baseline",
+    "thread_transformer_baseline"
+  ],
+  "summary_csv": "experiments/records/failure_case/20260323_091059_main_plus_topconf_failure_case_summary.csv",
+  "cases_csv": "experiments/records/failure_case/20260323_091059_main_plus_topconf_failure_case_case_studies.csv",
+  "html_path": "experiments/html/diagnostics/20260323_091059_main_plus_topconf_failure_case.html",
+  "report_path": "experiments/records/20260323_091059_main_plus_topconf_failure_case.md",
+  "figures": {
+    "slice_heatmap": "experiments/figures/failure_case/20260323_091059_main_plus_topconf_failure_case_slice_heatmap.png",
+    "gold_vs_prediction": "experiments/figures/failure_case/20260323_091059_main_plus_topconf_failure_case_gold_vs_prediction.png",
+    "absolute_error_by_bucket": "experiments/figures/failure_case/20260323_091059_main_plus_topconf_failure_case_absolute_error_by_bucket.png",
+    "pairwise_disagreement": "experiments/figures/failure_case/20260323_091059_main_plus_topconf_failure_case_pairwise_disagreement.png"
+  }
+}

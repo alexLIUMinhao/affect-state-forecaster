@@ -130,6 +130,8 @@ def classify_html_category(name: str) -> str:
         return "progress"
     if "data_analysis" in normalized:
         return "data_analysis"
+    if "failure_case" in normalized:
+        return "diagnostics"
     if normalized.startswith("import_"):
         return "imports"
     if "main_plus_topconf" in normalized or "first_round" in normalized:

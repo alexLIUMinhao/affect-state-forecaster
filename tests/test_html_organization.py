@@ -30,6 +30,7 @@ class HtmlOrganizationTests(unittest.TestCase):
         self.assertEqual(classify_html_category("20260323_092441_seed_sweep_seed_13"), "seed_sweep")
         self.assertEqual(classify_html_category("20260319_134508_smoke_ratio05"), "smoke")
         self.assertEqual(classify_html_category("20260319_211003_capacity_matched_main_default"), "diagnostics")
+        self.assertEqual(classify_html_category("20260323_091059_main_plus_topconf_failure_case"), "diagnostics")
         self.assertEqual(classify_html_category("20260323_092808_paper_progress"), "progress")
         self.assertEqual(classify_html_category("import_20260323_091059_main_plus_topconf"), "imports")
 
