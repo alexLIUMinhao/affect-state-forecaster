@@ -38,6 +38,7 @@ def build_model(
     disable_temporal: bool = False,
     disable_structure: bool = False,
     disable_affect_state: bool = False,
+    fusion_variant: str = "full",
 ) -> nn.Module:
     if name == "text_baseline":
         return TextBaseline(hidden_dim=hidden_dim, vocab_size=vocab_size, dropout=dropout)
@@ -54,8 +55,13 @@ def build_model(
             disable_temporal=disable_temporal,
             disable_structure=disable_structure,
             disable_affect_state=disable_affect_state,
+            fusion_variant=fusion_variant,
         )
     raise ValueError(f"Unknown model: {name}")
+
+
+def count_trainable_parameters(model: nn.Module) -> int:
+    return sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad)
 
 
 def _empty_reply_records(batch_size: int) -> list[list[dict[str, Any]]]:
@@ -241,6 +247,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable_temporal", action="store_true")
     parser.add_argument("--disable_structure", action="store_true")
     parser.add_argument("--disable_affect_state", action="store_true")
+    parser.add_argument(
+        "--fusion_variant",
+        type=str,
+        default="full",
+        choices=[
+            "full",
+            "scalar_gate",
+            "vector_gate",
+            "softmax_router",
+            "structure_gate_only",
+            "source_gate_only",
+            "reply_gate_only",
+        ],
+    )
+    parser.add_argument("--capacity_group", type=str, default="default")
     return parser.parse_args()
 
 
@@ -281,7 +302,9 @@ def main() -> None:
         disable_temporal=args.disable_temporal,
         disable_structure=args.disable_structure,
         disable_affect_state=args.disable_affect_state,
+        fusion_variant=args.fusion_variant,
     ).to(args.device)
+    param_count = count_trainable_parameters(model)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     mse_criterion = nn.MSELoss()
     cls_criterion = nn.CrossEntropyLoss()
@@ -344,6 +367,7 @@ def main() -> None:
         json.dump(
             {
                 "model": args.model,
+                "param_count": param_count,
                 "hidden_dim": args.hidden_dim,
                 "vocab_size": args.vocab_size,
                 "dropout": args.dropout,
@@ -351,20 +375,23 @@ def main() -> None:
                 "classification_loss_weight": args.classification_loss_weight,
                 "affect_state_weight": args.affect_state_weight,
                 "seed": args.seed,
+                "capacity_group": args.capacity_group,
                 "input_view": args.input_view,
                 "disable_temporal": args.disable_temporal,
                 "disable_structure": args.disable_structure,
                 "disable_affect_state": args.disable_affect_state,
+                "fusion_variant": args.fusion_variant,
             },
             handle,
             indent=2,
         )
     with summary_path.open("w", encoding="utf-8") as handle:
-        json.dump({"history": history}, handle, indent=2)
+        json.dump({"history": history, "param_count": param_count}, handle, indent=2)
 
     print(f"saved_model={model_path}")
     print(f"saved_config={config_path}")
     print(f"saved_summary={summary_path}")
+    print(f"param_count={param_count}")
 
 
 if __name__ == "__main__":

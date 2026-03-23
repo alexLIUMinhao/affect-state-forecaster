@@ -22,6 +22,10 @@ def load_module(relative_path: str, module_name: str):
 
 ratio_sweep = load_module("scripts/run_ratio_sweep.py", "run_ratio_sweep")
 cross_event = load_module("scripts/run_cross_event_suite.py", "run_cross_event_suite")
+labeler_robustness = load_module("scripts/run_labeler_robustness_suite.py", "run_labeler_robustness_suite")
+capacity_matched = load_module("scripts/run_capacity_matched_suite.py", "run_capacity_matched_suite")
+fusion_diagnostic = load_module("scripts/run_fusion_diagnostic_suite.py", "run_fusion_diagnostic_suite")
+source_gate_validation = load_module("scripts/run_source_gate_validation.py", "run_source_gate_validation")
 
 
 class ExperimentEntrypointTests(unittest.TestCase):
@@ -49,6 +53,76 @@ class ExperimentEntrypointTests(unittest.TestCase):
         self.assertTrue(all(item["event_name"] != "a" for item in train_records + val_records))
         self.assertEqual({item["split"] for item in train_records}, {"train"})
         self.assertEqual({item["split"] for item in val_records}, {"val"})
+
+    def test_labeler_robustness_uses_benchmark_ratio_suffix(self) -> None:
+        self.assertEqual(labeler_robustness.ratio_suffix("30"), "03")
+        self.assertEqual(labeler_robustness.ratio_suffix("50"), "05")
+        self.assertEqual(labeler_robustness.ratio_suffix("70"), "07")
+
+    def test_capacity_matched_search_targets_structure_baseline_window(self) -> None:
+        args = type(
+            "Args",
+            (),
+            {
+                "target_model": "structure_baseline",
+                "target_param_tolerance": 0.05,
+                "search_hidden_dim": [64, 72, 80, 88, 96, 104, 112, 120, 128],
+                "search_affect_state_dim": [8, 16, 24, 32, 40],
+            },
+        )()
+        matched = capacity_matched.choose_matched_asf_config(args)
+        target = matched["target_param_count"]
+        gap_ratio = abs(matched["param_count"] - target) / target
+        self.assertLessEqual(gap_ratio, 0.05)
+        self.assertLess(matched["hidden_dim"], 128)
+
+    def test_fusion_diagnostic_includes_gate_variants(self) -> None:
+        variants = fusion_diagnostic.variant_matrix()
+        variant_names = {name for _model, name, _overrides in variants}
+        self.assertIn("asf_scalar_gate", variant_names)
+        self.assertIn("asf_vector_gate", variant_names)
+        self.assertIn("asf_softmax_router", variant_names)
+        self.assertIn("structure_baseline", {model for model, _name, _overrides in variants})
+
+    def test_source_gate_validation_aggregates_by_capacity_and_variant(self) -> None:
+        rows = [
+            {
+                "seed": 13,
+                "capacity_group": "matched",
+                "model_name": "affect_state_forecaster",
+                "fusion_variant": "source_gate_only",
+                "param_count": 2634355.0,
+                "mae": 0.1240,
+                "rmse": 0.1750,
+                "pearson": 0.01,
+                "spearman": -0.02,
+                "gate_source_mean": 0.48,
+                "gate_temporal_mean": 1.0,
+                "gate_structure_mean": 1.0,
+            },
+            {
+                "seed": 42,
+                "capacity_group": "matched",
+                "model_name": "affect_state_forecaster",
+                "fusion_variant": "source_gate_only",
+                "param_count": 2634355.0,
+                "mae": 0.1260,
+                "rmse": 0.1740,
+                "pearson": 0.00,
+                "spearman": -0.05,
+                "gate_source_mean": 0.49,
+                "gate_temporal_mean": 1.0,
+                "gate_structure_mean": 1.0,
+            },
+        ]
+        aggregates = source_gate_validation.aggregate_rows(rows)
+        self.assertEqual(len(aggregates), 1)
+        aggregate = aggregates[0]
+        self.assertEqual(aggregate["capacity_group"], "matched")
+        self.assertEqual(aggregate["fusion_variant"], "source_gate_only")
+        self.assertEqual(aggregate["seeds"], "13,42")
+        self.assertAlmostEqual(aggregate["mae"], 0.1250)
+        self.assertGreaterEqual(aggregate["mae_std"], 0.0)
 
 
 if __name__ == "__main__":

@@ -39,6 +39,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable_temporal", action="store_true")
     parser.add_argument("--disable_structure", action="store_true")
     parser.add_argument("--disable_affect_state", action="store_true")
+    parser.add_argument(
+        "--fusion_variant",
+        type=str,
+        default="full",
+        choices=[
+            "full",
+            "scalar_gate",
+            "vector_gate",
+            "softmax_router",
+            "structure_gate_only",
+            "source_gate_only",
+            "reply_gate_only",
+        ],
+    )
+    parser.add_argument("--capacity_group", type=str, default="default")
     return parser.parse_args()
 
 
@@ -58,14 +73,17 @@ def maybe_load_config(args: argparse.Namespace) -> argparse.Namespace:
     args.disable_temporal = bool(config.get("disable_temporal", args.disable_temporal))
     args.disable_structure = bool(config.get("disable_structure", args.disable_structure))
     args.disable_affect_state = bool(config.get("disable_affect_state", args.disable_affect_state))
+    args.fusion_variant = str(config.get("fusion_variant", args.fusion_variant))
+    args.capacity_group = str(config.get("capacity_group", args.capacity_group))
     return args
 
 
-def normalize_model_output(output: Any) -> tuple[torch.Tensor, torch.Tensor | None, torch.Tensor | None]:
+def normalize_model_output(output: Any) -> tuple[torch.Tensor, torch.Tensor | None, torch.Tensor | None, torch.Tensor | None]:
     return (
         output["predicted_future_neg_ratio"],
         output.get("predicted_future_majority_logits"),
         output.get("predicted_current_affect_state"),
+        output.get("fusion_gate_means"),
     )
 
 
@@ -90,6 +108,7 @@ def build_prediction_rows(
     preds: np.ndarray,
     pred_labels: list[str],
     affect_states: np.ndarray | None,
+    gate_means: np.ndarray | None,
 ) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for index, pred in enumerate(preds):
@@ -106,6 +125,10 @@ def build_prediction_rows(
         }
         if affect_states is not None:
             row["predicted_current_affect_state"] = affect_states[index].tolist()
+        if gate_means is not None:
+            row["gate_source_mean"] = float(gate_means[index][0])
+            row["gate_temporal_mean"] = float(gate_means[index][1])
+            row["gate_structure_mean"] = float(gate_means[index][2])
         rows.append(row)
     return rows
 
@@ -121,6 +144,10 @@ def summarize_rows(rows: list[dict[str, Any]], group_name: str, group_value: str
         "num_threads": len(rows),
     }
     summary.update(compute_metrics(preds, targets, pred_labels=pred_labels, true_labels=true_labels))
+    if rows and "gate_source_mean" in rows[0]:
+        summary["gate_source_mean"] = float(np.mean([row["gate_source_mean"] for row in rows]))
+        summary["gate_temporal_mean"] = float(np.mean([row["gate_temporal_mean"] for row in rows]))
+        summary["gate_structure_mean"] = float(np.mean([row["gate_structure_mean"] for row in rows]))
     return summary
 
 
@@ -145,6 +172,9 @@ def write_summary_csv(path: Path, summaries: list[dict[str, Any]]) -> None:
         "majority_sentiment_macro_f1",
         "majority_sentiment_weighted_f1",
         "loss",
+        "gate_source_mean",
+        "gate_temporal_mean",
+        "gate_structure_mean",
     ]
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
@@ -198,6 +228,7 @@ def main() -> None:
         disable_temporal=args.disable_temporal,
         disable_structure=args.disable_structure,
         disable_affect_state=args.disable_affect_state,
+        fusion_variant=args.fusion_variant,
     ).to(args.device)
     state = torch.load(args.model_path, map_location=args.device)
     model.load_state_dict(state)
@@ -211,12 +242,13 @@ def main() -> None:
         for batch in loader:
             targets = batch["targets"].to(args.device)
             raw_output = model_forward(model, args.model, batch, input_view=args.input_view)
-            preds_tensor, cls_logits, affect_state = normalize_model_output(raw_output)
+            preds_tensor, cls_logits, affect_state, fusion_gate_means = normalize_model_output(raw_output)
             total_loss += float(criterion(preds_tensor, targets).item())
             preds = preds_tensor.cpu().numpy()
             pred_labels = logits_to_labels(cls_logits, preds)
             affect_state_np = affect_state.cpu().numpy() if affect_state is not None else None
-            all_rows.extend(build_prediction_rows(args.model, batch, preds, pred_labels, affect_state_np))
+            fusion_gate_np = fusion_gate_means.cpu().numpy() if fusion_gate_means is not None else None
+            all_rows.extend(build_prediction_rows(args.model, batch, preds, pred_labels, affect_state_np, fusion_gate_np))
 
     summaries = [summarize_rows(all_rows, "overall", "all")]
     split_values = sorted({row["split"] for row in all_rows})
