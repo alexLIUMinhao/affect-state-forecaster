@@ -19,7 +19,40 @@ data/processed/*
 !data/processed/.gitkeep
 artifacts/
 outputs/
+runs/
 *.tar.bz2
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+*.rar
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.onnx
+*.safetensors
+*.h5
+*.hdf5
+*.joblib
+*.pkl
+*.pickle
+*.npz
+*.npy
+
+# Dataset exports and local databases
+*.csv.gz
+*.jsonl.gz
+*.parquet
+*.feather
+*.db
+*.sqlite
+*.sqlite3
+
+# Local filesystem metadata
+._*
 
 # Notebooks
 .ipynb_checkpoints/
