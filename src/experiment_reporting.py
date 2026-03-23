@@ -28,6 +28,63 @@ class ExperimentPaths:
     html: Path
 
 
+HTML_CATEGORY_ORDER = [
+    "main",
+    "topconf",
+    "ratio_sweep",
+    "cross_event",
+    "seed_sweep",
+    "smoke",
+    "diagnostics",
+    "imports",
+    "progress",
+    "misc",
+]
+
+HTML_CATEGORY_METADATA = {
+    "main": {
+        "label": "主实验",
+        "description": "优先查看这里。用于论文主表和主要结论，包含当前核心模型对比。",
+    },
+    "topconf": {
+        "label": "顶会 Baseline",
+        "description": "只看新增顶会 baseline 的独立验证，用来判断是否值得进入主表。",
+    },
+    "ratio_sweep": {
+        "label": "Ratio Sweep",
+        "description": "比较不同 observation ratio 下的表现，回答模型是否随观测窗口变化而稳定。",
+    },
+    "cross_event": {
+        "label": "Cross Event",
+        "description": "留一事件外测试，用来看跨事件泛化能力，而不是同事件内拟合。",
+    },
+    "seed_sweep": {
+        "label": "Seed Sweep",
+        "description": "不同随机种子下的稳定性分析，主要看均值和方差，不直接替代主实验结论。",
+    },
+    "smoke": {
+        "label": "Smoke",
+        "description": "流程冒烟页，只验证训练评测链路是否跑通，不作为效果结论。",
+    },
+    "diagnostics": {
+        "label": "诊断与消融",
+        "description": "用于解释模型为什么有效或无效，包括容量匹配、融合诊断、标签器和 gate 验证等。",
+    },
+    "imports": {
+        "label": "导入记录",
+        "description": "由同步脚本导入的历史页面，主要用于追溯旧实验，不作为第一查看入口。",
+    },
+    "progress": {
+        "label": "论文进展",
+        "description": "高层总览页。适合先看当前最优模型、证据状态和下一步计划。",
+    },
+    "misc": {
+        "label": "其他",
+        "description": "未匹配到固定实验类型的页面。",
+    },
+}
+
+
 def ensure_experiment_paths(root: str | Path = "experiments") -> ExperimentPaths:
     root_path = Path(root)
     paths = ExperimentPaths(
@@ -60,6 +117,34 @@ def slugify(value: str) -> str:
 def default_run_id(tag: str) -> str:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f"{timestamp}_{slugify(tag)}"
+
+
+def classify_html_category(name: str) -> str:
+    normalized = name.lower()
+    if normalized.endswith("paper_progress") or "paper_progress" in normalized:
+        return "progress"
+    if normalized.startswith("import_"):
+        return "imports"
+    if "main_plus_topconf" in normalized or "first_round" in normalized:
+        return "main"
+    if "topconf" in normalized:
+        return "topconf"
+    if "ratio_sweep" in normalized:
+        return "ratio_sweep"
+    if "cross_event" in normalized:
+        return "cross_event"
+    if "seed_sweep" in normalized:
+        return "seed_sweep"
+    if "smoke" in normalized:
+        return "smoke"
+    if any(token in normalized for token in ("ablation", "fusion", "capacity", "labeler", "source_gate", "diagnostic", "process_doc")):
+        return "diagnostics"
+    return "misc"
+
+
+def html_output_path(html_root: Path, run_id: str) -> Path:
+    category = classify_html_category(run_id)
+    return html_root / category / f"{run_id}.html"
 
 
 def read_csv_rows(path: Path) -> list[dict[str, Any]]:
@@ -258,14 +343,14 @@ def _html_list(items: list[str]) -> str:
     return "<ul>" + "".join(f"<li>{_html_escape(item)}</li>" for item in items) + "</ul>"
 
 
-def _figure_rel_path(paths: ExperimentPaths, target: str) -> str:
+def _figure_rel_path(html_path: Path, target: str) -> str:
     try:
-        return os.path.relpath(target, start=paths.html)
+        return os.path.relpath(target, start=html_path.parent)
     except ValueError:
         return target
 
 
-def build_report_html(manifest: dict[str, Any], paths: ExperimentPaths) -> str:
+def build_report_html(manifest: dict[str, Any], paths: ExperimentPaths, html_path: Path) -> str:
     plan = manifest.get("experiment_plan", {})
     runtime = manifest.get("runtime_summary", {})
     decision = manifest.get("decision", {})
@@ -317,7 +402,7 @@ def build_report_html(manifest: dict[str, Any], paths: ExperimentPaths) -> str:
         ("ratio_trends", "Observation Ratio 趋势"),
     ):
         figure_path = figures.get(key, "")
-        rel = _figure_rel_path(paths, figure_path) if figure_path else ""
+        rel = _figure_rel_path(html_path, figure_path) if figure_path else ""
         figure_cards.append(
             "<section class='card figure'>"
             f"<h3>{title}</h3>"
@@ -440,10 +525,20 @@ def build_report_html(manifest: dict[str, Any], paths: ExperimentPaths) -> str:
 """
 
 
-def build_index_html(index_rows: list[dict[str, Any]]) -> str:
+def _category_meta(category: str) -> dict[str, str]:
+    return HTML_CATEGORY_METADATA.get(category, HTML_CATEGORY_METADATA["misc"])
+
+
+def _build_index_cards(index_rows: list[dict[str, Any]], base_dir: Path) -> str:
     cards = []
     for row in sorted(index_rows, key=lambda item: item.get("created_at", ""), reverse=True):
-        html_path = row.get("html_path", "")
+        html_path = Path(str(row.get("html_path", ""))) if row.get("html_path") else None
+        rel = ""
+        if html_path:
+            try:
+                rel = os.path.relpath(html_path, start=base_dir)
+            except ValueError:
+                rel = str(html_path)
         cards.append(
             "<article class='card'>"
             f"<div class='meta'>{_html_escape(row.get('created_at', ''))}</div>"
@@ -452,8 +547,64 @@ def build_index_html(index_rows: list[dict[str, Any]]) -> str:
             f"<p><strong>最佳模型:</strong> {_html_escape(row.get('best_model', ''))} | MAE={_html_escape(row.get('best_mae', ''))}</p>"
             f"<p><strong>研究判断:</strong> {_html_escape(row.get('hypothesis_summary', ''))}</p>"
             f"<p><strong>当前动作:</strong> {_html_escape(row.get('decision_action', ''))}</p>"
-            + (f"<p><a href='{_html_escape(os.path.basename(html_path))}'>打开 HTML 报告</a></p>" if html_path else "")
+            + (f"<p><a href='{_html_escape(rel)}'>打开 HTML 报告</a></p>" if rel else "")
             + "</article>"
+        )
+    return "".join(cards) if cards else '<div class="card"><p>暂无实验记录。</p></div>'
+
+
+def build_category_index_html(category: str, index_rows: list[dict[str, Any]], html_root: Path) -> str:
+    meta = _category_meta(category)
+    cards = _build_index_cards(index_rows, html_root / category)
+    return f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{_html_escape(meta['label'])} HTML 总览</title>
+  <style>
+    body {{ margin: 0; font-family: Georgia, "Noto Serif SC", serif; background: #f4f1e8; color: #1e293b; }}
+    .wrap {{ max-width: 1100px; margin: 0 auto; padding: 32px 20px 48px; }}
+    .hero {{ background: linear-gradient(135deg, #f8e7cf, #f7f5ef); border: 1px solid #d8d1c2; border-radius: 22px; padding: 28px; margin-bottom: 20px; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }}
+    .card {{ background: #fffdf8; border: 1px solid #d8d1c2; border-radius: 18px; padding: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.04); }}
+    .meta {{ color: #667085; font-size: 13px; margin-bottom: 8px; }}
+    a {{ color: #8c3b2f; text-decoration: none; font-weight: 700; }}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <p><a href="../index.html">返回总目录</a></p>
+      <h1>{_html_escape(meta['label'])}</h1>
+      <p>{_html_escape(meta['description'])}</p>
+    </section>
+    <section class="grid">{cards}</section>
+  </div>
+</body>
+</html>
+"""
+
+
+def build_index_html(index_rows: list[dict[str, Any]], html_root: Path) -> str:
+    grouped: dict[str, list[dict[str, Any]]] = {key: [] for key in HTML_CATEGORY_ORDER}
+    for row in index_rows:
+        grouped.setdefault(classify_html_category(row.get("run_id", "")), []).append(row)
+    sections = []
+    for category in HTML_CATEGORY_ORDER:
+        rows = grouped.get(category, [])
+        category_dir = html_root / category
+        has_extra_pages = category_dir.exists() and any(path.name != "index.html" for path in category_dir.glob("*.html"))
+        if not rows and not has_extra_pages:
+            continue
+        meta = _category_meta(category)
+        preview_html = _build_index_cards(rows[:6], html_root) if rows else "<div class='card'><p>当前没有结构化实验索引，但该目录下可能有汇总页或手动整理的 HTML。</p></div>"
+        sections.append(
+            "<section class='category'>"
+            f"<div class='category-head'><div><h2>{_html_escape(meta['label'])}</h2><p>{_html_escape(meta['description'])}</p></div>"
+            f"<a href='{_html_escape(category)}/index.html'>进入目录</a></div>"
+            f"<div class='grid'>{preview_html}</div>"
+            "</section>"
         )
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -465,6 +616,8 @@ def build_index_html(index_rows: list[dict[str, Any]]) -> str:
     body {{ margin: 0; font-family: Georgia, "Noto Serif SC", serif; background: #f4f1e8; color: #1e293b; }}
     .wrap {{ max-width: 1100px; margin: 0 auto; padding: 32px 20px 48px; }}
     .hero {{ background: linear-gradient(135deg, #f8e7cf, #f7f5ef); border: 1px solid #d8d1c2; border-radius: 22px; padding: 28px; margin-bottom: 20px; }}
+    .category {{ margin-bottom: 28px; }}
+    .category-head {{ display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 14px; }}
     .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }}
     .card {{ background: #fffdf8; border: 1px solid #d8d1c2; border-radius: 18px; padding: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.04); }}
     h1, h2 {{ margin: 0 0 10px; }}
@@ -477,11 +630,9 @@ def build_index_html(index_rows: list[dict[str, Any]]) -> str:
   <div class="wrap">
     <section class="hero">
       <h1>实验进展 HTML 总览</h1>
-      <p>以后查看实验进展，以这个 HTML 首页和每轮 HTML 报告为主。这里会按时间展示每一轮实验验证了什么、当前最优方向是什么，以及下一步为什么这样做。</p>
+      <p>以后先看这个首页，再按类别进入具体目录。主实验看“主实验”，稳健性看 “Ratio Sweep / Cross Event / Seed Sweep”，高层摘要看“论文进展”，诊断问题看“诊断与消融”。</p>
     </section>
-    <section class="grid">
-      {''.join(cards) if cards else '<div class="card"><p>暂无实验记录。</p></div>'}
-    </section>
+    {''.join(sections) if sections else '<div class="card"><p>暂无实验记录。</p></div>'}
   </div>
 </body>
 </html>
@@ -1118,18 +1269,31 @@ def persist_manifest_outputs(paths: ExperimentPaths, manifest: dict[str, Any]) -
     manifest["figures"] = figures
     manifest_path = paths.manifests / f"{manifest['run_id']}.json"
     report_path = paths.records / f"{manifest['run_id']}.md"
-    html_path = paths.html / f"{manifest['run_id']}.html"
+    html_path = html_output_path(paths.html, manifest["run_id"])
+    html_path.parent.mkdir(parents=True, exist_ok=True)
     manifest["manifest_path"] = str(manifest_path)
     manifest["report_path"] = str(report_path)
     manifest["html_path"] = str(html_path)
     write_json(manifest_path, manifest)
     report_path.write_text(build_report_markdown(manifest), encoding="utf-8")
-    html_path.write_text(build_report_html(manifest, paths), encoding="utf-8")
+    html_path.write_text(build_report_html(manifest, paths, html_path), encoding="utf-8")
     append_journal(paths, manifest)
     upsert_index(paths, manifest)
     index_rows = read_csv_rows(paths.records / "experiment_index.csv")
-    (paths.html / "index.html").write_text(build_index_html(index_rows), encoding="utf-8")
+    rebuild_html_indexes(paths, index_rows)
     return manifest
+
+
+def rebuild_html_indexes(paths: ExperimentPaths, index_rows: list[dict[str, Any]] | None = None) -> None:
+    rows = index_rows if index_rows is not None else read_csv_rows(paths.records / "experiment_index.csv")
+    (paths.html / "index.html").write_text(build_index_html(rows, paths.html), encoding="utf-8")
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for row in rows:
+        grouped.setdefault(classify_html_category(row.get("run_id", "")), []).append(row)
+    for category, category_rows in grouped.items():
+        category_dir = paths.html / category
+        category_dir.mkdir(parents=True, exist_ok=True)
+        (category_dir / "index.html").write_text(build_category_index_html(category, category_rows, paths.html), encoding="utf-8")
 
 
 def run_command_with_logging(command: list[str], log_path: Path, cwd: Path) -> int:

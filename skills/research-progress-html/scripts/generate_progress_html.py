@@ -23,7 +23,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a paper-style research progress HTML page.")
     parser.add_argument("--idea-path", type=Path, default=PROJECT_ROOT / "idea.md")
     parser.add_argument("--experiments-root", type=Path, default=PROJECT_ROOT / "experiments")
-    parser.add_argument("--output-html", type=Path, default=PROJECT_ROOT / "experiments/html/paper_progress.html")
+    parser.add_argument("--output-html", type=Path, default=PROJECT_ROOT / "experiments/html/progress/paper_progress.html")
     parser.add_argument("--mode", choices=("auto", "main", "ablation"), default="auto")
     parser.add_argument("--result-source", choices=("auto", "structured", "html"), default="auto")
     return parser.parse_args()
@@ -517,9 +517,17 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
     if not html_dir.exists():
         return {"models": models, "figures": figures}
 
-    candidates = [path for path in html_dir.glob("*paper_progress.html") if path.name != "index.html"]
+    candidates = [
+        path
+        for path in html_dir.rglob("*paper_progress.html")
+        if path.name != "index.html"
+    ]
     if not candidates:
-        candidates = [path for path in html_dir.glob("*.html") if path.name not in {"index.html", "paper_progress.html"}]
+        candidates = [
+            path
+            for path in html_dir.rglob("*.html")
+            if path.name not in {"index.html", "paper_progress.html"}
+        ]
     if not candidates:
         return {"models": models, "tables": [], "current_group": "default", "figures": figures, "source_label": "html"}
     latest = sorted(candidates, key=slug_sort_key, reverse=True)[0]
@@ -544,7 +552,7 @@ def collect_html_results(experiments_root: Path) -> dict[str, Any]:
         }
 
     for src in re.findall(r"<img src='([^']+)'", page):
-        figures.append(str((html_dir / src).resolve()))
+        figures.append(str((latest.parent / src).resolve()))
     return {
         "models": models,
         "tables": [{"key": "default", "title": "Table 1. 当前主实验（默认配置）", "models": models}],
