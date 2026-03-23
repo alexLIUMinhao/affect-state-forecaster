@@ -30,6 +30,7 @@ class ExperimentPaths:
 
 HTML_CATEGORY_ORDER = [
     "main",
+    "data_analysis",
     "topconf",
     "ratio_sweep",
     "cross_event",
@@ -45,6 +46,10 @@ HTML_CATEGORY_METADATA = {
     "main": {
         "label": "主实验",
         "description": "优先查看这里。用于论文主表和主要结论，包含当前核心模型对比。",
+    },
+    "data_analysis": {
+        "label": "数据分析",
+        "description": "看数据分布、标签噪声、结构/时间统计、低维可视化，以及 7 类模型对数据的归纳性偏置。",
     },
     "topconf": {
         "label": "顶会 Baseline",
@@ -123,6 +128,8 @@ def classify_html_category(name: str) -> str:
     normalized = name.lower()
     if normalized.endswith("paper_progress") or "paper_progress" in normalized:
         return "progress"
+    if "data_analysis" in normalized:
+        return "data_analysis"
     if normalized.startswith("import_"):
         return "imports"
     if "main_plus_topconf" in normalized or "first_round" in normalized:

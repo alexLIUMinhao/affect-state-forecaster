@@ -11,10 +11,13 @@
 2. `main/`
    主实验目录。论文主表、当前核心结论、主要模型对比，优先看这里。
 
-3. `progress/`
+3. `data_analysis/`
+   数据分析总览。适合先看数据本体分布、标签噪声、结构/时间统计，以及 7 类模型对数据的归纳性偏置。
+
+4. `progress/`
    论文进展总览。适合快速看当前最优模型、证据状态、下一步计划。
 
-4. `ratio_sweep/`、`cross_event/`、`seed_sweep/`
+5. `ratio_sweep/`、`cross_event/`、`seed_sweep/`
    这三个目录主要用于看稳健性和泛化，不直接替代主实验结论。
 
 ## 各目录含义
@@ -28,6 +31,21 @@
   - 新 baseline 是否进入主表候选
   - 主任务指标是否优于现有方法
 - 当前最重要的页面通常在这里。
+
+### `data_analysis/`
+
+- 含义：数据分析与偏置解释页面。
+- 作用：在继续堆实验之前，先回答“这份 benchmark 本身长什么样、哪里有风险、为什么某些方法更吃香”。
+- 应该看什么：
+  - 原始数据和 benchmark 是怎么构造出来的
+  - 事件不均衡、`neutral` 占主导、弱标注噪声这些风险
+  - 结构 / 时间 / 文本视角下的数据分布和低维可视化
+  - `text / temporal / structure / affect-state / patchtst / timesnet / thread-transformer`
+    这 7 类模型各自偏好利用什么规律
+- 适合回答：
+  - “当前结果是不是主要被数据分布驱动？”
+  - “为什么结构模型或时序模型会更强/更弱？”
+  - “下一步该优先补数据分析还是继续改模型？”
 
 ### `topconf/`
 
@@ -122,6 +140,7 @@
 ## 一个简单原则
 
 - 看主结论：去 `main/`
+- 看数据本体和模型偏置：去 `data_analysis/`
 - 看高层摘要：去 `progress/`
 - 看稳健性：去 `ratio_sweep/` / `cross_event/` / `seed_sweep/`
 - 看机制解释：去 `diagnostics/`
