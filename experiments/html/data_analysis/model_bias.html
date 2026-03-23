@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>模型偏置矩阵</title>
+  <style>
+    body { margin: 0; background: #f6f1e8; color: #1e293b; font-family: Georgia, "Noto Serif SC", serif; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 18px 48px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid #e3d7c1; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f7efe1; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a href="./index.html">返回数据分析首页</a></p>
+    <h1>模型偏置矩阵</h1>
+    <ul><li>事件分布明显不均衡，头部事件主导总体统计。</li><li>future_majority_sentiment 明显偏向 neutral，分类任务容易被多数类主导。</li><li>存在极小事件（如仅 2 个 thread 的事件），cross-event 评测的方差会较大。</li><li>benchmark 依赖弱标注词典，reply-level 标签噪声可能直接限制预测上限。</li></ul>
+    <table><thead><tr><th>model_name</th><th>input_view</th><th>ignores</th><th>prefers</th><th>benefits</th><th>risks</th><th>fit_event_imbalance</th><th>fit_neutral_heavy</th><th>need_long_threads</th><th>need_clean_structure</th><th>label_noise_sensitivity</th></tr></thead><tbody><tr><td>text_baseline</td><td>source_text + observed replies concat_texts</td><td>显式时间顺序、reply 级结构、局部传播轨迹</td><td>词汇共现、全局语义、事件关键词</td><td>当事件主题和负面词强耦合时容易受益；对短线程也不敏感</td><td>容易把事件话题当作情绪代理，且难区分同词不同传播形态</td><td>中</td><td>中</td><td>低</td><td>低</td><td>中</td></tr><tr><td>temporal_baseline</td><td>reply 文本序列</td><td>显式树拓扑、全局结构摘要</td><td>局部顺序、early-to-late 的文本演化</td><td>当早期回复顺序能反映情绪转折时受益</td><td>线程很短或时间噪声大时，序列模式会不稳定</td><td>中</td><td>中</td><td>中高</td><td>低</td><td>中高</td></tr><tr><td>structure_baseline</td><td>concat_text + 8维树统计</td><td>细粒度时间过程、reply 级交互细节</td><td>树深度、分叉、root children、leaf ratio 等全局拓扑摘要</td><td>在事件不均衡、neutral-heavy 但传播形态仍有差异时更稳</td><td>对局部情绪转折和单条关键回复不敏感</td><td>高</td><td>高</td><td>中</td><td>中高</td><td>中低</td></tr><tr><td>affect_state_forecaster</td><td>source + temporal + structure，经 affect-state bottleneck</td><td>没有显式建模更细粒度的未来生成过程</td><td>先压缩当前群体状态，再预测未来</td><td>当当前观察窗口中已存在稳定的群体情绪轮廓时受益</td><td>若弱标注噪声大，affect-state 可能成为 noisy summary</td><td>高</td><td>高</td><td>中</td><td>中高</td><td>中高</td></tr><tr><td>patchtst_baseline</td><td>固定时间桶统计序列</td><td>单条 reply 文本细节、非桶内的细粒度结构差异</td><td>局部重复模式、分段时序形状、桶间平滑变化</td><td>当未来 negativity 可由早期统计轨迹概括时受益</td><td>对非常短线程、强非平稳噪声和极端稀疏样本较敏感</td><td>中高</td><td>高</td><td>中</td><td>低</td><td>中</td></tr><tr><td>timesnet_baseline</td><td>桶化后的多变量时序特征</td><td>reply 级文本与树中的离散交互</td><td>多尺度局部卷积模式、周期和趋势混合</td><td>当桶化统计中存在稳定尺度结构时受益</td><td>极短线程和事件级分布漂移会削弱卷积式归纳偏置</td><td>中</td><td>中高</td><td>中</td><td>低</td><td>中</td></tr><tr><td>thread_transformer_baseline</td><td>source token + reply tokens + 结构 side features</td><td>没有显式全局树统计先验</td><td>reply 级局部交互、位置与结构偏置、token 细节</td><td>当关键回复和局部结构模式决定未来时受益</td><td>样本少、线程短、标签偏斜时更容易过拟合 token 级噪声</td><td>中低</td><td>中</td><td>高</td><td>高</td><td>高</td></tr></tbody></table>
+  </div>
+</body>
+</html>

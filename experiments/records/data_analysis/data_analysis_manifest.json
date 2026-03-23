@@ -1,0 +1,9 @@
+{
+  "main_ratio": "50",
+  "records_dir": "experiments/records/data_analysis",
+  "figures_dir": "experiments/figures/data_analysis",
+  "html_dir": "experiments/html/data_analysis",
+  "thread_count": 297,
+  "event_count": 8,
+  "embedding_figures": 30
+}

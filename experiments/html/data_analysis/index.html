@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>数据优先分析报告</title>
+  <style>
+    body { margin: 0; background: #f6f1e8; color: #1e293b; font-family: Georgia, "Noto Serif SC", serif; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 18px 48px; }
+    .hero { background: linear-gradient(135deg, #f8e7cf, #f7f5ef); border: 1px solid #d8d1c2; border-radius: 24px; padding: 28px; margin-bottom: 24px; }
+    .hero p, .section p, li { line-height: 1.6; }
+    .nav a { margin-right: 14px; color: #8c3b2f; text-decoration: none; font-weight: 700; }
+    .section { background: #fffdf8; border: 1px solid #d8d1c2; border-radius: 20px; padding: 22px; margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card { background: #fff8ee; border: 1px solid #e3d7c1; border-radius: 16px; padding: 16px; }
+    h1, h2, h3 { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th, td { border-bottom: 1px solid #e3d7c1; text-align: left; padding: 8px 10px; vertical-align: top; }
+    th { background: #f7efe1; }
+    pre { background: #231f20; color: #f8f8f2; border-radius: 14px; padding: 16px; overflow-x: auto; white-space: pre-wrap; }
+    img { width: 100%; border-radius: 14px; border: 1px solid #d8d1c2; background: #fff; }
+    .figure-card { background: #fff8ee; border: 1px solid #e3d7c1; border-radius: 16px; padding: 14px; }
+    .metric { font-size: 28px; font-weight: 700; color: #8c3b2f; }
+    .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .flow .step { background: #fff8ee; border: 1px solid #e3d7c1; border-radius: 16px; padding: 16px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <p><a href="../index.html">返回 HTML 总目录</a> | <a href="./feature_spaces.html">查看全部低维图</a> | <a href="./model_bias.html">查看模型偏置矩阵</a></p>
+      <h1>数据优先分析报告</h1>
+      <p>这份报告先回答数据问题，再解释模型结果。核心目标不是继续堆模型，而是判断当前 benchmark 的统计结构、标签偏置、结构/时间分布，以及 7 类模型各自的归纳性偏置为什么会在这份数据上吃亏或受益。</p>
+      <div class="nav">
+        <a href="#raw">原始数据</a>
+        <a href="#pipeline">预处理与 Benchmark</a>
+        <a href="#stats">数据统计</a>
+        <a href="#embeddings">低维可视化</a>
+        <a href="#bias">模型偏置</a>
+      </div>
+    </section>
+
+    <section class="section" id="raw">
+      <h2>A. 原始数据形式</h2>
+      <p>PHEME 原始 thread 的核心组成是 source tweet、reaction tweets 和 structure.json。即使本地没有完整 raw 目录，当前 repo 的处理链路仍然清楚地定义了期望输入和规范化结果。</p>
+      <div class="grid">
+        <article class="card">
+          <h3>期望原始布局</h3>
+          <pre>data/raw/pheme/&lt;event_name&gt;/&lt;thread_id&gt;/
+├── source-tweets/*.json
+├── reactions/*.json
+└── structure.json</pre>
+        </article>
+        <article class="card">
+          <h3>样例 thread / 规范化记录</h3>
+          <pre>{
+  &quot;thread_id&quot;: &quot;552783667052167168&quot;,
+  &quot;event_name&quot;: &quot;charliehebdo&quot;,
+  &quot;source_text&quot;: &quot;France: 10 people dead after shooting at HQ of satirical weekly newspaper #CharlieHebdo, according to witnesses http://t.co/FkYxGmuS58&quot;,
+  &quot;source_created_at&quot;: &quot;2015-01-07T11:07:51+00:00&quot;,
+  &quot;conversation_tree&quot;: {
+    &quot;552783667052167168&quot;: null,
+    &quot;552785374507175936&quot;: &quot;552783667052167168&quot;,
+    &quot;552786226546495488&quot;: &quot;552785374507175936&quot;,
+    &quot;552789345628069888&quot;: &quot;552786226546495488&quot;,
+    &quot;552789153403109376&quot;: &quot;552783667052167168&quot;,
+    &quot;552790281276628992&quot;: &quot;552783667052167168&quot;,
+    &quot;552792862610694144&quot;: &quot;552783667052167168&quot;,
+    &quot;552943855021330432&quot;: &quot;552783667052167168&quot;
+  },
+  &quot;replies&quot;: [
+    {
+      &quot;id&quot;: &quot;552785374507175936&quot;,
+      &quot;parent_id&quot;: &quot;552783667052167168&quot;,
+      &quot;text&quot;: &quot;MT @euronews France: 10 dead after shooting at HQ of satirical weekly #CharlieHebdo. If Zionists/Jews did this they&#x27;d be nuking Israel&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:14:38+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552786226546495488&quot;,
+      &quot;parent_id&quot;: &quot;552785374507175936&quot;,
+      &quot;text&quot;: &quot;@j0nathandavis They who? Stupid and partial opinions like this one only add noise to any debate.&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:18:01+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552789153403109376&quot;,
+      &quot;parent_id&quot;: &quot;552783667052167168&quot;,
+      &quot;text&quot;: &quot;@euronews @Massimilian2611 ci vuole una nuova crociata partendo da casa nostra...e lo dico io che non sono cattolico&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:29:39+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552789345628069888&quot;,
+      &quot;parent_id&quot;: &quot;552786226546495488&quot;,
+      &quot;text&quot;: &quot;@nanoSpawn Socialists, Antisemites, anti zionists - usual suspects&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:30:24+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552790281276628992&quot;,
+      &quot;parent_id&quot;: &quot;552783667052167168&quot;,
+      &quot;text&quot;: &quot;@Nuno_Rodrigo5 @euronews islamistas o taraos?&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:34:08+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552792862610694144&quot;,
+      &quot;parent_id&quot;: &quot;552783667052167168&quot;,
+      &quot;text&quot;: &quot;@euronews @TradeDesk_Steve A French crime of passion or another heathen moslem atrocity?&quot;,
+      &quot;created_at&quot;: &quot;2015-01-07T11:44:23+00:00&quot;
+    },
+    {
+      &quot;id&quot;: &quot;552943855021330432&quot;,
+      &quot;parent_id&quot;: &quot;552783667052167168&quot;,
+      &quot;text&quot;: &quot;@euronews LOL. 5 million Muslims in France, what a disgrace. the french worm president and politicians killed them. tine for croissants now&quot;,
+   </pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="pipeline">
+      <h2>B. 预处理与 Benchmark 构建</h2>
+      <p>raw -&gt; normalized threads -&gt; weak-labeled threads -&gt; forecasting benchmark。其中 prepare_pheme.py 负责时间规范化和 parent_id 修复，label_pheme_sentiment.py 使用弱标注词典，build_forecasting_benchmark.py 按 event-level split 构造 30/50/70 三个 observation 设定。</p>
+      <div class="flow">
+        <div class="step"><h3>Raw PHEME</h3><p>source-tweets / reactions / structure.json</p></div>
+        <div class="step"><h3>Normalized Threads</h3><p>时间排序、parent_id 修复、统一 thread schema</p></div>
+        <div class="step"><h3>Weak Labels</h3><p>lexicon_v1 / lexicon_conservative 三分类 reply 标签</p></div>
+        <div class="step"><h3>Forecast Benchmark</h3><p>30/50/70 observation ratio，event-level train/val/test split</p></div>
+      </div>
+      <p>报告展示统一采用 <strong>30/50/70</strong> 标签，内部同时兼容 `ratio_03/05/07` 与 `ratio_30/50/70` 两套文件命名。</p>
+    </section>
+
+    <section class="section" id="stats">
+      <h2>C. 数据本体统计与可视化</h2>
+      <div class="grid">
+        <article class="card"><div class="metric">297</div><p>ratio 50 下的 thread 样本数</p></article>
+        <article class="card"><div class="metric">8</div><p>事件数</p></article>
+        <article class="card"><div class="metric">7.83</div><p>平均 observed replies</p></article>
+        <article class="card"><div class="metric">0.116</div><p>平均 future_neg_ratio</p></article>
+      </div>
+      <h3>当前数据风险</h3>
+      <ul><li>事件分布明显不均衡，头部事件主导总体统计。</li><li>future_majority_sentiment 明显偏向 neutral，分类任务容易被多数类主导。</li><li>存在极小事件（如仅 2 个 thread 的事件），cross-event 评测的方差会较大。</li><li>benchmark 依赖弱标注词典，reply-level 标签噪声可能直接限制预测上限。</li></ul>
+      <div class="grid">
+        <article class="figure-card"><h3>事件规模</h3><img src="experiments/figures/data_analysis/event_thread_counts.png" alt="event counts" /></article>
+        <article class="figure-card"><h3>reply-level 弱标签分布</h3><img src="experiments/figures/data_analysis/reply_label_distribution.png" alt="reply labels" /></article>
+        <article class="figure-card"><h3>future_neg_ratio 分布</h3><img src="experiments/figures/data_analysis/future_neg_ratio_hist.png" alt="future neg hist" /></article>
+        <article class="figure-card"><h3>observed vs future negativity</h3><img src="experiments/figures/data_analysis/observed_vs_future_negativity.png" alt="observed future" /></article>
+        <article class="figure-card"><h3>reply count vs future negativity</h3><img src="experiments/figures/data_analysis/reply_count_vs_future_negativity.png" alt="reply future" /></article>
+        <article class="figure-card"><h3>ratio 对比</h3><img src="experiments/figures/data_analysis/ratio_overview_future_negativity.png" alt="ratio overview" /></article>
+      </div>
+      <h3>事件摘要</h3>
+      <table><thead><tr><th>event_name</th><th>thread_count</th><th>mean_observed_replies</th><th>mean_forecast_replies</th><th>mean_future_neg_ratio</th><th>mean_avg_depth</th><th>mean_branching_factor</th></tr></thead><tbody><tr><td>charliehebdo</td><td>74</td><td>7.608108108108108</td><td>8.108108108108109</td><td>0.16812277988748578</td><td>1.168261539291691</td><td>5.317323415666013</td></tr><tr><td>sydneysiege</td><td>71</td><td>8.0</td><td>8.408450704225352</td><td>0.09862370897996416</td><td>1.2802713807200041</td><td>4.0155813727580325</td></tr><tr><td>ottawashooting</td><td>58</td><td>6.482758620689655</td><td>7.068965517241379</td><td>0.08561309955392327</td><td>1.1753957333235905</td><td>3.804084568188108</td></tr><tr><td>ferguson</td><td>46</td><td>12.76086956521739</td><td>13.282608695652174</td><td>0.13734930940308515</td><td>1.350064464237379</td><td>4.327918446582297</td></tr><tr><td>germanwings-crash</td><td>25</td><td>5.52</td><td>5.92</td><td>0.10789560439560439</td><td>1.1832014751434325</td><td>3.406666669845581</td></tr><tr><td>prince-toronto</td><td>12</td><td>4.0</td><td>4.333333333333333</td><td>0.020833333333333332</td><td>1.3845237990220387</td><td>2.51388888557752</td></tr><tr><td>putinmissing</td><td>9</td><td>3.2222222222222223</td><td>3.888888888888889</td><td>0.05291005291005291</td><td>1.2301587263743083</td><td>2.4888888862397938</td></tr><tr><td>ebola-essien</td><td>2</td><td>8.5</td><td>8.5</td><td>0.16346153846153846</td><td>1.0384615659713745</td><td>5.25</td></tr></tbody></table>
+      <h3>Split 摘要</h3>
+      <table><thead><tr><th>split</th><th>thread_count</th><th>event_count</th><th>mean_future_neg_ratio</th></tr></thead><tbody><tr><td>test</td><td>92</td><td>3</td><td>0.08400515014965143</td></tr><tr><td>train</td><td>147</td><td>4</td><td>0.14818685123149014</td></tr><tr><td>val</td><td>58</td><td>1</td><td>0.08561309955392327</td></tr></tbody></table>
+      <h3>Reply 情绪摘要</h3>
+      <table><thead><tr><th>sentiment_label</th><th>count</th><th>ratio</th></tr></thead><tbody><tr><td>negative</td><td>615</td><td>0.12823185988323604</td></tr><tr><td>neutral</td><td>3795</td><td>0.7912844036697247</td></tr><tr><td>positive</td><td>386</td><td>0.0804837364470392</td></tr></tbody></table>
+      <h3>Ratio 摘要</h3>
+      <table><thead><tr><th>ratio_display</th><th>threads</th><th>events</th><th>mean_observed_replies</th><th>mean_forecast_replies</th><th>mean_observed_neg_ratio</th><th>mean_future_neg_ratio</th></tr></thead><tbody><tr><td>30.0</td><td>297.0</td><td>8.0</td><td>4.4848</td><td>11.6633</td><td>0.1146</td><td>0.1199</td></tr><tr><td>50.0</td><td>297.0</td><td>8.0</td><td>7.8316</td><td>8.3165</td><td>0.1189</td><td>0.1161</td></tr><tr><td>70.0</td><td>297.0</td><td>8.0</td><td>10.8418</td><td>5.3064</td><td>0.12</td><td>0.1097</td></tr></tbody></table>
+    </section>
+
+    <section class="section" id="embeddings">
+      <h2>D. 特征可视化</h2>
+      <p>下面的低维图展示的是输入空间和归纳偏置空间，而不是训练后 checkpoint latent。固定使用 `t-SNE` 与 `UMAP`，并分别按事件、未来多数类、future_neg_ratio 分桶着色。</p>
+      <div class="grid">
+        <article class='figure-card'><h3>text_view / TSNE / event_name</h3><img src='experiments/figures/data_analysis/text_view_tsne_event_name.png' alt='text_view' /></article><article class='figure-card'><h3>text_view / TSNE / future_majority_sentiment</h3><img src='experiments/figures/data_analysis/text_view_tsne_future_majority_sentiment.png' alt='text_view' /></article><article class='figure-card'><h3>text_view / UMAP / event_name</h3><img src='experiments/figures/data_analysis/text_view_umap_event_name.png' alt='text_view' /></article><article class='figure-card'><h3>text_view / UMAP / future_majority_sentiment</h3><img src='experiments/figures/data_analysis/text_view_umap_future_majority_sentiment.png' alt='text_view' /></article><article class='figure-card'><h3>temporal_view / TSNE / event_name</h3><img src='experiments/figures/data_analysis/temporal_view_tsne_event_name.png' alt='temporal_view' /></article><article class='figure-card'><h3>temporal_view / TSNE / future_majority_sentiment</h3><img src='experiments/figures/data_analysis/temporal_view_tsne_future_majority_sentiment.png' alt='temporal_view' /></article><article class='figure-card'><h3>temporal_view / UMAP / event_name</h3><img src='experiments/figures/data_analysis/temporal_view_umap_event_name.png' alt='temporal_view' /></article><article class='figure-card'><h3>temporal_view / UMAP / future_majority_sentiment</h3><img src='experiments/figures/data_analysis/temporal_view_umap_future_majority_sentiment.png' alt='temporal_view' /></article><article class='figure-card'><h3>structure_view / TSNE / event_name</h3><img src='experiments/figures/data_analysis/structure_view_tsne_event_name.png' alt='structure_view' /></article><article class='figure-card'><h3>structure_view / TSNE / future_majority_sentiment</h3><img src='experiments/figures/data_analysis/structure_view_tsne_future_majority_sentiment.png' alt='structure_view' /></article>
+      </div>
+      <p><a href="./feature_spaces.html">打开全部低维可视化图集</a></p>
+    </section>
+
+    <section class="section" id="bias">
+      <h2>E. 7 类模型的归纳性偏置解释</h2>
+      <p>这一部分不是重新汇报分数，而是解释不同模型真正“看到”的数据视角，以及在当前事件不均衡、neutral-heavy、弱标注构造的 benchmark 上，各自更容易受益或受损于什么偏置。</p>
+      <table><thead><tr><th>model_name</th><th>input_view</th><th>ignores</th><th>prefers</th><th>benefits</th><th>risks</th><th>fit_event_imbalance</th><th>fit_neutral_heavy</th><th>need_long_threads</th><th>need_clean_structure</th><th>label_noise_sensitivity</th></tr></thead><tbody><tr><td>text_baseline</td><td>source_text + observed replies concat_texts</td><td>显式时间顺序、reply 级结构、局部传播轨迹</td><td>词汇共现、全局语义、事件关键词</td><td>当事件主题和负面词强耦合时容易受益；对短线程也不敏感</td><td>容易把事件话题当作情绪代理，且难区分同词不同传播形态</td><td>中</td><td>中</td><td>低</td><td>低</td><td>中</td></tr><tr><td>temporal_baseline</td><td>reply 文本序列</td><td>显式树拓扑、全局结构摘要</td><td>局部顺序、early-to-late 的文本演化</td><td>当早期回复顺序能反映情绪转折时受益</td><td>线程很短或时间噪声大时，序列模式会不稳定</td><td>中</td><td>中</td><td>中高</td><td>低</td><td>中高</td></tr><tr><td>structure_baseline</td><td>concat_text + 8维树统计</td><td>细粒度时间过程、reply 级交互细节</td><td>树深度、分叉、root children、leaf ratio 等全局拓扑摘要</td><td>在事件不均衡、neutral-heavy 但传播形态仍有差异时更稳</td><td>对局部情绪转折和单条关键回复不敏感</td><td>高</td><td>高</td><td>中</td><td>中高</td><td>中低</td></tr><tr><td>affect_state_forecaster</td><td>source + temporal + structure，经 affect-state bottleneck</td><td>没有显式建模更细粒度的未来生成过程</td><td>先压缩当前群体状态，再预测未来</td><td>当当前观察窗口中已存在稳定的群体情绪轮廓时受益</td><td>若弱标注噪声大，affect-state 可能成为 noisy summary</td><td>高</td><td>高</td><td>中</td><td>中高</td><td>中高</td></tr><tr><td>patchtst_baseline</td><td>固定时间桶统计序列</td><td>单条 reply 文本细节、非桶内的细粒度结构差异</td><td>局部重复模式、分段时序形状、桶间平滑变化</td><td>当未来 negativity 可由早期统计轨迹概括时受益</td><td>对非常短线程、强非平稳噪声和极端稀疏样本较敏感</td><td>中高</td><td>高</td><td>中</td><td>低</td><td>中</td></tr><tr><td>timesnet_baseline</td><td>桶化后的多变量时序特征</td><td>reply 级文本与树中的离散交互</td><td>多尺度局部卷积模式、周期和趋势混合</td><td>当桶化统计中存在稳定尺度结构时受益</td><td>极短线程和事件级分布漂移会削弱卷积式归纳偏置</td><td>中</td><td>中高</td><td>中</td><td>低</td><td>中</td></tr><tr><td>thread_transformer_baseline</td><td>source token + reply tokens + 结构 side features</td><td>没有显式全局树统计先验</td><td>reply 级局部交互、位置与结构偏置、token 细节</td><td>当关键回复和局部结构模式决定未来时受益</td><td>样本少、线程短、标签偏斜时更容易过拟合 token 级噪声</td><td>中低</td><td>中</td><td>高</td><td>高</td><td>高</td></tr></tbody></table>
+      <p><a href="./model_bias.html">打开模型偏置矩阵子页</a></p>
+    </section>
+  </div>
+</body>
+</html>

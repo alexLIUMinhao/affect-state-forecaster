@@ -1,0 +1,4 @@
+split,thread_count,event_count,mean_future_neg_ratio
+test,92,3,0.08400515014965143
+train,147,4,0.14818685123149014
+val,58,1,0.08561309955392327

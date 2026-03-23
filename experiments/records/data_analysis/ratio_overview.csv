@@ -1,0 +1,4 @@
+ratio_display,threads,events,mean_observed_replies,mean_forecast_replies,mean_observed_neg_ratio,mean_future_neg_ratio
+30,297,8,4.4848,11.6633,0.1146,0.1199
+50,297,8,7.8316,8.3165,0.1189,0.1161
+70,297,8,10.8418,5.3064,0.12,0.1097
