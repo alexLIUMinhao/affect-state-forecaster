@@ -31,6 +31,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vocab_size", type=int, default=20000)
     parser.add_argument("--affect_state_dim", type=int, default=32)
     parser.add_argument("--dropout", type=float, default=0.1)
+    parser.add_argument("--num_bins", type=int, default=8)
+    parser.add_argument("--max_replies", type=int, default=64)
+    parser.add_argument("--time_series_dim", type=int, default=8)
+    parser.add_argument("--patch_len", type=int, default=2)
+    parser.add_argument("--stride", type=int, default=1)
+    parser.add_argument("--n_heads", type=int, default=4)
+    parser.add_argument("--n_layers", type=int, default=2)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--config_path", type=str, default="")
@@ -69,6 +76,13 @@ def maybe_load_config(args: argparse.Namespace) -> argparse.Namespace:
     args.vocab_size = int(config.get("vocab_size", args.vocab_size))
     args.dropout = float(config.get("dropout", args.dropout))
     args.affect_state_dim = int(config.get("affect_state_dim", args.affect_state_dim))
+    args.num_bins = int(config.get("num_bins", args.num_bins))
+    args.max_replies = int(config.get("max_replies", args.max_replies))
+    args.time_series_dim = int(config.get("time_series_dim", args.time_series_dim))
+    args.patch_len = int(config.get("patch_len", args.patch_len))
+    args.stride = int(config.get("stride", args.stride))
+    args.n_heads = int(config.get("n_heads", args.n_heads))
+    args.n_layers = int(config.get("n_layers", args.n_layers))
     args.input_view = str(config.get("input_view", args.input_view))
     args.disable_temporal = bool(config.get("disable_temporal", args.disable_temporal))
     args.disable_structure = bool(config.get("disable_structure", args.disable_structure))
@@ -225,6 +239,13 @@ def main() -> None:
         args.vocab_size,
         args.dropout,
         args.affect_state_dim,
+        num_bins=args.num_bins,
+        max_replies=args.max_replies,
+        time_series_dim=args.time_series_dim,
+        patch_len=args.patch_len,
+        stride=args.stride,
+        n_heads=args.n_heads,
+        n_layers=args.n_layers,
         disable_temporal=args.disable_temporal,
         disable_structure=args.disable_structure,
         disable_affect_state=args.disable_affect_state,

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
+from src.datasets.pheme_forecast_dataset import PHEMEForecastDataset, collate_forecast_batch
+from src.train import build_model, model_forward
 from src.utils.sentiment import weak_label_text
 
 
@@ -26,6 +29,7 @@ labeler_robustness = load_module("scripts/run_labeler_robustness_suite.py", "run
 capacity_matched = load_module("scripts/run_capacity_matched_suite.py", "run_capacity_matched_suite")
 fusion_diagnostic = load_module("scripts/run_fusion_diagnostic_suite.py", "run_fusion_diagnostic_suite")
 source_gate_validation = load_module("scripts/run_source_gate_validation.py", "run_source_gate_validation")
+topconf_suite = load_module("scripts/run_topconf_baseline_suite.py", "run_topconf_baseline_suite")
 
 
 class ExperimentEntrypointTests(unittest.TestCase):
@@ -123,6 +127,104 @@ class ExperimentEntrypointTests(unittest.TestCase):
         self.assertEqual(aggregate["seeds"], "13,42")
         self.assertAlmostEqual(aggregate["mae"], 0.1250)
         self.assertGreaterEqual(aggregate["mae_std"], 0.0)
+
+    def test_topconf_suite_builds_expected_models(self) -> None:
+        args = type(
+            "Args",
+            (),
+            {
+                "train_path": Path("data/processed/pheme_forecast_ratio_05_train.jsonl"),
+                "val_path": Path("data/processed/pheme_forecast_ratio_05_val.jsonl"),
+                "test_path": Path("data/processed/pheme_forecast_ratio_05_test.jsonl"),
+                "models": ["patchtst_baseline", "timesnet_baseline", "thread_transformer_baseline"],
+                "device": "cpu",
+                "epochs": 1,
+                "batch_size": 2,
+                "runs_root": Path("runs"),
+                "experiments_root": Path("experiments"),
+                "tag_prefix": "topconf_baselines",
+                "special_settings": "baseline_family=topconf",
+            },
+        )()
+        command = topconf_suite.build_command(args)
+        command_text = " ".join(command)
+        self.assertIn("patchtst_baseline", command_text)
+        self.assertIn("timesnet_baseline", command_text)
+        self.assertIn("thread_transformer_baseline", command_text)
+
+    def test_collate_generates_topconf_features(self) -> None:
+        sample = self._write_minimal_dataset()
+        dataset = PHEMEForecastDataset(sample)
+        batch = collate_forecast_batch([dataset[0]])
+        self.assertEqual(tuple(batch["binned_time_series"].shape), (1, 8, 8))
+        self.assertEqual(tuple(batch["binned_time_series_mask"].shape), (1, 8))
+        self.assertEqual(len(batch["reply_depths"][0]), 2)
+        self.assertEqual(len(batch["reply_parent_positions"][0]), 2)
+        self.assertEqual(len(batch["reply_time_deltas"][0]), 2)
+
+    def test_new_models_support_minimal_forward(self) -> None:
+        sample = self._write_minimal_dataset()
+        dataset = PHEMEForecastDataset(sample)
+        batch = collate_forecast_batch([dataset[0]])
+        for model_name in ("patchtst_baseline", "timesnet_baseline", "thread_transformer_baseline"):
+            model = build_model(
+                model_name,
+                hidden_dim=32,
+                vocab_size=1000,
+                dropout=0.1,
+                affect_state_dim=16,
+                num_bins=8,
+                max_replies=16,
+                time_series_dim=8,
+                patch_len=2,
+                stride=1,
+                n_heads=4,
+                n_layers=2,
+            )
+            output = model_forward(model, model_name, batch)
+            self.assertIn("predicted_future_neg_ratio", output)
+            self.assertIn("predicted_future_majority_logits", output)
+            self.assertEqual(output["predicted_future_neg_ratio"].shape[0], 1)
+
+    def _write_minimal_dataset(self) -> Path:
+        tempdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tempdir.cleanup)
+        path = Path(tempdir.name) / "sample.jsonl"
+        record = {
+            "thread_id": "root",
+            "event_name": "event_a",
+            "split": "train",
+            "observation_ratio": 0.5,
+            "source_text": "source post",
+            "conversation_tree": {"r1": "root", "r2": "r1"},
+            "observed_replies": [
+                {
+                    "id": "r1",
+                    "parent_id": "root",
+                    "text": "bad warning",
+                    "created_at": "2020-01-01T00:00:00+00:00",
+                    "sentiment_label": "negative",
+                },
+                {
+                    "id": "r2",
+                    "parent_id": "r1",
+                    "text": "good support",
+                    "created_at": "2020-01-01T00:05:00+00:00",
+                    "sentiment_label": "positive",
+                },
+            ],
+            "forecast_replies": [],
+            "observed_neg_ratio": 0.5,
+            "observed_neu_ratio": 0.0,
+            "observed_pos_ratio": 0.5,
+            "observed_majority_sentiment": "negative",
+            "future_neg_ratio": 0.5,
+            "future_neu_ratio": 0.25,
+            "future_pos_ratio": 0.25,
+            "future_majority_sentiment": "negative",
+        }
+        path.write_text(json.dumps(record) + "\n", encoding="utf-8")
+        return path
 
 
 if __name__ == "__main__":

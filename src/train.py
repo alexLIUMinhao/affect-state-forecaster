@@ -20,13 +20,24 @@ from tqdm import tqdm
 from src.datasets.pheme_forecast_dataset import PHEMEForecastDataset, collate_forecast_batch
 from src.eval.metrics import compute_metrics
 from src.models.affect_state_forecaster import AffectStateForecaster
+from src.models.patchtst_baseline import PatchTSTBaseline
 from src.models.structure_baseline import StructureBaseline
 from src.models.temporal_baseline import TemporalBaseline
 from src.models.text_baseline import TextBaseline
+from src.models.thread_transformer_baseline import ThreadTransformerBaseline
+from src.models.timesnet_baseline import TimesNetBaseline
 from src.utils.sentiment import id_to_label
 
 
-MODEL_NAMES = ("text_baseline", "temporal_baseline", "structure_baseline", "affect_state_forecaster")
+MODEL_NAMES = (
+    "text_baseline",
+    "temporal_baseline",
+    "structure_baseline",
+    "affect_state_forecaster",
+    "patchtst_baseline",
+    "timesnet_baseline",
+    "thread_transformer_baseline",
+)
 
 
 def build_model(
@@ -35,6 +46,13 @@ def build_model(
     vocab_size: int,
     dropout: float,
     affect_state_dim: int,
+    num_bins: int = 8,
+    max_replies: int = 64,
+    time_series_dim: int = 8,
+    patch_len: int = 2,
+    stride: int = 1,
+    n_heads: int = 4,
+    n_layers: int = 2,
     disable_temporal: bool = False,
     disable_structure: bool = False,
     disable_affect_state: bool = False,
@@ -56,6 +74,32 @@ def build_model(
             disable_structure=disable_structure,
             disable_affect_state=disable_affect_state,
             fusion_variant=fusion_variant,
+        )
+    if name == "patchtst_baseline":
+        return PatchTSTBaseline(
+            hidden_dim=hidden_dim,
+            time_series_dim=time_series_dim,
+            patch_len=patch_len,
+            stride=stride,
+            n_heads=n_heads,
+            n_layers=n_layers,
+            dropout=dropout,
+        )
+    if name == "timesnet_baseline":
+        return TimesNetBaseline(
+            hidden_dim=hidden_dim,
+            time_series_dim=time_series_dim,
+            n_layers=n_layers,
+            dropout=dropout,
+        )
+    if name == "thread_transformer_baseline":
+        return ThreadTransformerBaseline(
+            hidden_dim=hidden_dim,
+            vocab_size=vocab_size,
+            max_replies=max_replies,
+            n_heads=n_heads,
+            n_layers=n_layers,
+            dropout=dropout,
         )
     raise ValueError(f"Unknown model: {name}")
 
@@ -121,6 +165,16 @@ def model_forward(
             observed_reply_texts,
             observed_replies,
             batch["conversation_trees"],
+        )
+    if model_name in {"patchtst_baseline", "timesnet_baseline"}:
+        return model(batch["binned_time_series"].to(next(model.parameters()).device), batch["binned_time_series_mask"].to(next(model.parameters()).device))
+    if model_name == "thread_transformer_baseline":
+        return model(
+            source_texts,
+            observed_replies,
+            batch["reply_depths"],
+            batch["reply_parent_positions"],
+            batch["reply_time_deltas"],
         )
     raise ValueError(f"Unsupported model: {model_name}")
 
@@ -234,6 +288,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vocab_size", type=int, default=20000)
     parser.add_argument("--affect_state_dim", type=int, default=32)
     parser.add_argument("--dropout", type=float, default=0.1)
+    parser.add_argument("--num_bins", type=int, default=8)
+    parser.add_argument("--max_replies", type=int, default=64)
+    parser.add_argument("--time_series_dim", type=int, default=8)
+    parser.add_argument("--patch_len", type=int, default=2)
+    parser.add_argument("--stride", type=int, default=1)
+    parser.add_argument("--n_heads", type=int, default=4)
+    parser.add_argument("--n_layers", type=int, default=2)
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--lr", type=float, default=1e-3)
@@ -299,6 +360,13 @@ def main() -> None:
         args.vocab_size,
         args.dropout,
         args.affect_state_dim,
+        num_bins=args.num_bins,
+        max_replies=args.max_replies,
+        time_series_dim=args.time_series_dim,
+        patch_len=args.patch_len,
+        stride=args.stride,
+        n_heads=args.n_heads,
+        n_layers=args.n_layers,
         disable_temporal=args.disable_temporal,
         disable_structure=args.disable_structure,
         disable_affect_state=args.disable_affect_state,
@@ -372,6 +440,13 @@ def main() -> None:
                 "vocab_size": args.vocab_size,
                 "dropout": args.dropout,
                 "affect_state_dim": args.affect_state_dim,
+                "num_bins": args.num_bins,
+                "max_replies": args.max_replies,
+                "time_series_dim": args.time_series_dim,
+                "patch_len": args.patch_len,
+                "stride": args.stride,
+                "n_heads": args.n_heads,
+                "n_layers": args.n_layers,
                 "classification_loss_weight": args.classification_loss_weight,
                 "affect_state_weight": args.affect_state_weight,
                 "seed": args.seed,

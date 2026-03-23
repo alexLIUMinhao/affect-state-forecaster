@@ -61,6 +61,9 @@ Supported models:
 - `temporal_baseline`
 - `structure_baseline`
 - `affect_state_forecaster`
+- `patchtst_baseline`
+- `timesnet_baseline`
+- `thread_transformer_baseline`
 
 Run the first-round `50/50` experiment suite on a GPU server:
 
@@ -76,6 +79,24 @@ python scripts/run_experiment_suite.py \
   --val_path data/processed/pheme_forecast_ratio_05_val.jsonl \
   --test_path data/processed/pheme_forecast_ratio_05_test.jsonl \
   --tag ratio05_main
+```
+
+Run only the top-conference-inspired baselines:
+
+```bash
+python scripts/run_topconf_baseline_suite.py \
+  --train_path data/processed/pheme_forecast_ratio_05_train.jsonl \
+  --val_path data/processed/pheme_forecast_ratio_05_val.jsonl \
+  --test_path data/processed/pheme_forecast_ratio_05_test.jsonl
+```
+
+Run the main models plus the new topconf baselines in one tracked suite:
+
+```bash
+python scripts/run_main_plus_topconf_suite.py \
+  --train_path data/processed/pheme_forecast_ratio_05_train.jsonl \
+  --val_path data/processed/pheme_forecast_ratio_05_val.jsonl \
+  --test_path data/processed/pheme_forecast_ratio_05_test.jsonl
 ```
 
 Import existing `runs/` results into the experiment journal:

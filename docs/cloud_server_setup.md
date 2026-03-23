@@ -119,6 +119,7 @@ After the first-round run succeeds, expand to:
 
 - `30/70`, `50/50`, `70/30` observation ratios
 - ablations for time, structure, and affect-state
+- top-conference-inspired baselines on the same benchmark
 - alternate weak sentiment labelers
 - cross-dataset experiments with a new RumourEval pipeline
 
@@ -131,6 +132,8 @@ python scripts/run_affect_ablation_suite.py --device cuda --epochs 5 --batch_siz
 python scripts/run_cross_event_suite.py --device cuda --epochs 5 --batch_size 16
 python scripts/run_seed_sweep.py --device cuda --epochs 5 --batch_size 16
 python scripts/run_labeler_robustness_suite.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_topconf_baseline_suite.py --device cuda --epochs 5 --batch_size 16
+python scripts/run_main_plus_topconf_suite.py --device cuda --epochs 5 --batch_size 16
 ```
 
 Tracked experiment runs and generated HTML reports use timestamp-based names by default.
