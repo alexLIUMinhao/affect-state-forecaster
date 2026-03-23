@@ -1,0 +1,1004 @@
+{
+  "run_id": "20260323_091856_cross_event_ottawashooting",
+  "created_at": "2026-03-23T01:19:51.975745+00:00",
+  "run_root": "runs/20260323_091856_cross_event_ottawashooting",
+  "log_path": "experiments/logs/20260323_091856_cross_event_ottawashooting.log",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "param_count": 5417259,
+      "capacity_group": "default",
+      "config": {
+        "model": "affect_state_forecaster",
+        "param_count": 5417259,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.11332082003355026,
+        "rmse": 0.1630309820175171,
+        "pearson": 0.07735445674722029,
+        "spearman": 0.3027639471832652,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.026112924329936504
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.11332082003355026",
+          "rmse": "0.1630309820175171",
+          "pearson": "0.07735445674722029",
+          "spearman": "0.3027639471832652",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "1.0",
+          "gate_temporal_mean": "1.0",
+          "gate_structure_mean": "1.0"
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.11332082003355026",
+          "rmse": "0.1630309820175171",
+          "pearson": "0.07735445674722029",
+          "spearman": "0.3027639471832652"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.19963789866729217,
+          "val_loss": 0.09681150540709496,
+          "val_mae": 0.14371424913406372,
+          "val_rmse": 0.1936063915491104,
+          "val_pearson": 0.12349328940754332,
+          "val_spearman": 0.31576314113559156,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11152472855015234,
+          "val_loss": 0.08913704752922058,
+          "val_mae": 0.15947774052619934,
+          "val_rmse": 0.20752274990081787,
+          "val_pearson": -0.1250836824059938,
+          "val_spearman": 0.23206175876694124,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10609886795282364,
+          "val_loss": 0.0961139291524887,
+          "val_mae": 0.1803220808506012,
+          "val_rmse": 0.22101296484470367,
+          "val_pearson": -0.1652316725845345,
+          "val_spearman": 0.17362068746024265,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.1065415387803858,
+          "val_loss": 0.0871858149766922,
+          "val_mae": 0.11247295886278152,
+          "val_rmse": 0.19057564437389374,
+          "val_pearson": -0.2146075984013854,
+          "val_spearman": 0.09319481795457066,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10229926149953496,
+          "val_loss": 0.08924999237060546,
+          "val_mae": 0.1287117451429367,
+          "val_rmse": 0.1953258216381073,
+          "val_pearson": -0.2621201568548754,
+          "val_spearman": -0.0025537896897797363,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "patchtst_baseline",
+      "status": "completed",
+      "param_count": 1205508,
+      "capacity_group": "default",
+      "config": {
+        "model": "patchtst_baseline",
+        "param_count": 1205508,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.13179385662078857,
+        "rmse": 0.16740016639232635,
+        "pearson": 0.18916957822321648,
+        "spearman": 0.4613526688092922,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.02764367964118719
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.13179385662078857",
+          "rmse": "0.16740016639232635",
+          "pearson": "0.18916957822321648",
+          "spearman": "0.4613526688092922",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.13179385662078857",
+          "rmse": "0.16740016639232635",
+          "pearson": "0.18916957822321648",
+          "spearman": "0.4613526688092922"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.15967166660861534,
+          "val_loss": 0.08539313152432441,
+          "val_mae": 0.13113215565681458,
+          "val_rmse": 0.18965540826320648,
+          "val_pearson": -0.11197292805729489,
+          "val_spearman": 0.2762813990169656,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.10006107525392012,
+          "val_loss": 0.08487740270793438,
+          "val_mae": 0.13221430778503418,
+          "val_rmse": 0.1910257339477539,
+          "val_pearson": -0.12524658781521453,
+          "val_spearman": 0.27084967395523274,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09627910381691022,
+          "val_loss": 0.09086358547210693,
+          "val_mae": 0.1466383934020996,
+          "val_rmse": 0.1994459480047226,
+          "val_pearson": -0.13035586964475265,
+          "val_spearman": 0.283524724092844,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10077501477842982,
+          "val_loss": 0.09284903034567833,
+          "val_mae": 0.14483144879341125,
+          "val_rmse": 0.2000342607498169,
+          "val_pearson": -0.13231881232837361,
+          "val_spearman": 0.27814441532773676,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.09805932979692113,
+          "val_loss": 0.09511974453926086,
+          "val_mae": 0.15520058572292328,
+          "val_rmse": 0.2072232961654663,
+          "val_pearson": -0.13255476870033184,
+          "val_spearman": 0.26491316560345424,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "param_count": 2595076,
+      "capacity_group": "default",
+      "config": {
+        "model": "structure_baseline",
+        "param_count": 2595076,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/structure_baseline/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/structure_baseline/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.13225902616977692,
+        "rmse": 0.17402569949626923,
+        "pearson": -0.012561315472489346,
+        "spearman": 0.22853886990971087,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.030023635365068913
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.13225902616977692",
+          "rmse": "0.17402569949626923",
+          "pearson": "-0.012561315472489346",
+          "spearman": "0.22853886990971087",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.13225902616977692",
+          "rmse": "0.17402569949626923",
+          "pearson": "-0.012561315472489346",
+          "spearman": "0.22853886990971087"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.18330126729878513,
+          "val_loss": 0.11079730838537216,
+          "val_mae": 0.20464390516281128,
+          "val_rmse": 0.24997174739837646,
+          "val_pearson": -0.393266682381242,
+          "val_spearman": 0.02955363865636405,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12780567123131317,
+          "val_loss": 0.0899577870965004,
+          "val_mae": 0.14318662881851196,
+          "val_rmse": 0.20775461196899414,
+          "val_pearson": -0.4339945109181794,
+          "val_spearman": 0.004959533600441807,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10491273856975815,
+          "val_loss": 0.09577740579843522,
+          "val_mae": 0.16668331623077393,
+          "val_rmse": 0.21808160841464996,
+          "val_pearson": -0.35933671029340436,
+          "val_spearman": 0.10899870487538149,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.09794291853904724,
+          "val_loss": 0.11531069427728653,
+          "val_mae": 0.21787327527999878,
+          "val_rmse": 0.25842392444610596,
+          "val_pearson": -0.38215923665890594,
+          "val_spearman": 0.13007672267725917,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10103444856676189,
+          "val_loss": 0.09467143341898918,
+          "val_mae": 0.15299417078495026,
+          "val_rmse": 0.2139797806739807,
+          "val_pearson": -0.2945680070917075,
+          "val_spearman": 0.0986540060595346,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "param_count": 2709380,
+      "capacity_group": "default",
+      "config": {
+        "model": "temporal_baseline",
+        "param_count": 2709380,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.12836137413978577,
+        "rmse": 0.1743457317352295,
+        "pearson": 0.20398167941648374,
+        "spearman": 0.07694237297335697,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.03017887193709612
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.12836137413978577",
+          "rmse": "0.1743457317352295",
+          "pearson": "0.20398167941648374",
+          "spearman": "0.07694237297335697",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.12836137413978577",
+          "rmse": "0.1743457317352295",
+          "pearson": "0.20398167941648374",
+          "spearman": "0.07694237297335697"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2650991109284488,
+          "val_loss": 0.15639003217220307,
+          "val_mae": 0.1866672933101654,
+          "val_rmse": 0.2664431631565094,
+          "val_pearson": -0.016892443182208318,
+          "val_spearman": 0.018246642276252317,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11417256905273958,
+          "val_loss": 0.1270239993929863,
+          "val_mae": 0.23614601790905,
+          "val_rmse": 0.2926085293292999,
+          "val_pearson": -0.2660239838832734,
+          "val_spearman": -0.13251947803270067,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09697048603133722,
+          "val_loss": 0.09921671897172928,
+          "val_mae": 0.18353891372680664,
+          "val_rmse": 0.24923504889011383,
+          "val_pearson": -0.1968283573462472,
+          "val_spearman": -0.007457806123052418,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.07699031213467772,
+          "val_loss": 0.09705430790781974,
+          "val_mae": 0.14734487235546112,
+          "val_rmse": 0.2324466109275818,
+          "val_pearson": -0.19228309723199935,
+          "val_spearman": -0.1067965239110062,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.06816354444758459,
+          "val_loss": 0.10423125028610229,
+          "val_mae": 0.18283435702323914,
+          "val_rmse": 0.24686205387115479,
+          "val_pearson": -0.19601631178668866,
+          "val_spearman": -0.09241757761420291,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "param_count": 2577284,
+      "capacity_group": "default",
+      "config": {
+        "model": "text_baseline",
+        "param_count": 2577284,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/text_baseline/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/text_baseline/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.17870517075061798,
+        "rmse": 0.22408145666122437,
+        "pearson": 0.040242566489513534,
+        "spearman": 0.13801001843734104,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.049480464309453964
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.17870517075061798",
+          "rmse": "0.22408145666122437",
+          "pearson": "0.040242566489513534",
+          "spearman": "0.13801001843734104",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.17870517075061798",
+          "rmse": "0.22408145666122437",
+          "pearson": "0.040242566489513534",
+          "spearman": "0.13801001843734104"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2188987203619697,
+          "val_loss": 0.15649408847093582,
+          "val_mae": 0.20072947442531586,
+          "val_rmse": 0.272652268409729,
+          "val_pearson": -0.32416238033733236,
+          "val_spearman": -0.2520479389478261,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12048349258574573,
+          "val_loss": 0.10678556114435196,
+          "val_mae": 0.16268290579319,
+          "val_rmse": 0.24758590757846832,
+          "val_pearson": -0.2946042505885885,
+          "val_spearman": -0.14242003951119456,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09770516170696779,
+          "val_loss": 0.09253767132759094,
+          "val_mae": 0.15237703919410706,
+          "val_rmse": 0.226564422249794,
+          "val_pearson": -0.051121576407309965,
+          "val_spearman": 0.08990079936920259,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.08910286155613986,
+          "val_loss": 0.0942473627626896,
+          "val_mae": 0.13949552178382874,
+          "val_rmse": 0.22525306046009064,
+          "val_pearson": -0.1369666325139474,
+          "val_spearman": -0.0797781692220322,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0766239349137653,
+          "val_loss": 0.10125092267990113,
+          "val_mae": 0.16103559732437134,
+          "val_rmse": 0.23703736066818237,
+          "val_pearson": -0.22741102785333947,
+          "val_spearman": -0.08940114486468047,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "thread_transformer_baseline",
+      "status": "completed",
+      "param_count": 6332420,
+      "capacity_group": "default",
+      "config": {
+        "model": "thread_transformer_baseline",
+        "param_count": 6332420,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/artifacts",
+        "eval_dir": "runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/eval",
+        "summary_csv": "runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.10495883226394653,
+        "rmse": 0.16217723488807678,
+        "pearson": 0.1322117731363468,
+        "spearman": 0.3147415005968687,
+        "accuracy": 0.896551724137931,
+        "macro_f1": 0.3151515151515151,
+        "weighted_f1": 0.8476489028213167,
+        "loss": 0.02580560650676489
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "58",
+          "mae": "0.10495883226394653",
+          "rmse": "0.16217723488807678",
+          "pearson": "0.1322117731363468",
+          "spearman": "0.3147415005968687",
+          "majority_sentiment_accuracy": "0.896551724137931",
+          "majority_sentiment_macro_f1": "0.3151515151515151",
+          "majority_sentiment_weighted_f1": "0.8476489028213167",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ottawashooting",
+          "num_threads": "58",
+          "mae": "0.10495883226394653",
+          "rmse": "0.16217723488807678",
+          "pearson": "0.1322117731363468",
+          "spearman": "0.3147415005968687"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.19997839426452463,
+          "val_loss": 0.0885041445493698,
+          "val_mae": 0.10511824488639832,
+          "val_rmse": 0.19059555232524872,
+          "val_pearson": -0.19793991250490303,
+          "val_spearman": 0.12937350522645027,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.10101826082576405,
+          "val_loss": 0.08541200086474418,
+          "val_mae": 0.11061844974756241,
+          "val_rmse": 0.19732654094696045,
+          "val_pearson": -0.2354301763985949,
+          "val_spearman": 0.10720364980357978,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09849942001429471,
+          "val_loss": 0.09896746650338173,
+          "val_mae": 0.1758105456829071,
+          "val_rmse": 0.22742103040218353,
+          "val_pearson": -0.22587632734733815,
+          "val_spearman": 0.22230924306756503,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.09855383058840578,
+          "val_loss": 0.09102223291993142,
+          "val_mae": 0.13075610995292664,
+          "val_rmse": 0.19714905321598053,
+          "val_pearson": -0.21829507741679208,
+          "val_spearman": 0.15204301515384286,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.09743028946898201,
+          "val_loss": 0.08852635696530342,
+          "val_mae": 0.1186167374253273,
+          "val_rmse": 0.19766117632389069,
+          "val_pearson": -0.2117781785229555,
+          "val_spearman": 0.1689757511404259,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "20260323_091856_cross_event_ottawashooting",
+    "experiment_type": "主实验",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "question": "验证 held-out event=ottawashooting 时各模型的 cross-event 泛化能力。",
+    "success_criteria": "affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。",
+    "failure_criteria": "若 held-out event 掉点显著，则后续优先做泛化与正则化。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "六、方法方案",
+      "七、实验设计"
+    ],
+    "dataset": "/tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl",
+    "ratio_labels": [
+      "ottawashooting_train"
+    ],
+    "models": [
+      "text_baseline",
+      "temporal_baseline",
+      "structure_baseline",
+      "affect_state_forecaster",
+      "patchtst_baseline",
+      "thread_transformer_baseline"
+    ],
+    "epochs": 5,
+    "batch_size": 16,
+    "seed": 42,
+    "device": "cuda",
+    "special_settings": "heldout_event=ottawashooting",
+    "capacity_group": "default",
+    "model_configs_path": ".",
+    "model_configs": {}
+  },
+  "runtime_summary": {
+    "has_log": true,
+    "start_time": "=> plan start_time=1774228736.9342797",
+    "end_time": "=> summarize end_time=1774228791.973736",
+    "duration_seconds": 0.0,
+    "warning_count": 8,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": [
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model text_baseline --model_path runs/20260323_091856_cross_event_ottawashooting/text_baseline/artifacts/text_baseline_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/text_baseline/artifacts/text_baseline_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/text_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model temporal_baseline --model_path runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/artifacts/temporal_baseline_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/artifacts/temporal_baseline_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/temporal_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model structure_baseline --model_path runs/20260323_091856_cross_event_ottawashooting/structure_baseline/artifacts/structure_baseline_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/structure_baseline/artifacts/structure_baseline_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/structure_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/artifacts/affect_state_forecaster_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/artifacts/affect_state_forecaster_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/affect_state_forecaster/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model patchtst_baseline --model_path runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/artifacts/patchtst_baseline_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/artifacts/patchtst_baseline_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/patchtst_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/ottawashooting_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/artifacts/thread_transformer_baseline_ottawashooting_train.pt --config_path runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/artifacts/thread_transformer_baseline_ottawashooting_train.json --device cuda --output_dir runs/20260323_091856_cross_event_ottawashooting/thread_transformer_baseline/eval"
+    ]
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 thread_transformer_baseline，相对文本基线 MAE 改进 0.0737。",
+        "最佳模型相关系数表现 Pearson=0.1322117731363468, Spearman=0.3147415005968687。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.11332082003355026, RMSE=0.1630309820175171。",
+        "Text baseline: MAE=0.17870517075061798, RMSE=0.22408145666122437。",
+        "Structure baseline: MAE=0.13225902616977692, RMSE=0.17402569949626923。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 0.0503。",
+        "structure_baseline 相对文本基线的 MAE 改进为 0.0464。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "affect_state_forecaster 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "patchtst_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "structure_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "temporal_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 0
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "20260323_091759_cross_event_germanwings_crash",
+    "previous_best_model": "structure_baseline",
+    "previous_best_mae": 0.11534103751182556,
+    "best_mae_delta": -0.0104
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/20260323_091856_cross_event_ottawashooting_model_metrics.png",
+    "event_errors": "experiments/figures/20260323_091856_cross_event_ottawashooting_event_errors.png",
+    "ratio_trends": "experiments/figures/20260323_091856_cross_event_ottawashooting_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/20260323_091856_cross_event_ottawashooting.json",
+  "report_path": "experiments/records/20260323_091856_cross_event_ottawashooting.md",
+  "html_path": "experiments/html/20260323_091856_cross_event_ottawashooting.html"
+}

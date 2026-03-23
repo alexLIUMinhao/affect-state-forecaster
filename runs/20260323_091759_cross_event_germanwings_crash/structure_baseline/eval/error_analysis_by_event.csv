@@ -1,0 +1,2 @@
+event_name,num_threads,mae,rmse,pearson,spearman
+germanwings-crash,25,0.11534103751182556,0.225380077958107,-7.837074425378712e-05,0.37337212308053014

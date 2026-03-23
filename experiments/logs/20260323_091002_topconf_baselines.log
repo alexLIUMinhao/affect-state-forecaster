@@ -1,0 +1,29 @@
+==> plan start_time=1774228202.0610294
+==> plan run_id=20260323_091002_topconf_baselines
+==> plan experiment_type=顶会Baseline对比
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=顶会可适配baseline在PHEME forecasting设定下是否优于现有自研基础线。
+==> plan success_criteria=至少一个顶会baseline在主要回归指标上进入前二，并可稳定复现。
+==> plan failure_criteria=若新增baseline全部落后于现有强基线，则停止继续扩展。
+==> plan dataset=data/processed/pheme_forecast_ratio_05_train.jsonl
+==> plan ratio_labels=ratio_05_train
+==> plan models=patchtst_baseline,timesnet_baseline,thread_transformer_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_05_train.jsonl --model patchtst_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091002_topconf_baselines/patchtst_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_05_val.jsonl
+Traceback (most recent call last):
+  File "/tmp/asf_main_clean/src/train.py", line 473, in <module>
+    main()
+  File "/tmp/asf_main_clean/src/train.py", line 336, in main
+    train_dataset = PHEMEForecastDataset(args.train_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/asf_main_clean/src/datasets/pheme_forecast_dataset.py", line 42, in __init__
+    self.samples = self._load(self.path)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/asf_main_clean/src/datasets/pheme_forecast_dataset.py", line 46, in _load
+    raise FileNotFoundError(f"Dataset not found: {path}")
+FileNotFoundError: Dataset not found: data/processed/pheme_forecast_ratio_05_train.jsonl
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path data/processed/pheme_forecast_ratio_05_train.jsonl --model patchtst_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091002_topconf_baselines/patchtst_baseline/artifacts --val_path data/processed/pheme_forecast_ratio_05_val.jsonl returncode=1
+==> command_duration_seconds 2.69

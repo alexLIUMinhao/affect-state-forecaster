@@ -1,0 +1,1010 @@
+{
+  "run_id": "20260323_091759_cross_event_germanwings_crash",
+  "created_at": "2026-03-23T01:18:55.823337+00:00",
+  "run_root": "runs/20260323_091759_cross_event_germanwings_crash",
+  "log_path": "experiments/logs/20260323_091759_cross_event_germanwings_crash.log",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "param_count": 5417259,
+      "capacity_group": "default",
+      "config": {
+        "model": "affect_state_forecaster",
+        "param_count": 5417259,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.11933886259794235,
+        "rmse": 0.21641682088375092,
+        "pearson": 0.18204722929834202,
+        "spearman": 0.5712503945452716,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.046836238354444504
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.11933886259794235",
+          "rmse": "0.21641682088375092",
+          "pearson": "0.18204722929834202",
+          "spearman": "0.5712503945452716",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "1.0",
+          "gate_temporal_mean": "1.0",
+          "gate_structure_mean": "1.0"
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.11933886259794235",
+          "rmse": "0.21641682088375092",
+          "pearson": "0.18204722929834202",
+          "spearman": "0.5712503945452716"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.21093007922172546,
+          "val_loss": 0.10605996698141099,
+          "val_mae": 0.18296587467193604,
+          "val_rmse": 0.22113429009914398,
+          "val_pearson": -0.16293973139703896,
+          "val_spearman": -0.09487883869203413,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1105968734392753,
+          "val_loss": 0.0821235042065382,
+          "val_mae": 0.11010793596506119,
+          "val_rmse": 0.18794140219688416,
+          "val_pearson": -0.1331832901340801,
+          "val_spearman": -0.04478384818309392,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10885474716241543,
+          "val_loss": 0.10094575360417365,
+          "val_mae": 0.1965278834104538,
+          "val_rmse": 0.23352393507957458,
+          "val_pearson": -0.22439737448941552,
+          "val_spearman": 0.020171237404781977,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.1111788096336218,
+          "val_loss": 0.09050171449780464,
+          "val_mae": 0.14665503799915314,
+          "val_rmse": 0.19909736514091492,
+          "val_pearson": -0.18838158015826129,
+          "val_spearman": 0.22758337394863187,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10355817010769477,
+          "val_loss": 0.09131869077682495,
+          "val_mae": 0.1578012853860855,
+          "val_rmse": 0.2069031149148941,
+          "val_pearson": -0.17913110230951226,
+          "val_spearman": 0.23744692398234632,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "patchtst_baseline",
+      "status": "completed",
+      "param_count": 1205508,
+      "capacity_group": "default",
+      "config": {
+        "model": "patchtst_baseline",
+        "param_count": 1205508,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.124762624502182,
+        "rmse": 0.21938441693782806,
+        "pearson": 0.04135399575027687,
+        "spearman": 0.3435150231229094,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.04812951758503914
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.124762624502182",
+          "rmse": "0.21938441693782806",
+          "pearson": "0.04135399575027687",
+          "spearman": "0.3435150231229094",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.124762624502182",
+          "rmse": "0.21938441693782806",
+          "pearson": "0.04135399575027687",
+          "spearman": "0.3435150231229094"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.16571146794236624,
+          "val_loss": 0.09238029196858406,
+          "val_mae": 0.10150789469480515,
+          "val_rmse": 0.21068142354488373,
+          "val_pearson": -0.11291617312692499,
+          "val_spearman": 0.305434894472587,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11223520481815705,
+          "val_loss": 0.08449167795479298,
+          "val_mae": 0.10709451138973236,
+          "val_rmse": 0.1876974254846573,
+          "val_pearson": -0.1250906450161599,
+          "val_spearman": 0.294210143152385,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10599985947975746,
+          "val_loss": 0.08593864068388939,
+          "val_mae": 0.11595436930656433,
+          "val_rmse": 0.18797843158245087,
+          "val_pearson": -0.12542476893546498,
+          "val_spearman": 0.2904693205353533,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10286944789382127,
+          "val_loss": 0.08704177439212799,
+          "val_mae": 0.11179158836603165,
+          "val_rmse": 0.190426766872406,
+          "val_pearson": -0.12569383804830117,
+          "val_spearman": 0.2938212457516044,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10206592914003593,
+          "val_loss": 0.09098886102437972,
+          "val_mae": 0.14612841606140137,
+          "val_rmse": 0.20239146053791046,
+          "val_pearson": -0.1286921205500696,
+          "val_spearman": 0.2865803465275481,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "param_count": 2595076,
+      "capacity_group": "default",
+      "config": {
+        "model": "structure_baseline",
+        "param_count": 2595076,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.11534103751182556,
+        "rmse": 0.225380077958107,
+        "pearson": -7.837074425378712e-05,
+        "spearman": 0.37337212308053014,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.05079617723822594
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.11534103751182556",
+          "rmse": "0.225380077958107",
+          "pearson": "-7.837074425378712e-05",
+          "spearman": "0.37337212308053014",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.11534103751182556",
+          "rmse": "0.225380077958107",
+          "pearson": "-7.837074425378712e-05",
+          "spearman": "0.37337212308053014"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.17954702044908816,
+          "val_loss": 0.09484242498874665,
+          "val_mae": 0.10929509252309799,
+          "val_rmse": 0.2169061005115509,
+          "val_pearson": -0.4166487774980596,
+          "val_spearman": 0.17230678117057338,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11836840957403183,
+          "val_loss": 0.0949197143316269,
+          "val_mae": 0.10496433079242706,
+          "val_rmse": 0.2217721939086914,
+          "val_pearson": -0.4123229312756582,
+          "val_spearman": 0.23796508420925816,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.1173292460063329,
+          "val_loss": 0.09223336987197399,
+          "val_mae": 0.13154573738574982,
+          "val_rmse": 0.21256789565086365,
+          "val_pearson": -0.33909545633959476,
+          "val_spearman": 0.22345659785572694,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10476454032155183,
+          "val_loss": 0.09839546382427215,
+          "val_mae": 0.14835745096206665,
+          "val_rmse": 0.21460789442062378,
+          "val_pearson": -0.4292182721316403,
+          "val_spearman": 0.17097436915851438,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10269524701512776,
+          "val_loss": 0.0909917913377285,
+          "val_mae": 0.11231271177530289,
+          "val_rmse": 0.20520088076591492,
+          "val_pearson": -0.39615055440671276,
+          "val_spearman": 0.2105581093501003,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "param_count": 2709380,
+      "capacity_group": "default",
+      "config": {
+        "model": "temporal_baseline",
+        "param_count": 2709380,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.17835037410259247,
+        "rmse": 0.25406599044799805,
+        "pearson": -0.02809648398223509,
+        "spearman": -0.07252552031060658,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.0645495280623436
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.17835037410259247",
+          "rmse": "0.25406599044799805",
+          "pearson": "-0.02809648398223509",
+          "spearman": "-0.07252552031060658",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.17835037410259247",
+          "rmse": "0.25406599044799805",
+          "pearson": "-0.02809648398223509",
+          "spearman": "-0.07252552031060658"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.21448867825361398,
+          "val_loss": 0.11275743395090103,
+          "val_mae": 0.1717277318239212,
+          "val_rmse": 0.22734586894512177,
+          "val_pearson": 0.03317162476954993,
+          "val_spearman": -0.02542686256345911,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12041146652056621,
+          "val_loss": 0.0825665608048439,
+          "val_mae": 0.13853733241558075,
+          "val_rmse": 0.20478956401348114,
+          "val_pearson": 0.0036196310263234225,
+          "val_spearman": 0.01894985972706123,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09353424809299983,
+          "val_loss": 0.0829017475247383,
+          "val_mae": 0.12223861366510391,
+          "val_rmse": 0.20382557809352875,
+          "val_pearson": -0.04439691388951564,
+          "val_spearman": 0.08186931585206923,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.07316054203189336,
+          "val_loss": 0.08579897433519364,
+          "val_mae": 0.13937069475650787,
+          "val_rmse": 0.21016010642051697,
+          "val_pearson": -0.09776034104567259,
+          "val_spearman": 0.06432589102662582,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0650297194146193,
+          "val_loss": 0.08479896709322929,
+          "val_mae": 0.13702663779258728,
+          "val_rmse": 0.21065504848957062,
+          "val_pearson": -0.09215017247708684,
+          "val_spearman": 0.05422176660184512,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "param_count": 2577284,
+      "capacity_group": "default",
+      "config": {
+        "model": "text_baseline",
+        "param_count": 2577284,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.16604608297348022,
+        "rmse": 0.2797043025493622,
+        "pearson": -0.4619664704101862,
+        "spearman": -0.21175661177109203,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.0782344862818718
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.16604608297348022",
+          "rmse": "0.2797043025493622",
+          "pearson": "-0.4619664704101862",
+          "spearman": "-0.21175661177109203",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.16604608297348022",
+          "rmse": "0.2797043025493622",
+          "pearson": "-0.4619664704101862",
+          "spearman": "-0.21175661177109203"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2165965661406517,
+          "val_loss": 0.14019472301006317,
+          "val_mae": 0.16836445033550262,
+          "val_rmse": 0.2538317143917084,
+          "val_pearson": -0.2850268005928281,
+          "val_spearman": -0.16732874184774185,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1165634448138567,
+          "val_loss": 0.10410002768039703,
+          "val_mae": 0.17318518459796906,
+          "val_rmse": 0.2446860522031784,
+          "val_pearson": -0.21855761697676643,
+          "val_spearman": -0.07002565352265595,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.09531678316684869,
+          "val_loss": 0.09701489880681038,
+          "val_mae": 0.15393082797527313,
+          "val_rmse": 0.2317713052034378,
+          "val_pearson": -0.2343102758540825,
+          "val_spearman": -0.12147156176604484,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.08518733127185932,
+          "val_loss": 0.10201660692691802,
+          "val_mae": 0.1723775863647461,
+          "val_rmse": 0.2403532862663269,
+          "val_pearson": -0.2545343343675368,
+          "val_spearman": -0.10690755824534447,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07552468318205613,
+          "val_loss": 0.10201381891965866,
+          "val_mae": 0.15947431325912476,
+          "val_rmse": 0.2334790974855423,
+          "val_pearson": -0.2184954332121707,
+          "val_spearman": -0.06480703980875822,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "thread_transformer_baseline",
+      "status": "completed",
+      "param_count": 6332420,
+      "capacity_group": "default",
+      "config": {
+        "model": "thread_transformer_baseline",
+        "param_count": 6332420,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts",
+        "eval_dir": "runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval",
+        "summary_csv": "runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.1178584173321724,
+        "rmse": 0.2183990776538849,
+        "pearson": 0.07865833701176773,
+        "spearman": 0.473206635606859,
+        "accuracy": 0.96,
+        "macro_f1": 0.4897959183673469,
+        "weighted_f1": 0.9404081632653061,
+        "loss": 0.04769815504550934
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "25",
+          "mae": "0.1178584173321724",
+          "rmse": "0.2183990776538849",
+          "pearson": "0.07865833701176773",
+          "spearman": "0.473206635606859",
+          "majority_sentiment_accuracy": "0.96",
+          "majority_sentiment_macro_f1": "0.4897959183673469",
+          "majority_sentiment_weighted_f1": "0.9404081632653061",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "germanwings-crash",
+          "num_threads": "25",
+          "mae": "0.1178584173321724",
+          "rmse": "0.2183990776538849",
+          "pearson": "0.07865833701176773",
+          "spearman": "0.473206635606859"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2042638550584133,
+          "val_loss": 0.09733130931854247,
+          "val_mae": 0.15986008942127228,
+          "val_rmse": 0.21797071397304535,
+          "val_pearson": -0.14533150844226161,
+          "val_spearman": 0.29087294452143403,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1116517444069569,
+          "val_loss": 0.09230119511485099,
+          "val_mae": 0.16346286237239838,
+          "val_rmse": 0.21175003051757812,
+          "val_pearson": -0.18053015978272569,
+          "val_spearman": 0.1773218319381843,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10529242799832271,
+          "val_loss": 0.09666100591421127,
+          "val_mae": 0.1568623185157776,
+          "val_rmse": 0.21219246089458466,
+          "val_pearson": -0.19113686558439685,
+          "val_spearman": 0.22871222301440405,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10368389263749123,
+          "val_loss": 0.0907106228172779,
+          "val_mae": 0.12045918405056,
+          "val_rmse": 0.19892677664756775,
+          "val_pearson": -0.1659746766270095,
+          "val_spearman": 0.22354912646767544,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.1036424321623949,
+          "val_loss": 0.08782498687505721,
+          "val_mae": 0.12952585518360138,
+          "val_rmse": 0.20054583251476288,
+          "val_pearson": -0.15987284027903245,
+          "val_spearman": 0.2057096100839967,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "20260323_091759_cross_event_germanwings_crash",
+    "experiment_type": "主实验",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "question": "验证 held-out event=germanwings-crash 时各模型的 cross-event 泛化能力。",
+    "success_criteria": "affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。",
+    "failure_criteria": "若 held-out event 掉点显著，则后续优先做泛化与正则化。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "六、方法方案",
+      "七、实验设计"
+    ],
+    "dataset": "/tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl",
+    "ratio_labels": [
+      "germanwings-crash_train"
+    ],
+    "models": [
+      "text_baseline",
+      "temporal_baseline",
+      "structure_baseline",
+      "affect_state_forecaster",
+      "patchtst_baseline",
+      "thread_transformer_baseline"
+    ],
+    "epochs": 5,
+    "batch_size": 16,
+    "seed": 42,
+    "device": "cuda",
+    "special_settings": "heldout_event=germanwings-crash",
+    "capacity_group": "default",
+    "model_configs_path": ".",
+    "model_configs": {}
+  },
+  "runtime_summary": {
+    "has_log": true,
+    "start_time": "=> plan start_time=1774228679.514949",
+    "end_time": "=> summarize end_time=1774228735.8213394",
+    "duration_seconds": 0.0,
+    "warning_count": 8,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": [
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model text_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model temporal_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model structure_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model patchtst_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval"
+    ]
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 structure_baseline，相对文本基线 MAE 改进 0.0507。",
+        "最佳模型相关系数表现 Pearson=-7.837074425378712e-05, Spearman=0.37337212308053014。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "部分支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.11933886259794235, RMSE=0.21641682088375092。",
+        "Text baseline: MAE=0.16604608297348022, RMSE=0.2797043025493622。",
+        "Structure baseline: MAE=0.11534103751182556, RMSE=0.225380077958107。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 -0.0123。",
+        "structure_baseline 相对文本基线的 MAE 改进为 0.0507。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "temporal_baseline 未优于 text_baseline。",
+      "possible_cause": "当前时序编码没有有效利用 reply 顺序，或 observation window 信息密度不足。",
+      "idea_conflict": "削弱了 `idea.md` 中时间动态应带来增益的预期。",
+      "recommendation": "优先检查时间编码与序列长度处理；单次出现不建议新建 `idea.md`。"
+    },
+    {
+      "phenomenon": "affect_state_forecaster 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "patchtst_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "structure_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "temporal_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "text_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 1
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "20260323_091703_cross_event_ferguson",
+    "previous_best_model": "thread_transformer_baseline",
+    "previous_best_mae": 0.10716671496629715,
+    "best_mae_delta": 0.0082
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/20260323_091759_cross_event_germanwings_crash_model_metrics.png",
+    "event_errors": "experiments/figures/20260323_091759_cross_event_germanwings_crash_event_errors.png",
+    "ratio_trends": "experiments/figures/20260323_091759_cross_event_germanwings_crash_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/20260323_091759_cross_event_germanwings_crash.json",
+  "report_path": "experiments/records/20260323_091759_cross_event_germanwings_crash.md",
+  "html_path": "experiments/html/20260323_091759_cross_event_germanwings_crash.html"
+}

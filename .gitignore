@@ -19,7 +19,6 @@ data/processed/*
 !data/processed/.gitkeep
 artifacts/
 outputs/
-runs/
 *.tar.bz2
 *.tar.gz
 *.tgz
@@ -62,3 +61,6 @@ runs/
 .pytest_cache/
 .mypy_cache/
 .coverage
+
+# Experiment outputs: keep evaluation/report artifacts, still exclude weights.
+runs/**/artifacts/

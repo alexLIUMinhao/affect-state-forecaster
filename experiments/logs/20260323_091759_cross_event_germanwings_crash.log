@@ -1,0 +1,367 @@
+==> plan start_time=1774228679.514949
+==> plan run_id=20260323_091759_cross_event_germanwings_crash
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=germanwings-crash 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl
+==> plan ratio_labels=germanwings-crash_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster,patchtst_baseline,thread_transformer_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:03,  4.00it/s]
+epoch 1/5:  54%|█████▍    | 7/13 [00:00<00:00, 22.41it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 27.46it/s]
+epoch=1 train_loss=0.2166 val_loss=0.1402 val_mae=0.1684 val_rmse=0.2538 val_pearson=-0.2850 val_spearman=-0.1673 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  38%|███▊      | 5/13 [00:00<00:00, 46.80it/s]
+epoch 2/5:  92%|█████████▏| 12/13 [00:00<00:00, 54.27it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 55.19it/s]
+epoch=2 train_loss=0.1166 val_loss=0.1041 val_mae=0.1732 val_rmse=0.2447 val_pearson=-0.2186 val_spearman=-0.0700 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  46%|████▌     | 6/13 [00:00<00:00, 55.02it/s]
+epoch 3/5:  92%|█████████▏| 12/13 [00:00<00:00, 52.99it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 54.19it/s]
+epoch=3 train_loss=0.0953 val_loss=0.0970 val_mae=0.1539 val_rmse=0.2318 val_pearson=-0.2343 val_spearman=-0.1215 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  46%|████▌     | 6/13 [00:00<00:00, 57.83it/s]
+epoch 4/5:  92%|█████████▏| 12/13 [00:00<00:00, 52.17it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 55.07it/s]
+epoch=4 train_loss=0.0852 val_loss=0.1020 val_mae=0.1724 val_rmse=0.2404 val_pearson=-0.2545 val_spearman=-0.1069 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  46%|████▌     | 6/13 [00:00<00:00, 54.78it/s]
+epoch 5/5:  92%|█████████▏| 12/13 [00:00<00:00, 53.34it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 55.06it/s]
+epoch=5 train_loss=0.0755 val_loss=0.1020 val_mae=0.1595 val_rmse=0.2335 val_pearson=-0.2185 val_spearman=-0.0648 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train_summary.json
+param_count=2577284
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 5.7
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model text_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=25 mae=0.1660 rmse=0.2797
+group=split value=test num_threads=25 mae=0.1660 rmse=0.2797
+group=observation_ratio value=0.5 num_threads=25 mae=0.1660 rmse=0.2797
+group=event value=germanwings-crash num_threads=25 mae=0.1660 rmse=0.2797
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model text_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/text_baseline/artifacts/text_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/text_baseline/eval returncode=0
+==> command_duration_seconds 2.95
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:04,  2.93it/s]
+epoch 1/5:  38%|███▊      | 5/13 [00:00<00:00, 12.69it/s]
+epoch 1/5:  69%|██████▉   | 9/13 [00:00<00:00, 20.13it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 24.84it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 18.87it/s]
+epoch=1 train_loss=0.2145 val_loss=0.1128 val_mae=0.1717 val_rmse=0.2273 val_pearson=0.0332 val_spearman=-0.0254 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  31%|███       | 4/13 [00:00<00:00, 36.90it/s]
+epoch 2/5:  62%|██████▏   | 8/13 [00:00<00:00, 34.54it/s]
+epoch 2/5:  92%|█████████▏| 12/13 [00:00<00:00, 35.55it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 35.71it/s]
+epoch=2 train_loss=0.1204 val_loss=0.0826 val_mae=0.1385 val_rmse=0.2048 val_pearson=0.0036 val_spearman=0.0189 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  31%|███       | 4/13 [00:00<00:00, 34.20it/s]
+epoch 3/5:  62%|██████▏   | 8/13 [00:00<00:00, 34.83it/s]
+epoch 3/5:  92%|█████████▏| 12/13 [00:00<00:00, 34.64it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 35.81it/s]
+epoch=3 train_loss=0.0935 val_loss=0.0829 val_mae=0.1222 val_rmse=0.2038 val_pearson=-0.0444 val_spearman=0.0819 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  31%|███       | 4/13 [00:00<00:00, 38.21it/s]
+epoch 4/5:  62%|██████▏   | 8/13 [00:00<00:00, 34.47it/s]
+epoch 4/5:  92%|█████████▏| 12/13 [00:00<00:00, 34.01it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 35.88it/s]
+epoch=4 train_loss=0.0732 val_loss=0.0858 val_mae=0.1394 val_rmse=0.2102 val_pearson=-0.0978 val_spearman=0.0643 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  31%|███       | 4/13 [00:00<00:00, 39.07it/s]
+epoch 5/5:  62%|██████▏   | 8/13 [00:00<00:00, 35.54it/s]
+epoch 5/5:  92%|█████████▏| 12/13 [00:00<00:00, 33.37it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 35.73it/s]
+epoch=5 train_loss=0.0650 val_loss=0.0848 val_mae=0.1370 val_rmse=0.2107 val_pearson=-0.0922 val_spearman=0.0542 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train_summary.json
+param_count=2709380
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 6.51
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model temporal_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=25 mae=0.1784 rmse=0.2541
+group=split value=test num_threads=25 mae=0.1784 rmse=0.2541
+group=observation_ratio value=0.5 num_threads=25 mae=0.1784 rmse=0.2541
+group=event value=germanwings-crash num_threads=25 mae=0.1784 rmse=0.2541
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model temporal_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/artifacts/temporal_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.06
+==> train model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:03,  3.89it/s]
+epoch 1/5:  46%|████▌     | 6/13 [00:00<00:00, 20.06it/s]
+epoch 1/5:  85%|████████▍ | 11/13 [00:00<00:00, 29.59it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 26.28it/s]
+epoch=1 train_loss=0.1795 val_loss=0.0948 val_mae=0.1093 val_rmse=0.2169 val_pearson=-0.4166 val_spearman=0.1723 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  46%|████▌     | 6/13 [00:00<00:00, 52.78it/s]
+epoch 2/5:  92%|█████████▏| 12/13 [00:00<00:00, 49.62it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 51.85it/s]
+epoch=2 train_loss=0.1184 val_loss=0.0949 val_mae=0.1050 val_rmse=0.2218 val_pearson=-0.4123 val_spearman=0.2380 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  38%|███▊      | 5/13 [00:00<00:00, 49.02it/s]
+epoch 3/5:  85%|████████▍ | 11/13 [00:00<00:00, 50.30it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 51.90it/s]
+epoch=3 train_loss=0.1173 val_loss=0.0922 val_mae=0.1315 val_rmse=0.2126 val_pearson=-0.3391 val_spearman=0.2235 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  46%|████▌     | 6/13 [00:00<00:00, 47.29it/s]
+epoch 4/5:  92%|█████████▏| 12/13 [00:00<00:00, 50.24it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 51.65it/s]
+epoch=4 train_loss=0.1048 val_loss=0.0984 val_mae=0.1484 val_rmse=0.2146 val_pearson=-0.4292 val_spearman=0.1710 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  38%|███▊      | 5/13 [00:00<00:00, 45.67it/s]
+epoch 5/5:  85%|████████▍ | 11/13 [00:00<00:00, 50.33it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 51.65it/s]
+epoch=5 train_loss=0.1027 val_loss=0.0910 val_mae=0.1123 val_rmse=0.2052 val_pearson=-0.3962 val_spearman=0.2106 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train_summary.json
+param_count=2595076
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 5.87
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model structure_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=25 mae=0.1153 rmse=0.2254
+group=split value=test num_threads=25 mae=0.1153 rmse=0.2254
+group=observation_ratio value=0.5 num_threads=25 mae=0.1153 rmse=0.2254
+group=event value=germanwings-crash num_threads=25 mae=0.1153 rmse=0.2254
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model structure_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/artifacts/structure_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.98
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:04,  2.72it/s]
+epoch 1/5:  38%|███▊      | 5/13 [00:00<00:00, 11.91it/s]
+epoch 1/5:  62%|██████▏   | 8/13 [00:00<00:00, 16.67it/s]
+epoch 1/5:  92%|█████████▏| 12/13 [00:00<00:00, 22.44it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 17.60it/s]
+epoch=1 train_loss=0.2109 val_loss=0.1061 val_mae=0.1830 val_rmse=0.2211 val_pearson=-0.1629 val_spearman=-0.0949 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  23%|██▎       | 3/13 [00:00<00:00, 29.26it/s]
+epoch 2/5:  54%|█████▍    | 7/13 [00:00<00:00, 31.16it/s]
+epoch 2/5:  85%|████████▍ | 11/13 [00:00<00:00, 31.12it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 31.96it/s]
+epoch=2 train_loss=0.1106 val_loss=0.0821 val_mae=0.1101 val_rmse=0.1879 val_pearson=-0.1332 val_spearman=-0.0448 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  23%|██▎       | 3/13 [00:00<00:00, 29.06it/s]
+epoch 3/5:  54%|█████▍    | 7/13 [00:00<00:00, 31.49it/s]
+epoch 3/5:  85%|████████▍ | 11/13 [00:00<00:00, 30.57it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 32.02it/s]
+epoch=3 train_loss=0.1089 val_loss=0.1009 val_mae=0.1965 val_rmse=0.2335 val_pearson=-0.2244 val_spearman=0.0202 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  23%|██▎       | 3/13 [00:00<00:00, 27.32it/s]
+epoch 4/5:  46%|████▌     | 6/13 [00:00<00:00, 28.57it/s]
+epoch 4/5:  77%|███████▋  | 10/13 [00:00<00:00, 30.84it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 32.33it/s]
+epoch=4 train_loss=0.1112 val_loss=0.0905 val_mae=0.1467 val_rmse=0.1991 val_pearson=-0.1884 val_spearman=0.2276 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  31%|███       | 4/13 [00:00<00:00, 31.36it/s]
+epoch 5/5:  62%|██████▏   | 8/13 [00:00<00:00, 30.95it/s]
+epoch 5/5:  92%|█████████▏| 12/13 [00:00<00:00, 31.82it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 32.46it/s]
+epoch=5 train_loss=0.1036 val_loss=0.0913 val_mae=0.1578 val_rmse=0.2069 val_pearson=-0.1791 val_spearman=0.2374 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train_summary.json
+param_count=5417259
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 6.85
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=25 mae=0.1193 rmse=0.2164
+group=split value=test num_threads=25 mae=0.1193 rmse=0.2164
+group=observation_ratio value=0.5 num_threads=25 mae=0.1193 rmse=0.2164
+group=event value=germanwings-crash num_threads=25 mae=0.1193 rmse=0.2164
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/artifacts/affect_state_forecaster_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.11
+==> train model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:03,  3.99it/s]
+epoch 1/5:  54%|█████▍    | 7/13 [00:00<00:00, 22.31it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 33.35it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 26.74it/s]
+epoch=1 train_loss=0.1657 val_loss=0.0924 val_mae=0.1015 val_rmse=0.2107 val_pearson=-0.1129 val_spearman=0.3054 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  46%|████▌     | 6/13 [00:00<00:00, 50.34it/s]
+epoch 2/5:  92%|█████████▏| 12/13 [00:00<00:00, 49.32it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 50.47it/s]
+epoch=2 train_loss=0.1122 val_loss=0.0845 val_mae=0.1071 val_rmse=0.1877 val_pearson=-0.1251 val_spearman=0.2942 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  38%|███▊      | 5/13 [00:00<00:00, 49.41it/s]
+epoch 3/5:  85%|████████▍ | 11/13 [00:00<00:00, 49.77it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 50.45it/s]
+epoch=3 train_loss=0.1060 val_loss=0.0859 val_mae=0.1160 val_rmse=0.1880 val_pearson=-0.1254 val_spearman=0.2905 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  38%|███▊      | 5/13 [00:00<00:00, 48.79it/s]
+epoch 4/5:  77%|███████▋  | 10/13 [00:00<00:00, 48.64it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 50.63it/s]
+epoch=4 train_loss=0.1029 val_loss=0.0870 val_mae=0.1118 val_rmse=0.1904 val_pearson=-0.1257 val_spearman=0.2938 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  46%|████▌     | 6/13 [00:00<00:00, 50.03it/s]
+epoch 5/5:  92%|█████████▏| 12/13 [00:00<00:00, 49.23it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 50.59it/s]
+epoch=5 train_loss=0.1021 val_loss=0.0910 val_mae=0.1461 val_rmse=0.2024 val_pearson=-0.1287 val_spearman=0.2866 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train_summary.json
+param_count=1205508
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 5.71
+==> evaluate model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model patchtst_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=25 mae=0.1248 rmse=0.2194
+group=split value=test num_threads=25 mae=0.1248 rmse=0.2194
+group=observation_ratio value=0.5 num_threads=25 mae=0.1248 rmse=0.2194
+group=event value=germanwings-crash num_threads=25 mae=0.1248 rmse=0.2194
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model patchtst_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/artifacts/patchtst_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/patchtst_baseline/eval returncode=0
+==> command_duration_seconds 2.99
+==> train model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl
+
+epoch 1/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 1/5:   8%|▊         | 1/13 [00:00<00:04,  2.64it/s]
+epoch 1/5:  31%|███       | 4/13 [00:00<00:00,  9.85it/s]
+epoch 1/5:  54%|█████▍    | 7/13 [00:00<00:00, 15.05it/s]
+epoch 1/5:  77%|███████▋  | 10/13 [00:00<00:00, 18.52it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 21.22it/s]
+epoch 1/5: 100%|██████████| 13/13 [00:00<00:00, 15.87it/s]
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+epoch=1 train_loss=0.2043 val_loss=0.0973 val_mae=0.1599 val_rmse=0.2180 val_pearson=-0.1453 val_spearman=0.2909 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 2/5:  23%|██▎       | 3/13 [00:00<00:00, 25.68it/s]
+epoch 2/5:  46%|████▌     | 6/13 [00:00<00:00, 26.16it/s]
+epoch 2/5:  69%|██████▉   | 9/13 [00:00<00:00, 26.58it/s]
+epoch 2/5:  92%|█████████▏| 12/13 [00:00<00:00, 26.48it/s]
+epoch 2/5: 100%|██████████| 13/13 [00:00<00:00, 27.18it/s]
+epoch=2 train_loss=0.1117 val_loss=0.0923 val_mae=0.1635 val_rmse=0.2118 val_pearson=-0.1805 val_spearman=0.1773 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 3/5:  23%|██▎       | 3/13 [00:00<00:00, 25.66it/s]
+epoch 3/5:  46%|████▌     | 6/13 [00:00<00:00, 25.10it/s]
+epoch 3/5:  69%|██████▉   | 9/13 [00:00<00:00, 26.83it/s]
+epoch 3/5:  92%|█████████▏| 12/13 [00:00<00:00, 25.98it/s]
+epoch 3/5: 100%|██████████| 13/13 [00:00<00:00, 27.01it/s]
+epoch=3 train_loss=0.1053 val_loss=0.0967 val_mae=0.1569 val_rmse=0.2122 val_pearson=-0.1911 val_spearman=0.2287 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 4/5:  31%|███       | 4/13 [00:00<00:00, 32.12it/s]
+epoch 4/5:  62%|██████▏   | 8/13 [00:00<00:00, 27.99it/s]
+epoch 4/5:  85%|████████▍ | 11/13 [00:00<00:00, 25.12it/s]
+epoch 4/5: 100%|██████████| 13/13 [00:00<00:00, 27.32it/s]
+epoch=4 train_loss=0.1037 val_loss=0.0907 val_mae=0.1205 val_rmse=0.1989 val_pearson=-0.1660 val_spearman=0.2235 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/13 [00:00<?, ?it/s]
+epoch 5/5:  23%|██▎       | 3/13 [00:00<00:00, 26.86it/s]
+epoch 5/5:  46%|████▌     | 6/13 [00:00<00:00, 26.27it/s]
+epoch 5/5:  77%|███████▋  | 10/13 [00:00<00:00, 28.23it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 27.13it/s]
+epoch 5/5: 100%|██████████| 13/13 [00:00<00:00, 27.18it/s]
+epoch=5 train_loss=0.1036 val_loss=0.0878 val_mae=0.1295 val_rmse=0.2005 val_pearson=-0.1599 val_spearman=0.2057 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.pt
+saved_config=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.json
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train_summary.json
+param_count=6332420
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_val.jsonl returncode=0
+==> command_duration_seconds 7.4
+==> evaluate model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+group=overall value=all num_threads=25 mae=0.1179 rmse=0.2184
+group=split value=test num_threads=25 mae=0.1179 rmse=0.2184
+group=observation_ratio value=0.5 num_threads=25 mae=0.1179 rmse=0.2184
+group=event value=germanwings-crash num_threads=25 mae=0.1179 rmse=0.2184
+saved_predictions=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/germanwings-crash_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.pt --config_path runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/artifacts/thread_transformer_baseline_germanwings-crash_train.json --device cuda --output_dir runs/20260323_091759_cross_event_germanwings_crash/thread_transformer_baseline/eval returncode=0
+==> command_duration_seconds 3.19
+==> summarize completed
+==> anomaly temporal_baseline 未优于 text_baseline。
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly patchtst_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1774228735.8213394

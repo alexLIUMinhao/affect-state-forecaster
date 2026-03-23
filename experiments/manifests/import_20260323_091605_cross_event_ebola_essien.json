@@ -1,0 +1,948 @@
+{
+  "run_id": "import_20260323_091605_cross_event_ebola_essien",
+  "created_at": "2026-03-23T01:28:01.846561+00:00",
+  "run_root": "runs/20260323_091605_cross_event_ebola_essien",
+  "log_path": "",
+  "models": [
+    {
+      "model": "affect_state_forecaster",
+      "status": "completed",
+      "param_count": 5417259,
+      "capacity_group": "default",
+      "config": {
+        "model": "affect_state_forecaster",
+        "param_count": 5417259,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/affect_state_forecaster/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/affect_state_forecaster/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/affect_state_forecaster/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/affect_state_forecaster/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.10613307356834412,
+        "rmse": 0.13693884015083313,
+        "pearson": 1.0,
+        "spearman": 0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.018752247095108032
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.10613307356834412",
+          "rmse": "0.13693884015083313",
+          "pearson": "1.0",
+          "spearman": "0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "1.0",
+          "gate_temporal_mean": "1.0",
+          "gate_structure_mean": "1.0"
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.10613307356834412",
+          "rmse": "0.13693884015083313",
+          "pearson": "1.0",
+          "spearman": "0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.20205121274505342,
+          "val_loss": 0.09597806185483933,
+          "val_mae": 0.10053334385156631,
+          "val_rmse": 0.20565758645534515,
+          "val_pearson": -0.09867024761123076,
+          "val_spearman": 0.19327376463811277,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12327941374054976,
+          "val_loss": 0.08388438560068608,
+          "val_mae": 0.10275755822658539,
+          "val_rmse": 0.19257387518882751,
+          "val_pearson": -0.15874003952527035,
+          "val_spearman": 0.07648415063666414,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10485066340437957,
+          "val_loss": 0.08723180368542671,
+          "val_mae": 0.13379192352294922,
+          "val_rmse": 0.19223573803901672,
+          "val_pearson": -0.20723142493633256,
+          "val_spearman": 0.02191077530941455,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10885336995124817,
+          "val_loss": 0.08614118248224259,
+          "val_mae": 0.11673873662948608,
+          "val_rmse": 0.18662087619304657,
+          "val_pearson": -0.23364334959885244,
+          "val_spearman": -0.07411541817078149,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10458566541118282,
+          "val_loss": 0.08853468671441078,
+          "val_mae": 0.15129491686820984,
+          "val_rmse": 0.20079456269741058,
+          "val_pearson": -0.1883778783611223,
+          "val_spearman": 0.1665144900625947,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "patchtst_baseline",
+      "status": "completed",
+      "param_count": 1205508,
+      "capacity_group": "default",
+      "config": {
+        "model": "patchtst_baseline",
+        "param_count": 1205508,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/patchtst_baseline/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/patchtst_baseline/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/patchtst_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/patchtst_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.09205478429794312,
+        "rmse": 0.10595360398292542,
+        "pearson": -1.0,
+        "spearman": -0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.011226166039705276
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.09205478429794312",
+          "rmse": "0.10595360398292542",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.09205478429794312",
+          "rmse": "0.10595360398292542",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.17114629170724324,
+          "val_loss": 0.08966142497956753,
+          "val_mae": 0.09768801927566528,
+          "val_rmse": 0.20473027229309082,
+          "val_pearson": -0.11059743954442268,
+          "val_spearman": 0.3153216759266914,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.1115188148937055,
+          "val_loss": 0.08627390563488006,
+          "val_mae": 0.1014954149723053,
+          "val_rmse": 0.1921001821756363,
+          "val_pearson": -0.12300686323494957,
+          "val_spearman": 0.3039537287116724,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.1083482498569148,
+          "val_loss": 0.08569025695323944,
+          "val_mae": 0.11659777909517288,
+          "val_rmse": 0.18649068474769592,
+          "val_pearson": -0.13047974341476737,
+          "val_spearman": 0.29011746098226615,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10496884105460984,
+          "val_loss": 0.09011824280023575,
+          "val_mae": 0.1512807458639145,
+          "val_rmse": 0.20071417093276978,
+          "val_pearson": -0.13230987942897582,
+          "val_spearman": 0.29458535527388807,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.09880909350301538,
+          "val_loss": 0.08639914132654666,
+          "val_mae": 0.1267835795879364,
+          "val_rmse": 0.1942320168018341,
+          "val_pearson": -0.13266226008806928,
+          "val_spearman": 0.29232657748849344,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "structure_baseline",
+      "status": "completed",
+      "param_count": 2595076,
+      "capacity_group": "default",
+      "config": {
+        "model": "structure_baseline",
+        "param_count": 2595076,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/structure_baseline/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/structure_baseline/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/structure_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/structure_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.09576579928398132,
+        "rmse": 0.11622310429811478,
+        "pearson": -1.0,
+        "spearman": -0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.013507810421288013
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.09576579928398132",
+          "rmse": "0.11622310429811478",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.09576579928398132",
+          "rmse": "0.11622310429811478",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.16982370721442358,
+          "val_loss": 0.09341557174921036,
+          "val_mae": 0.11807095259428024,
+          "val_rmse": 0.21954837441444397,
+          "val_pearson": -0.4071972011638451,
+          "val_spearman": -0.10533457184221927,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.12612471263855696,
+          "val_loss": 0.09744529947638511,
+          "val_mae": 0.1644260436296463,
+          "val_rmse": 0.22598153352737427,
+          "val_pearson": -0.4297611419160027,
+          "val_spearman": 0.09315780650979125,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10675929034394878,
+          "val_loss": 0.09421695545315742,
+          "val_mae": 0.14258041977882385,
+          "val_rmse": 0.21009695529937744,
+          "val_pearson": -0.33211078555846557,
+          "val_spearman": 0.16399771181759437,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10118644152368818,
+          "val_loss": 0.09140092581510544,
+          "val_mae": 0.126268669962883,
+          "val_rmse": 0.20616385340690613,
+          "val_pearson": -0.34460964838385844,
+          "val_spearman": 0.04915119866706507,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10087873440768037,
+          "val_loss": 0.08778680860996246,
+          "val_mae": 0.11596035957336426,
+          "val_rmse": 0.19896440207958221,
+          "val_pearson": -0.330813326513403,
+          "val_spearman": 0.036419261662945804,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "temporal_baseline",
+      "status": "completed",
+      "param_count": 2709380,
+      "capacity_group": "default",
+      "config": {
+        "model": "temporal_baseline",
+        "param_count": 2709380,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/temporal_baseline/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/temporal_baseline/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/temporal_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/temporal_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.05972917005419731,
+        "rmse": 0.06984865665435791,
+        "pearson": 1.0,
+        "spearman": 0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.004878835286945105
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.05972917005419731",
+          "rmse": "0.06984865665435791",
+          "pearson": "1.0",
+          "spearman": "0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.05972917005419731",
+          "rmse": "0.06984865665435791",
+          "pearson": "1.0",
+          "spearman": "0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.21740052742617472,
+          "val_loss": 0.11710978299379349,
+          "val_mae": 0.18805816769599915,
+          "val_rmse": 0.2515905499458313,
+          "val_pearson": -0.1282359056182347,
+          "val_spearman": -0.052408205807653714,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.10511602993522372,
+          "val_loss": 0.09183301329612732,
+          "val_mae": 0.1756265014410019,
+          "val_rmse": 0.23676224052906036,
+          "val_pearson": -0.20053219102934128,
+          "val_spearman": -0.043766033451659976,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.08986194618046284,
+          "val_loss": 0.09194737374782562,
+          "val_mae": 0.16246788203716278,
+          "val_rmse": 0.23262494802474976,
+          "val_pearson": -0.11193795518854505,
+          "val_spearman": 0.12128650454214776,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.0783571723316397,
+          "val_loss": 0.09604313969612122,
+          "val_mae": 0.15446926653385162,
+          "val_rmse": 0.2222757637500763,
+          "val_pearson": -0.08617775809191433,
+          "val_spearman": 0.07998173216831898,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0651426397796188,
+          "val_loss": 0.09388250261545181,
+          "val_mae": 0.16135796904563904,
+          "val_rmse": 0.22927308082580566,
+          "val_pearson": -0.12302049571511889,
+          "val_spearman": 0.012176765332428018,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "text_baseline",
+      "status": "completed",
+      "param_count": 2577284,
+      "capacity_group": "default",
+      "config": {
+        "model": "text_baseline",
+        "param_count": 2577284,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/text_baseline/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/text_baseline/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/text_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/text_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.31166332960128784,
+        "rmse": 0.341633141040802,
+        "pearson": -1.0,
+        "spearman": -0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.11671321094036102
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.31166332960128784",
+          "rmse": "0.341633141040802",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.31166332960128784",
+          "rmse": "0.341633141040802",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2213759028485843,
+          "val_loss": 0.13316140770912172,
+          "val_mae": 0.17429403960704803,
+          "val_rmse": 0.24985279142856598,
+          "val_pearson": -0.23353573344964673,
+          "val_spearman": -0.18276251432075852,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.11823163979819842,
+          "val_loss": 0.09822749495506286,
+          "val_mae": 0.15870413184165955,
+          "val_rmse": 0.23237286508083344,
+          "val_pearson": -0.20304836577435806,
+          "val_spearman": -0.0800372493354881,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.0958316879613059,
+          "val_loss": 0.09305308312177658,
+          "val_mae": 0.14949557185173035,
+          "val_rmse": 0.22456251084804535,
+          "val_pearson": -0.164791828435096,
+          "val_spearman": 0.0016099978479046165,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.08675770687737636,
+          "val_loss": 0.09314498007297516,
+          "val_mae": 0.1343729943037033,
+          "val_rmse": 0.21617671847343445,
+          "val_pearson": -0.14333035111658154,
+          "val_spearman": -0.007383783233493585,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.07605819736740418,
+          "val_loss": 0.09701734781265259,
+          "val_mae": 0.15846773982048035,
+          "val_rmse": 0.22559911012649536,
+          "val_pearson": -0.18329990022153692,
+          "val_spearman": -0.031330188005776034,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    },
+    {
+      "model": "thread_transformer_baseline",
+      "status": "completed",
+      "param_count": 6332420,
+      "capacity_group": "default",
+      "config": {
+        "model": "thread_transformer_baseline",
+        "param_count": 6332420,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091605_cross_event_ebola_essien/thread_transformer_baseline/artifacts",
+        "eval_dir": "runs/20260323_091605_cross_event_ebola_essien/thread_transformer_baseline/eval",
+        "summary_csv": "runs/20260323_091605_cross_event_ebola_essien/thread_transformer_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091605_cross_event_ebola_essien/thread_transformer_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.09379709511995316,
+        "rmse": 0.11660042405128479,
+        "pearson": -1.0,
+        "spearman": -0.9999999999999999,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "loss": 0.013595659285783768
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "2",
+          "mae": "0.09379709511995316",
+          "rmse": "0.11660042405128479",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999",
+          "majority_sentiment_accuracy": "1.0",
+          "majority_sentiment_macro_f1": "1.0",
+          "majority_sentiment_weighted_f1": "1.0",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "ebola-essien",
+          "num_threads": "2",
+          "mae": "0.09379709511995316",
+          "rmse": "0.11660042405128479",
+          "pearson": "-1.0",
+          "spearman": "-0.9999999999999999"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.20472866988607816,
+          "val_loss": 0.08999002277851105,
+          "val_mae": 0.152185320854187,
+          "val_rmse": 0.2036166787147522,
+          "val_pearson": -0.20024699315695352,
+          "val_spearman": 0.23578140896727262,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.10912203841975757,
+          "val_loss": 0.09051543399691582,
+          "val_mae": 0.15620212256908417,
+          "val_rmse": 0.20992138981819153,
+          "val_pearson": -0.22267262578790037,
+          "val_spearman": 0.2413701371289645,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.10316956854824509,
+          "val_loss": 0.08759227767586708,
+          "val_mae": 0.10899568349123001,
+          "val_rmse": 0.1908472627401352,
+          "val_pearson": -0.21990570663392975,
+          "val_spearman": 0.23235785032517656,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.10249098603214536,
+          "val_loss": 0.08822543174028397,
+          "val_mae": 0.13410896062850952,
+          "val_rmse": 0.19833135604858398,
+          "val_pearson": -0.21113597849185495,
+          "val_spearman": 0.2439239268187442,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.10199760871806315,
+          "val_loss": 0.09044362455606461,
+          "val_mae": 0.1470547467470169,
+          "val_rmse": 0.20621360838413239,
+          "val_pearson": -0.2006018013837665,
+          "val_spearman": 0.24990127515062,
+          "val_majority_sentiment_accuracy": 0.9577464788732394,
+          "val_majority_sentiment_macro_f1": 0.3261390887290168,
+          "val_majority_sentiment_weighted_f1": 0.9370756915594285
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "import_20260323_091605_cross_event_ebola_essien",
+    "experiment_type": "历史结果导入",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "question": "回填历史实验 `20260323_091605_cross_event_ebola_essien`，确认其对当前研究主线的支持程度。",
+    "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+    "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "七、实验设计"
+    ],
+    "dataset": "runs/20260323_091605_cross_event_ebola_essien",
+    "ratio_labels": [],
+    "models": [],
+    "epochs": "unknown",
+    "batch_size": "unknown",
+    "device": "unknown",
+    "special_settings": "来自既有 runs 目录的历史导入"
+  },
+  "runtime_summary": {
+    "has_log": false,
+    "start_time": "",
+    "end_time": "",
+    "duration_seconds": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": []
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "最佳模型为 temporal_baseline，相对文本基线 MAE 改进 0.2519。",
+        "最佳模型相关系数表现 Pearson=1.0, Spearman=0.9999999999999999。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "部分支持",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "Affect-State Forecaster: MAE=0.10613307356834412, RMSE=0.13693884015083313。",
+        "Text baseline: MAE=0.31166332960128784, RMSE=0.341633141040802。",
+        "Structure baseline: MAE=0.09576579928398132, RMSE=0.11622310429811478。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "支持",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "temporal_baseline 相对文本基线的 MAE 改进为 0.2519。",
+        "structure_baseline 相对文本基线的 MAE 改进为 0.2159。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "Affect-State Forecaster 的 MAE 明显差于 structure_baseline。",
+      "possible_cause": "当前显式 affect-state 表达未带来比结构特征更稳定的增益，或模型容量不足。",
+      "idea_conflict": "与 `idea.md` 中“显式情绪状态建模优于直接预测”主线存在张力。",
+      "recommendation": "先不新建 `idea.md`；继续做 affect-state 消融与正则化实验。若多轮复现同结论，再考虑新增结构优先版研究计划。 "
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 1
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "import_20260323_091509_cross_event_charliehebdo",
+    "previous_best_model": "affect_state_forecaster",
+    "previous_best_mae": 0.13929902017116547,
+    "best_mae_delta": -0.0796
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/import_20260323_091605_cross_event_ebola_essien_model_metrics.png",
+    "event_errors": "experiments/figures/import_20260323_091605_cross_event_ebola_essien_event_errors.png",
+    "ratio_trends": "experiments/figures/import_20260323_091605_cross_event_ebola_essien_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/import_20260323_091605_cross_event_ebola_essien.json",
+  "report_path": "experiments/records/import_20260323_091605_cross_event_ebola_essien.md",
+  "html_path": "experiments/html/import_20260323_091605_cross_event_ebola_essien.html"
+}

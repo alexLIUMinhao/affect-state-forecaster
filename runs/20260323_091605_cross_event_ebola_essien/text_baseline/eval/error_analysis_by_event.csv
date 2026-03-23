@@ -1,0 +1,2 @@
+event_name,num_threads,mae,rmse,pearson,spearman
+ebola-essien,2,0.31166332960128784,0.341633141040802,-1.0,-0.9999999999999999

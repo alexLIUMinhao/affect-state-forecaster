@@ -1,0 +1,338 @@
+==> plan start_time=1774228509.9270155
+==> plan run_id=20260323_091509_cross_event_charliehebdo
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=charliehebdo 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl
+==> plan ratio_labels=charliehebdo_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster,patchtst_baseline,thread_transformer_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.81it/s]
+epoch 1/5:  70%|███████   | 7/10 [00:00<00:00, 22.42it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 23.44it/s]
+epoch=1 train_loss=0.2159 val_loss=0.1602 val_mae=0.1910 val_rmse=0.2643 val_pearson=-0.1892 val_spearman=-0.1991 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  60%|██████    | 6/10 [00:00<00:00, 53.92it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 56.45it/s]
+epoch=2 train_loss=0.1098 val_loss=0.1205 val_mae=0.2044 val_rmse=0.2739 val_pearson=-0.2727 val_spearman=-0.2149 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  60%|██████    | 6/10 [00:00<00:00, 52.94it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 56.38it/s]
+epoch=3 train_loss=0.0732 val_loss=0.0999 val_mae=0.1576 val_rmse=0.2463 val_pearson=-0.1798 val_spearman=-0.0693 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  60%|██████    | 6/10 [00:00<00:00, 51.35it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 56.14it/s]
+epoch=4 train_loss=0.0667 val_loss=0.0990 val_mae=0.1714 val_rmse=0.2468 val_pearson=-0.1703 val_spearman=-0.0150 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 5/10 [00:00<00:00, 48.03it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 56.11it/s]
+epoch=5 train_loss=0.0549 val_loss=0.0978 val_mae=0.1701 val_rmse=0.2438 val_pearson=-0.2439 val_spearman=-0.1660 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train_summary.json
+param_count=2577284
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 5.47
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model text_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/text_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=74 mae=0.2032 rmse=0.2552
+group=split value=test num_threads=74 mae=0.2032 rmse=0.2552
+group=observation_ratio value=0.5 num_threads=74 mae=0.2032 rmse=0.2552
+group=event value=charliehebdo num_threads=74 mae=0.2032 rmse=0.2552
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model text_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/text_baseline/artifacts/text_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/text_baseline/eval returncode=0
+==> command_duration_seconds 3.01
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.87it/s]
+epoch 1/5:  50%|█████     | 5/10 [00:00<00:00, 12.83it/s]
+epoch 1/5:  90%|█████████ | 9/10 [00:00<00:00, 19.33it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 16.66it/s]
+epoch=1 train_loss=0.2294 val_loss=0.1517 val_mae=0.1848 val_rmse=0.2696 val_pearson=0.0935 val_spearman=0.1045 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  40%|████      | 4/10 [00:00<00:00, 37.82it/s]
+epoch 2/5:  80%|████████  | 8/10 [00:00<00:00, 33.27it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 36.72it/s]
+epoch=2 train_loss=0.1235 val_loss=0.0962 val_mae=0.1838 val_rmse=0.2385 val_pearson=0.0214 val_spearman=0.1402 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  40%|████      | 4/10 [00:00<00:00, 37.25it/s]
+epoch 3/5:  80%|████████  | 8/10 [00:00<00:00, 36.49it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 36.27it/s]
+epoch=3 train_loss=0.0790 val_loss=0.0810 val_mae=0.1318 val_rmse=0.2055 val_pearson=0.0628 val_spearman=0.1428 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  40%|████      | 4/10 [00:00<00:00, 38.31it/s]
+epoch 4/5:  80%|████████  | 8/10 [00:00<00:00, 32.68it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 36.18it/s]
+epoch=4 train_loss=0.0665 val_loss=0.0859 val_mae=0.1472 val_rmse=0.2173 val_pearson=-0.0080 val_spearman=0.0583 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  40%|████      | 4/10 [00:00<00:00, 35.15it/s]
+epoch 5/5:  80%|████████  | 8/10 [00:00<00:00, 36.55it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 36.77it/s]
+epoch=5 train_loss=0.0537 val_loss=0.0889 val_mae=0.1652 val_rmse=0.2256 val_pearson=-0.0418 val_spearman=0.0773 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train_summary.json
+param_count=2709380
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 6.06
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model temporal_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=74 mae=0.1679 rmse=0.2211
+group=split value=test num_threads=74 mae=0.1679 rmse=0.2211
+group=observation_ratio value=0.5 num_threads=74 mae=0.1679 rmse=0.2211
+group=event value=charliehebdo num_threads=74 mae=0.1679 rmse=0.2211
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model temporal_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/artifacts/temporal_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.15
+==> train model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  3.75it/s]
+epoch 1/5:  60%|██████    | 6/10 [00:00<00:00, 19.22it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 22.95it/s]
+epoch=1 train_loss=0.2037 val_loss=0.1130 val_mae=0.1958 val_rmse=0.2383 val_pearson=-0.2988 val_spearman=0.0187 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 5/10 [00:00<00:00, 49.57it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 53.30it/s]
+epoch=2 train_loss=0.0994 val_loss=0.0913 val_mae=0.1472 val_rmse=0.2102 val_pearson=-0.5090 val_spearman=-0.2004 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  50%|█████     | 5/10 [00:00<00:00, 48.68it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 52.71it/s]
+epoch=3 train_loss=0.0883 val_loss=0.0895 val_mae=0.1176 val_rmse=0.2041 val_pearson=-0.4571 val_spearman=0.0121 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  50%|█████     | 5/10 [00:00<00:00, 48.76it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 52.75it/s]
+epoch=4 train_loss=0.0837 val_loss=0.0878 val_mae=0.1097 val_rmse=0.2039 val_pearson=-0.3762 val_spearman=0.0452 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  60%|██████    | 6/10 [00:00<00:00, 52.17it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 52.85it/s]
+epoch=5 train_loss=0.0757 val_loss=0.0883 val_mae=0.1409 val_rmse=0.2050 val_pearson=-0.4240 val_spearman=-0.0794 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train_summary.json
+param_count=2595076
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 5.56
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model structure_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/structure_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=74 mae=0.1510 rmse=0.2162
+group=split value=test num_threads=74 mae=0.1510 rmse=0.2162
+group=observation_ratio value=0.5 num_threads=74 mae=0.1510 rmse=0.2162
+group=event value=charliehebdo num_threads=74 mae=0.1510 rmse=0.2162
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model structure_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/structure_baseline/artifacts/structure_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/structure_baseline/eval returncode=0
+==> command_duration_seconds 3.04
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.77it/s]
+epoch 1/5:  40%|████      | 4/10 [00:00<00:00, 10.17it/s]
+epoch 1/5:  80%|████████  | 8/10 [00:00<00:00, 17.67it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 15.57it/s]
+epoch=1 train_loss=0.1752 val_loss=0.0963 val_mae=0.1068 val_rmse=0.1860 val_pearson=0.0591 val_spearman=0.0269 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  40%|████      | 4/10 [00:00<00:00, 34.01it/s]
+epoch 2/5:  80%|████████  | 8/10 [00:00<00:00, 31.96it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 33.30it/s]
+epoch=2 train_loss=0.0858 val_loss=0.0802 val_mae=0.1164 val_rmse=0.1844 val_pearson=0.0812 val_spearman=0.2295 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  40%|████      | 4/10 [00:00<00:00, 31.66it/s]
+epoch 3/5:  80%|████████  | 8/10 [00:00<00:00, 31.12it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 33.09it/s]
+epoch=3 train_loss=0.0926 val_loss=0.0824 val_mae=0.1201 val_rmse=0.1864 val_pearson=0.0041 val_spearman=0.2506 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  40%|████      | 4/10 [00:00<00:00, 32.16it/s]
+epoch 4/5:  80%|████████  | 8/10 [00:00<00:00, 33.37it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 33.68it/s]
+epoch=4 train_loss=0.0961 val_loss=0.0819 val_mae=0.1017 val_rmse=0.1893 val_pearson=0.0192 val_spearman=0.2740 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  30%|███       | 3/10 [00:00<00:00, 29.94it/s]
+epoch 5/5:  70%|███████   | 7/10 [00:00<00:00, 34.30it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 33.50it/s]
+epoch=5 train_loss=0.0897 val_loss=0.0858 val_mae=0.1008 val_rmse=0.1970 val_pearson=-0.0100 val_spearman=0.2494 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train_summary.json
+param_count=5417259
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 6.31
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=74 mae=0.1393 rmse=0.1916
+group=split value=test num_threads=74 mae=0.1393 rmse=0.1916
+group=observation_ratio value=0.5 num_threads=74 mae=0.1393 rmse=0.1916
+group=event value=charliehebdo num_threads=74 mae=0.1393 rmse=0.1916
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/artifacts/affect_state_forecaster_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.21
+==> train model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:02,  4.06it/s]
+epoch 1/5:  60%|██████    | 6/10 [00:00<00:00, 20.34it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 23.70it/s]
+epoch=1 train_loss=0.1457 val_loss=0.0891 val_mae=0.1573 val_rmse=0.2055 val_pearson=-0.1242 val_spearman=0.2942 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  50%|█████     | 5/10 [00:00<00:00, 47.49it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 52.05it/s]
+epoch=2 train_loss=0.0973 val_loss=0.0910 val_mae=0.1662 val_rmse=0.2094 val_pearson=-0.1245 val_spearman=0.2931 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  60%|██████    | 6/10 [00:00<00:00, 51.74it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 52.34it/s]
+epoch=3 train_loss=0.0799 val_loss=0.0811 val_mae=0.1203 val_rmse=0.1866 val_pearson=-0.1223 val_spearman=0.2910 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  60%|██████    | 6/10 [00:00<00:00, 50.45it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 51.88it/s]
+epoch=4 train_loss=0.0791 val_loss=0.0813 val_mae=0.1105 val_rmse=0.1863 val_pearson=-0.1244 val_spearman=0.2857 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  50%|█████     | 5/10 [00:00<00:00, 47.24it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 52.28it/s]
+epoch=5 train_loss=0.0875 val_loss=0.0820 val_mae=0.1159 val_rmse=0.1866 val_pearson=-0.1241 val_spearman=0.2857 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train_summary.json
+param_count=1205508
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 5.4
+==> evaluate model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model patchtst_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=74 mae=0.1425 rmse=0.1902
+group=split value=test num_threads=74 mae=0.1425 rmse=0.1902
+group=observation_ratio value=0.5 num_threads=74 mae=0.1425 rmse=0.1902
+group=event value=charliehebdo num_threads=74 mae=0.1425 rmse=0.1902
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model patchtst_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/artifacts/patchtst_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/patchtst_baseline/eval returncode=0
+==> command_duration_seconds 3.07
+==> train model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl
+
+epoch 1/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 1/5:  10%|█         | 1/10 [00:00<00:03,  2.70it/s]
+epoch 1/5:  40%|████      | 4/10 [00:00<00:00,  9.72it/s]
+epoch 1/5:  70%|███████   | 7/10 [00:00<00:00, 14.48it/s]
+epoch 1/5: 100%|██████████| 10/10 [00:00<00:00, 14.20it/s]
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+epoch=1 train_loss=0.1931 val_loss=0.1148 val_mae=0.1682 val_rmse=0.2498 val_pearson=0.1012 val_spearman=-0.0715 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 2/5:  40%|████      | 4/10 [00:00<00:00, 27.18it/s]
+epoch 2/5:  70%|███████   | 7/10 [00:00<00:00, 25.05it/s]
+epoch 2/5: 100%|██████████| 10/10 [00:00<00:00, 27.83it/s]
+epoch=2 train_loss=0.0981 val_loss=0.0935 val_mae=0.1692 val_rmse=0.2210 val_pearson=-0.1695 val_spearman=0.2686 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 3/5:  30%|███       | 3/10 [00:00<00:00, 21.90it/s]
+epoch 3/5:  60%|██████    | 6/10 [00:00<00:00, 24.96it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 29.38it/s]
+epoch 3/5: 100%|██████████| 10/10 [00:00<00:00, 27.76it/s]
+epoch=3 train_loss=0.0911 val_loss=0.0845 val_mae=0.1403 val_rmse=0.1991 val_pearson=-0.1350 val_spearman=0.2649 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 4/5:  30%|███       | 3/10 [00:00<00:00, 27.83it/s]
+epoch 4/5:  60%|██████    | 6/10 [00:00<00:00, 27.74it/s]
+epoch 4/5:  90%|█████████ | 9/10 [00:00<00:00, 26.11it/s]
+epoch 4/5: 100%|██████████| 10/10 [00:00<00:00, 27.61it/s]
+epoch=4 train_loss=0.0877 val_loss=0.0828 val_mae=0.0998 val_rmse=0.1917 val_pearson=-0.0791 val_spearman=0.2803 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/10 [00:00<?, ?it/s]
+epoch 5/5:  30%|███       | 3/10 [00:00<00:00, 25.06it/s]
+epoch 5/5:  60%|██████    | 6/10 [00:00<00:00, 25.70it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 28.08it/s]
+epoch 5/5: 100%|██████████| 10/10 [00:00<00:00, 27.38it/s]
+epoch=5 train_loss=0.0793 val_loss=0.0810 val_mae=0.1253 val_rmse=0.1892 val_pearson=-0.0604 val_spearman=0.2902 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.pt
+saved_config=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.json
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train_summary.json
+param_count=6332420
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_val.jsonl returncode=0
+==> command_duration_seconds 6.97
+==> evaluate model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+group=overall value=all num_threads=74 mae=0.1414 rmse=0.1875
+group=split value=test num_threads=74 mae=0.1414 rmse=0.1875
+group=observation_ratio value=0.5 num_threads=74 mae=0.1414 rmse=0.1875
+group=event value=charliehebdo num_threads=74 mae=0.1414 rmse=0.1875
+saved_predictions=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/charliehebdo_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.pt --config_path runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/artifacts/thread_transformer_baseline_charliehebdo_train.json --device cuda --output_dir runs/20260323_091509_cross_event_charliehebdo/thread_transformer_baseline/eval returncode=0
+==> command_duration_seconds 3.32
+==> summarize completed
+==> anomaly affect_state_forecaster 的 Accuracy 远高于 Macro-F1。
+==> anomaly patchtst_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly structure_baseline 的 Pearson/Spearman 接近 0。
+==> anomaly structure_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly temporal_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly text_baseline 的 Pearson/Spearman 接近 0。
+==> anomaly text_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1774228564.4948668

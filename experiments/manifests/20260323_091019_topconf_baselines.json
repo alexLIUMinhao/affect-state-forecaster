@@ -1,0 +1,469 @@
+{
+  "run_id": "20260323_091019_topconf_baselines",
+  "created_at": "2026-03-23T01:10:44.429737+00:00",
+  "run_root": "runs/20260323_091019_topconf_baselines",
+  "log_path": "experiments/logs/20260323_091019_topconf_baselines.log",
+  "models": [
+    {
+      "model": "patchtst_baseline",
+      "status": "completed",
+      "param_count": 1205508,
+      "capacity_group": "default",
+      "config": {
+        "model": "patchtst_baseline",
+        "param_count": 1205508,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts",
+        "eval_dir": "runs/20260323_091019_topconf_baselines/patchtst_baseline/eval",
+        "summary_csv": "runs/20260323_091019_topconf_baselines/patchtst_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091019_topconf_baselines/patchtst_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.11854799836874008,
+        "rmse": 0.17262616753578186,
+        "pearson": -0.032635729522494564,
+        "spearman": 0.285753341109831,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.02904786014308532
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.11854799836874008",
+          "rmse": "0.17262616753578186",
+          "pearson": "-0.032635729522494564",
+          "spearman": "0.285753341109831",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.11207709461450577",
+          "rmse": "0.11241243034601212",
+          "pearson": "0.1335957693575219",
+          "spearman": "0.13193984914006276"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.1134633868932724",
+          "rmse": "0.12297526746988297",
+          "pearson": "-0.18154975981505364",
+          "spearman": "-0.18333969940564226"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.12028620392084122",
+          "rmse": "0.1859060823917389",
+          "pearson": "-0.11323392646471865",
+          "spearman": "0.24360405996390058"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.2091744969549932,
+          "val_loss": 0.10128115327097476,
+          "val_mae": 0.1240946352481842,
+          "val_rmse": 0.16406182944774628,
+          "val_pearson": 0.2089487228648732,
+          "val_spearman": 0.4665323493363354,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    },
+    {
+      "model": "thread_transformer_baseline",
+      "status": "completed",
+      "param_count": 6332420,
+      "capacity_group": "default",
+      "config": {
+        "model": "thread_transformer_baseline",
+        "param_count": 6332420,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts",
+        "eval_dir": "runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval",
+        "summary_csv": "runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.31523823738098145,
+        "rmse": 0.33385637402534485,
+        "pearson": -0.05826493328736684,
+        "spearman": -0.10039520679848353,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.11089103668928146
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.31523823738098145",
+          "rmse": "0.33385637402534485",
+          "pearson": "-0.05826493328736684",
+          "spearman": "-0.10039520679848353",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.35313844680786133",
+          "rmse": "0.3599211275577545",
+          "pearson": "-0.07619130496305933",
+          "spearman": "-0.2183565733705734"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.3195778429508209",
+          "rmse": "0.33728206157684326",
+          "pearson": "0.25598960678341554",
+          "spearman": "0.06846531968814576"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.3082824647426605",
+          "rmse": "0.3288044333457947",
+          "pearson": "-0.027832465596074517",
+          "spearman": "-0.05444383527052162"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.20481065739142268,
+          "val_loss": 0.18803215585649014,
+          "val_mae": 0.3149886429309845,
+          "val_rmse": 0.328963965177536,
+          "val_pearson": -0.10563294527760922,
+          "val_spearman": -0.2645787918228818,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    },
+    {
+      "model": "timesnet_baseline",
+      "status": "completed",
+      "param_count": 314628,
+      "capacity_group": "default",
+      "config": {
+        "model": "timesnet_baseline",
+        "param_count": 314628,
+        "hidden_dim": 128,
+        "vocab_size": 20000,
+        "dropout": 0.1,
+        "affect_state_dim": 32,
+        "num_bins": 8,
+        "max_replies": 64,
+        "time_series_dim": 8,
+        "patch_len": 2,
+        "stride": 1,
+        "n_heads": 4,
+        "n_layers": 2,
+        "classification_loss_weight": 0.2,
+        "affect_state_weight": 0.0,
+        "seed": 42,
+        "capacity_group": "default",
+        "input_view": "full",
+        "disable_temporal": false,
+        "disable_structure": false,
+        "disable_affect_state": false,
+        "fusion_variant": "full"
+      },
+      "paths": {
+        "artifact_dir": "runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts",
+        "eval_dir": "runs/20260323_091019_topconf_baselines/timesnet_baseline/eval",
+        "summary_csv": "runs/20260323_091019_topconf_baselines/timesnet_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_091019_topconf_baselines/timesnet_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": 0.10797085613012314,
+        "rmse": 0.18161989748477936,
+        "pearson": -0.11806792748788533,
+        "spearman": 0.10090472493485854,
+        "accuracy": 0.967391304347826,
+        "macro_f1": 0.3278084714548803,
+        "weighted_f1": 0.9513571943310113,
+        "loss": 0.031993567322691284
+      },
+      "ratio_metrics": [
+        {
+          "group_name": "observation_ratio",
+          "group_value": "0.5",
+          "num_threads": "92",
+          "mae": "0.10797085613012314",
+          "rmse": "0.18161989748477936",
+          "pearson": "-0.11806792748788533",
+          "spearman": "0.10090472493485854",
+          "majority_sentiment_accuracy": "0.967391304347826",
+          "majority_sentiment_macro_f1": "0.3278084714548803",
+          "majority_sentiment_weighted_f1": "0.9513571943310113",
+          "loss": "",
+          "gate_source_mean": "",
+          "gate_temporal_mean": "",
+          "gate_structure_mean": ""
+        }
+      ],
+      "event_metrics": [
+        {
+          "event_name": "prince-toronto",
+          "num_threads": "12",
+          "mae": "0.06317802518606186",
+          "rmse": "0.07575824856758118",
+          "pearson": "0.27424010490496703",
+          "spearman": "0.30785964799347976"
+        },
+        {
+          "event_name": "putinmissing",
+          "num_threads": "9",
+          "mae": "0.10561764985322952",
+          "rmse": "0.13991524279117584",
+          "pearson": "-0.6711303482008614",
+          "spearman": "-0.7333587976225691"
+        },
+        {
+          "event_name": "sydneysiege",
+          "num_threads": "71",
+          "mae": "0.11583977192640305",
+          "rmse": "0.19821862876415253",
+          "pearson": "-0.19970215126331312",
+          "spearman": "0.034520118653627085"
+        }
+      ],
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.17808348999211662,
+          "val_loss": 0.10102779930457473,
+          "val_mae": 0.10691771656274796,
+          "val_rmse": 0.16232384741306305,
+          "val_pearson": 0.15530230738062337,
+          "val_spearman": 0.35417362972892114,
+          "val_majority_sentiment_accuracy": 0.896551724137931,
+          "val_majority_sentiment_macro_f1": 0.3151515151515151,
+          "val_majority_sentiment_weighted_f1": 0.8476489028213167
+        }
+      ]
+    }
+  ],
+  "observation_ratios": [
+    0.5
+  ],
+  "experiment_plan": {
+    "run_id": "20260323_091019_topconf_baselines",
+    "experiment_type": "顶会Baseline对比",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "question": "顶会可适配baseline在PHEME forecasting设定下是否优于现有自研基础线。",
+    "success_criteria": "至少一个顶会baseline在主要回归指标上进入前二，并可稳定复现。",
+    "failure_criteria": "若新增baseline全部落后于现有强基线，则停止继续扩展。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "六、方法方案",
+      "七、实验设计"
+    ],
+    "dataset": "/home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl",
+    "ratio_labels": [
+      "ratio_05_train"
+    ],
+    "models": [
+      "patchtst_baseline",
+      "timesnet_baseline",
+      "thread_transformer_baseline"
+    ],
+    "epochs": 1,
+    "batch_size": 8,
+    "seed": 42,
+    "device": "cuda",
+    "special_settings": "baseline_family=topconf",
+    "capacity_group": "default",
+    "model_configs_path": ".",
+    "model_configs": {}
+  },
+  "runtime_summary": {
+    "has_log": true,
+    "start_time": "=> plan start_time=1774228219.935633",
+    "end_time": "=> summarize end_time=1774228244.4287624",
+    "duration_seconds": 0.0,
+    "warning_count": 5,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": [
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model patchtst_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model patchtst_baseline --model_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model timesnet_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model timesnet_baseline --model_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/eval",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model thread_transformer_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl",
+      "/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval"
+    ]
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "缺少文本基线或总体最佳模型结果。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "缺少 affect-state 或文本基线结果。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "缺少文本基线结果。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 1 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "phenomenon": "patchtst_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    },
+    {
+      "phenomenon": "timesnet_baseline 的 Accuracy 远高于 Macro-F1。",
+      "possible_cause": "多数类占优，分类表现可能被类别不平衡掩盖。",
+      "idea_conflict": "说明扩展任务分类结果暂时不适合作为强支撑证据。",
+      "recommendation": "在报告中弱化分类结论，优先以回归指标论证主任务。"
+    }
+  ],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前更适合保留原始 `idea.md`，同时在报告中记录风险与后续验证动作。",
+    "num_not_supported": 0,
+    "num_partial": 0
+  },
+  "decision": {
+    "action": "继续，但先做诊断",
+    "reason": "当前结果可继续推进，但仍有未解释的异常现象需要优先澄清。",
+    "next_step": "围绕报告中的异常项安排定向诊断实验，而不是直接扩大模型复杂度。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "import_first_round_ratio_05",
+    "previous_best_model": "structure_baseline",
+    "previous_best_mae": 0.11702784150838852,
+    "best_mae_delta": -0.0091
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/20260323_091019_topconf_baselines_model_metrics.png",
+    "event_errors": "experiments/figures/20260323_091019_topconf_baselines_event_errors.png",
+    "ratio_trends": "experiments/figures/20260323_091019_topconf_baselines_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/20260323_091019_topconf_baselines.json",
+  "report_path": "experiments/records/20260323_091019_topconf_baselines.md",
+  "html_path": "experiments/html/20260323_091019_topconf_baselines.html"
+}

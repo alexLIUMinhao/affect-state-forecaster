@@ -1,0 +1,145 @@
+{
+  "run_id": "import_20260323_090525_topconf_baselines",
+  "created_at": "2026-03-23T01:27:58.215901+00:00",
+  "run_root": "runs/20260323_090525_topconf_baselines",
+  "log_path": "",
+  "models": [
+    {
+      "model": "patchtst_baseline",
+      "status": "failed",
+      "param_count": null,
+      "capacity_group": "default",
+      "config": {},
+      "paths": {
+        "artifact_dir": "runs/20260323_090525_topconf_baselines/patchtst_baseline/artifacts",
+        "eval_dir": "runs/20260323_090525_topconf_baselines/patchtst_baseline/eval",
+        "summary_csv": "runs/20260323_090525_topconf_baselines/patchtst_baseline/eval/results_summary.csv",
+        "event_error_csv": "runs/20260323_090525_topconf_baselines/patchtst_baseline/eval/error_analysis_by_event.csv"
+      },
+      "overall_metrics": {
+        "mae": null,
+        "rmse": null,
+        "pearson": null,
+        "spearman": null,
+        "accuracy": null,
+        "macro_f1": null,
+        "weighted_f1": null,
+        "loss": null
+      },
+      "ratio_metrics": [],
+      "event_metrics": [],
+      "history": []
+    }
+  ],
+  "observation_ratios": [],
+  "experiment_plan": {
+    "run_id": "import_20260323_090525_topconf_baselines",
+    "experiment_type": "历史结果导入",
+    "target_hypotheses": [
+      "H1",
+      "H2",
+      "H3",
+      "H4"
+    ],
+    "question": "回填历史实验 `20260323_090525_topconf_baselines`，确认其对当前研究主线的支持程度。",
+    "success_criteria": "能够生成完整报告，并对 idea.md 给出可读判断。",
+    "failure_criteria": "若历史结果缺失严重，则仅标记证据不足，不给过度结论。",
+    "idea_sections": [
+      "三、核心研究问题",
+      "七、实验设计"
+    ],
+    "dataset": "runs/20260323_090525_topconf_baselines",
+    "ratio_labels": [],
+    "models": [],
+    "epochs": "unknown",
+    "batch_size": "unknown",
+    "device": "unknown",
+    "special_settings": "来自既有 runs 目录的历史导入"
+  },
+  "runtime_summary": {
+    "has_log": false,
+    "start_time": "",
+    "end_time": "",
+    "duration_seconds": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "failed_commands": [],
+    "executed_commands": []
+  },
+  "hypothesis_analysis": [
+    {
+      "id": "H1",
+      "title": "早期观测足以预测未来群体情绪",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：事件早期观测是否足以预测后续群体情绪走势",
+        "四、任务定义：future_neg_ratio 主任务"
+      ],
+      "evidence": [
+        "缺少文本基线或总体最佳模型结果。"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Affect-State Forecaster 优于直接预测基线",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：情绪应不应该被建模为动态状态变量",
+        "六、方法方案：Affect-State Forecaster"
+      ],
+      "evidence": [
+        "缺少 affect-state 或文本基线结果。"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "时间或结构信息相对文本基线有增益",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "三、核心研究问题：时间顺序与传播结构的帮助",
+        "六、方法方案：时序文本基线与结构感知基线"
+      ],
+      "evidence": [
+        "缺少文本基线结果。"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "不同 observation ratio 呈现可解释趋势",
+      "verdict": "证据不足",
+      "related_idea_sections": [
+        "七、实验设计：30/70、50/50、70/30",
+        "九、预期创新点：多 observation ratio 评测协议"
+      ],
+      "evidence": [
+        "当前只有 0 个 observation ratio，尚不足以判断趋势。"
+      ]
+    }
+  ],
+  "anomalies": [],
+  "idea_followup": {
+    "suggest_new_idea": false,
+    "summary": "当前结果整体沿着 `idea.md` 推进，不建议新增研究计划文件。",
+    "num_not_supported": 0,
+    "num_partial": 0
+  },
+  "decision": {
+    "action": "暂停方法扩展，先修复工程问题",
+    "reason": "存在失败模型：patchtst_baseline，当前结果不能作为研究结论。",
+    "next_step": "修复失败模型后重新运行同一轮实验。"
+  },
+  "comparison_to_previous": {
+    "previous_run_id": "20260323_092630_seed_sweep_seed_77",
+    "previous_best_model": "affect_state_forecaster",
+    "previous_best_mae": 0.10047584772109985,
+    "best_mae_delta": null
+  },
+  "figures": {
+    "model_metrics": "experiments/figures/import_20260323_090525_topconf_baselines_model_metrics.png",
+    "event_errors": "experiments/figures/import_20260323_090525_topconf_baselines_event_errors.png",
+    "ratio_trends": "experiments/figures/import_20260323_090525_topconf_baselines_ratio_trends.png"
+  },
+  "manifest_path": "experiments/manifests/import_20260323_090525_topconf_baselines.json",
+  "report_path": "experiments/records/import_20260323_090525_topconf_baselines.md",
+  "html_path": "experiments/html/import_20260323_090525_topconf_baselines.html"
+}

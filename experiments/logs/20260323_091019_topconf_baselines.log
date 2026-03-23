@@ -1,0 +1,119 @@
+==> plan start_time=1774228219.935633
+==> plan run_id=20260323_091019_topconf_baselines
+==> plan experiment_type=顶会Baseline对比
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=顶会可适配baseline在PHEME forecasting设定下是否优于现有自研基础线。
+==> plan success_criteria=至少一个顶会baseline在主要回归指标上进入前二，并可稳定复现。
+==> plan failure_criteria=若新增baseline全部落后于现有强基线，则停止继续扩展。
+==> plan dataset=/home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl
+==> plan ratio_labels=ratio_05_train
+==> plan models=patchtst_baseline,timesnet_baseline,thread_transformer_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model patchtst_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/1:   0%|          | 0/19 [00:00<?, ?it/s]
+epoch 1/1:   5%|▌         | 1/19 [00:00<00:06,  2.74it/s]
+epoch 1/1:  47%|████▋     | 9/19 [00:00<00:00, 23.84it/s]
+epoch 1/1:  89%|████████▉ | 17/19 [00:00<00:00, 38.47it/s]
+epoch 1/1: 100%|██████████| 19/19 [00:00<00:00, 31.29it/s]
+epoch=1 train_loss=0.2092 val_loss=0.1013 val_mae=0.1241 val_rmse=0.1641 val_pearson=0.2089 val_spearman=0.4665 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train_summary.json
+param_count=1205508
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model patchtst_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 4.73
+==> evaluate model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model patchtst_baseline --model_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=92 mae=0.1185 rmse=0.1726
+group=split value=test num_threads=92 mae=0.1185 rmse=0.1726
+group=observation_ratio value=0.5 num_threads=92 mae=0.1185 rmse=0.1726
+group=event value=prince-toronto num_threads=12 mae=0.1121 rmse=0.1124
+group=event value=putinmissing num_threads=9 mae=0.1135 rmse=0.1230
+group=event value=sydneysiege num_threads=71 mae=0.1203 rmse=0.1859
+saved_predictions=runs/20260323_091019_topconf_baselines/patchtst_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091019_topconf_baselines/patchtst_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091019_topconf_baselines/patchtst_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model patchtst_baseline --model_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/patchtst_baseline/artifacts/patchtst_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/patchtst_baseline/eval returncode=0
+==> command_duration_seconds 3.11
+==> train model=timesnet_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model timesnet_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/1:   0%|          | 0/19 [00:00<?, ?it/s]
+epoch 1/1:   5%|▌         | 1/19 [00:00<00:14,  1.25it/s]
+epoch 1/1:  53%|█████▎    | 10/19 [00:00<00:00, 14.47it/s]
+epoch 1/1:  95%|█████████▍| 18/19 [00:01<00:00, 25.39it/s]
+epoch 1/1: 100%|██████████| 19/19 [00:01<00:00, 17.62it/s]
+epoch=1 train_loss=0.1781 val_loss=0.1010 val_mae=0.1069 val_rmse=0.1623 val_pearson=0.1553 val_spearman=0.3542 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train_summary.json
+param_count=314628
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model timesnet_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 5.06
+==> evaluate model=timesnet_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model timesnet_baseline --model_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=92 mae=0.1080 rmse=0.1816
+group=split value=test num_threads=92 mae=0.1080 rmse=0.1816
+group=observation_ratio value=0.5 num_threads=92 mae=0.1080 rmse=0.1816
+group=event value=prince-toronto num_threads=12 mae=0.0632 rmse=0.0758
+group=event value=putinmissing num_threads=9 mae=0.1056 rmse=0.1399
+group=event value=sydneysiege num_threads=71 mae=0.1158 rmse=0.1982
+saved_predictions=runs/20260323_091019_topconf_baselines/timesnet_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091019_topconf_baselines/timesnet_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091019_topconf_baselines/timesnet_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model timesnet_baseline --model_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/timesnet_baseline/artifacts/timesnet_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/timesnet_baseline/eval returncode=0
+==> command_duration_seconds 3.25
+==> train model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model thread_transformer_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl
+
+epoch 1/1:   0%|          | 0/19 [00:00<?, ?it/s]
+epoch 1/1:   5%|▌         | 1/19 [00:00<00:07,  2.47it/s]
+epoch 1/1:  26%|██▋       | 5/19 [00:00<00:01, 12.21it/s]
+epoch 1/1:  53%|█████▎    | 10/19 [00:00<00:00, 21.57it/s]
+epoch 1/1:  74%|███████▎  | 14/19 [00:00<00:00, 26.44it/s]
+epoch 1/1: 100%|██████████| 19/19 [00:00<00:00, 31.44it/s]
+epoch 1/1: 100%|██████████| 19/19 [00:00<00:00, 22.59it/s]
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+epoch=1 train_loss=0.2048 val_loss=0.1880 val_mae=0.3150 val_rmse=0.3290 val_pearson=-0.1056 val_spearman=-0.2646 val_majority_sentiment_accuracy=0.8966 val_majority_sentiment_macro_f1=0.3152 val_majority_sentiment_weighted_f1=0.8476
+saved_model=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.pt
+saved_config=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.json
+saved_summary=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train_summary.json
+param_count=6332420
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_train.jsonl --model thread_transformer_baseline --device cuda --epochs 1 --batch_size 8 --seed 42 --capacity_group default --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts --val_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_val.jsonl returncode=0
+==> command_duration_seconds 5.01
+==> evaluate model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+group=overall value=all num_threads=92 mae=0.3152 rmse=0.3339
+group=split value=test num_threads=92 mae=0.3152 rmse=0.3339
+group=observation_ratio value=0.5 num_threads=92 mae=0.3152 rmse=0.3339
+group=event value=prince-toronto num_threads=12 mae=0.3531 rmse=0.3599
+group=event value=putinmissing num_threads=9 mae=0.3196 rmse=0.3373
+group=event value=sydneysiege num_threads=71 mae=0.3083 rmse=0.3288
+saved_predictions=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /home/alexmhliu/affect-state-forecaster/data/processed/pheme_forecast_ratio_05_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.pt --config_path runs/20260323_091019_topconf_baselines/thread_transformer_baseline/artifacts/thread_transformer_baseline_pheme_forecast_ratio_05_train.json --device cuda --output_dir runs/20260323_091019_topconf_baselines/thread_transformer_baseline/eval returncode=0
+==> command_duration_seconds 3.34
+==> summarize completed
+==> anomaly patchtst_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly thread_transformer_baseline 的 Accuracy 远高于 Macro-F1。
+==> anomaly timesnet_baseline 的 Accuracy 远高于 Macro-F1。
+==> summarize end_time=1774228244.4287624

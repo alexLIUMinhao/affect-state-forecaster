@@ -1,0 +1,364 @@
+==> plan start_time=1774228793.081701
+==> plan run_id=20260323_091953_cross_event_prince_toronto
+==> plan experiment_type=主实验
+==> plan target_hypotheses=H1,H2,H3
+==> plan question=验证 held-out event=prince-toronto 时各模型的 cross-event 泛化能力。
+==> plan success_criteria=affect_state_forecaster 在 held-out event 上保持与主实验一致的领先趋势。
+==> plan failure_criteria=若 held-out event 掉点显著，则后续优先做泛化与正则化。
+==> plan dataset=/tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl
+==> plan ratio_labels=prince-toronto_train
+==> plan models=text_baseline,temporal_baseline,structure_baseline,affect_state_forecaster,patchtst_baseline,thread_transformer_baseline
+==> plan python=asf311:/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python
+==> plan device=cuda
+==> train model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.78it/s]
+epoch 1/5:  50%|█████     | 7/14 [00:00<00:00, 22.53it/s]
+epoch 1/5:  93%|█████████▎| 13/14 [00:00<00:00, 33.05it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 28.05it/s]
+epoch=1 train_loss=0.2250 val_loss=0.1388 val_mae=0.1980 val_rmse=0.2635 val_pearson=-0.2337 val_spearman=-0.1090 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  43%|████▎     | 6/14 [00:00<00:00, 55.05it/s]
+epoch 2/5:  86%|████████▌ | 12/14 [00:00<00:00, 53.44it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 54.91it/s]
+epoch=2 train_loss=0.1165 val_loss=0.1040 val_mae=0.1732 val_rmse=0.2452 val_pearson=-0.2653 val_spearman=-0.0550 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 54.37it/s]
+epoch 3/5:  86%|████████▌ | 12/14 [00:00<00:00, 51.50it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 54.57it/s]
+epoch=3 train_loss=0.0917 val_loss=0.1017 val_mae=0.1764 val_rmse=0.2412 val_pearson=-0.2004 val_spearman=0.0466 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 52.44it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 50.03it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 53.72it/s]
+epoch=4 train_loss=0.0893 val_loss=0.0992 val_mae=0.1366 val_rmse=0.2317 val_pearson=-0.2719 val_spearman=-0.0296 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  36%|███▌      | 5/14 [00:00<00:00, 47.46it/s]
+epoch 5/5:  79%|███████▊  | 11/14 [00:00<00:00, 51.46it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 53.69it/s]
+epoch=5 train_loss=0.0801 val_loss=0.0975 val_mae=0.1563 val_rmse=0.2261 val_pearson=-0.1604 val_spearman=0.0516 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train_summary.json
+param_count=2577284
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model text_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 5.89
+==> evaluate model=text_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model text_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/text_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=12 mae=0.1315 rmse=0.1587
+group=split value=test num_threads=12 mae=0.1315 rmse=0.1587
+group=observation_ratio value=0.5 num_threads=12 mae=0.1315 rmse=0.1587
+group=event value=prince-toronto num_threads=12 mae=0.1315 rmse=0.1587
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/text_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/text_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/text_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model text_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/text_baseline/artifacts/text_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/text_baseline/eval returncode=0
+==> command_duration_seconds 2.93
+==> train model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.81it/s]
+epoch 1/5:  36%|███▌      | 5/14 [00:00<00:00, 13.09it/s]
+epoch 1/5:  64%|██████▍   | 9/14 [00:00<00:00, 19.51it/s]
+epoch 1/5:  93%|█████████▎| 13/14 [00:00<00:00, 24.69it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 19.64it/s]
+epoch=1 train_loss=0.2096 val_loss=0.1291 val_mae=0.2289 val_rmse=0.2841 val_pearson=-0.1035 val_spearman=0.0574 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  29%|██▊       | 4/14 [00:00<00:00, 37.85it/s]
+epoch 2/5:  57%|█████▋    | 8/14 [00:00<00:00, 35.55it/s]
+epoch 2/5:  86%|████████▌ | 12/14 [00:00<00:00, 34.76it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 36.56it/s]
+epoch=2 train_loss=0.1137 val_loss=0.0884 val_mae=0.1585 val_rmse=0.2256 val_pearson=-0.1303 val_spearman=0.0091 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  29%|██▊       | 4/14 [00:00<00:00, 33.03it/s]
+epoch 3/5:  57%|█████▋    | 8/14 [00:00<00:00, 33.48it/s]
+epoch 3/5:  86%|████████▌ | 12/14 [00:00<00:00, 35.97it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 36.51it/s]
+epoch=3 train_loss=0.0914 val_loss=0.0889 val_mae=0.1366 val_rmse=0.2165 val_pearson=-0.1148 val_spearman=0.0448 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  29%|██▊       | 4/14 [00:00<00:00, 34.21it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 36.07it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 35.15it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 37.04it/s]
+epoch=4 train_loss=0.0777 val_loss=0.0944 val_mae=0.1344 val_rmse=0.2217 val_pearson=-0.1074 val_spearman=0.0342 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  29%|██▊       | 4/14 [00:00<00:00, 35.47it/s]
+epoch 5/5:  57%|█████▋    | 8/14 [00:00<00:00, 33.46it/s]
+epoch 5/5:  93%|█████████▎| 13/14 [00:00<00:00, 36.04it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 36.94it/s]
+epoch=5 train_loss=0.0718 val_loss=0.0926 val_mae=0.1473 val_rmse=0.2286 val_pearson=-0.1117 val_spearman=0.0363 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train_summary.json
+param_count=2709380
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model temporal_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 6.61
+==> evaluate model=temporal_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model temporal_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=12 mae=0.1284 rmse=0.1566
+group=split value=test num_threads=12 mae=0.1284 rmse=0.1566
+group=observation_ratio value=0.5 num_threads=12 mae=0.1284 rmse=0.1566
+group=event value=prince-toronto num_threads=12 mae=0.1284 rmse=0.1566
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model temporal_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/artifacts/temporal_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/temporal_baseline/eval returncode=0
+==> command_duration_seconds 3.04
+==> train model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  3.78it/s]
+epoch 1/5:  43%|████▎     | 6/14 [00:00<00:00, 19.59it/s]
+epoch 1/5:  79%|███████▊  | 11/14 [00:00<00:00, 29.38it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 26.88it/s]
+epoch=1 train_loss=0.1652 val_loss=0.0926 val_mae=0.1112 val_rmse=0.2187 val_pearson=-0.3980 val_spearman=0.0068 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  43%|████▎     | 6/14 [00:00<00:00, 51.27it/s]
+epoch 2/5:  86%|████████▌ | 12/14 [00:00<00:00, 50.03it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 52.38it/s]
+epoch=2 train_loss=0.1152 val_loss=0.0893 val_mae=0.1165 val_rmse=0.2071 val_pearson=-0.4622 val_spearman=0.0353 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 50.46it/s]
+epoch 3/5:  86%|████████▌ | 12/14 [00:00<00:00, 50.77it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 52.08it/s]
+epoch=3 train_loss=0.1119 val_loss=0.0937 val_mae=0.1021 val_rmse=0.2074 val_pearson=-0.3623 val_spearman=0.1740 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  36%|███▌      | 5/14 [00:00<00:00, 45.48it/s]
+epoch 4/5:  79%|███████▊  | 11/14 [00:00<00:00, 51.09it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 52.81it/s]
+epoch=4 train_loss=0.1147 val_loss=0.1224 val_mae=0.2367 val_rmse=0.2712 val_pearson=-0.3459 val_spearman=0.1352 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  36%|███▌      | 5/14 [00:00<00:00, 48.97it/s]
+epoch 5/5:  79%|███████▊  | 11/14 [00:00<00:00, 51.77it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 52.85it/s]
+epoch=5 train_loss=0.1019 val_loss=0.1002 val_mae=0.1798 val_rmse=0.2247 val_pearson=-0.3618 val_spearman=-0.0587 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train_summary.json
+param_count=2595076
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model structure_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 5.88
+==> evaluate model=structure_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model structure_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/structure_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=12 mae=0.0874 rmse=0.0966
+group=split value=test num_threads=12 mae=0.0874 rmse=0.0966
+group=observation_ratio value=0.5 num_threads=12 mae=0.0874 rmse=0.0966
+group=event value=prince-toronto num_threads=12 mae=0.0874 rmse=0.0966
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/structure_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model structure_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/structure_baseline/artifacts/structure_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/structure_baseline/eval returncode=0
+==> command_duration_seconds 2.94
+==> train model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.69it/s]
+epoch 1/5:  36%|███▌      | 5/14 [00:00<00:00, 11.90it/s]
+epoch 1/5:  57%|█████▋    | 8/14 [00:00<00:00, 16.37it/s]
+epoch 1/5:  86%|████████▌ | 12/14 [00:00<00:00, 22.01it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 18.23it/s]
+epoch=1 train_loss=0.1926 val_loss=0.0967 val_mae=0.1031 val_rmse=0.2077 val_pearson=0.0067 val_spearman=-0.1631 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  21%|██▏       | 3/14 [00:00<00:00, 26.35it/s]
+epoch 2/5:  50%|█████     | 7/14 [00:00<00:00, 30.93it/s]
+epoch 2/5:  79%|███████▊  | 11/14 [00:00<00:00, 31.94it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 32.98it/s]
+epoch=2 train_loss=0.1177 val_loss=0.0847 val_mae=0.1033 val_rmse=0.1946 val_pearson=-0.0500 val_spearman=-0.0381 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  21%|██▏       | 3/14 [00:00<00:00, 26.86it/s]
+epoch 3/5:  50%|█████     | 7/14 [00:00<00:00, 29.25it/s]
+epoch 3/5:  79%|███████▊  | 11/14 [00:00<00:00, 31.30it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 32.87it/s]
+epoch=3 train_loss=0.1083 val_loss=0.0837 val_mae=0.1341 val_rmse=0.1904 val_pearson=-0.0881 val_spearman=0.2750 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  29%|██▊       | 4/14 [00:00<00:00, 31.80it/s]
+epoch 4/5:  57%|█████▋    | 8/14 [00:00<00:00, 31.45it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 32.08it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 32.62it/s]
+epoch=4 train_loss=0.1031 val_loss=0.0859 val_mae=0.1323 val_rmse=0.1907 val_pearson=-0.1750 val_spearman=0.1892 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  21%|██▏       | 3/14 [00:00<00:00, 27.90it/s]
+epoch 5/5:  50%|█████     | 7/14 [00:00<00:00, 30.43it/s]
+epoch 5/5:  79%|███████▊  | 11/14 [00:00<00:00, 33.13it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 32.78it/s]
+epoch=5 train_loss=0.1067 val_loss=0.0843 val_mae=0.1236 val_rmse=0.1893 val_pearson=-0.1872 val_spearman=0.2022 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train_summary.json
+param_count=5417259
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model affect_state_forecaster --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 6.98
+==> evaluate model=affect_state_forecaster
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=12 mae=0.1356 rmse=0.1360
+group=split value=test num_threads=12 mae=0.1356 rmse=0.1360
+group=observation_ratio value=0.5 num_threads=12 mae=0.1356 rmse=0.1360
+group=event value=prince-toronto num_threads=12 mae=0.1356 rmse=0.1360
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model affect_state_forecaster --model_path runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/artifacts/affect_state_forecaster_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/affect_state_forecaster/eval returncode=0
+==> command_duration_seconds 3.11
+==> train model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:03,  4.02it/s]
+epoch 1/5:  43%|████▎     | 6/14 [00:00<00:00, 20.58it/s]
+epoch 1/5:  86%|████████▌ | 12/14 [00:00<00:00, 31.84it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 27.73it/s]
+epoch=1 train_loss=0.1771 val_loss=0.0946 val_mae=0.1771 val_rmse=0.2160 val_pearson=-0.0401 val_spearman=0.2569 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  36%|███▌      | 5/14 [00:00<00:00, 48.81it/s]
+epoch 2/5:  71%|███████▏  | 10/14 [00:00<00:00, 47.08it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 50.75it/s]
+epoch=2 train_loss=0.1159 val_loss=0.0878 val_mae=0.1475 val_rmse=0.1978 val_pearson=-0.1215 val_spearman=0.3057 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  36%|███▌      | 5/14 [00:00<00:00, 48.61it/s]
+epoch 3/5:  79%|███████▊  | 11/14 [00:00<00:00, 49.49it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 50.61it/s]
+epoch=3 train_loss=0.1156 val_loss=0.0864 val_mae=0.1063 val_rmse=0.1880 val_pearson=-0.1253 val_spearman=0.2981 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  43%|████▎     | 6/14 [00:00<00:00, 50.86it/s]
+epoch 4/5:  86%|████████▌ | 12/14 [00:00<00:00, 47.89it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 50.45it/s]
+epoch=4 train_loss=0.0997 val_loss=0.0848 val_mae=0.1094 val_rmse=0.1878 val_pearson=-0.1272 val_spearman=0.3015 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  36%|███▌      | 5/14 [00:00<00:00, 49.03it/s]
+epoch 5/5:  79%|███████▊  | 11/14 [00:00<00:00, 51.03it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 51.06it/s]
+epoch=5 train_loss=0.1045 val_loss=0.0866 val_mae=0.1029 val_rmse=0.1914 val_pearson=-0.1259 val_spearman=0.3029 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train_summary.json
+param_count=1205508
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model patchtst_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 5.87
+==> evaluate model=patchtst_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model patchtst_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+group=overall value=all num_threads=12 mae=0.0861 rmse=0.0910
+group=split value=test num_threads=12 mae=0.0861 rmse=0.0910
+group=observation_ratio value=0.5 num_threads=12 mae=0.0861 rmse=0.0910
+group=event value=prince-toronto num_threads=12 mae=0.0861 rmse=0.0910
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model patchtst_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/artifacts/patchtst_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/patchtst_baseline/eval returncode=0
+==> command_duration_seconds 2.99
+==> train model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl
+
+epoch 1/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 1/5:   7%|▋         | 1/14 [00:00<00:04,  2.61it/s]
+epoch 1/5:  29%|██▊       | 4/14 [00:00<00:01,  9.35it/s]
+epoch 1/5:  50%|█████     | 7/14 [00:00<00:00, 14.52it/s]
+epoch 1/5:  79%|███████▊  | 11/14 [00:00<00:00, 19.77it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 21.96it/s]
+epoch 1/5: 100%|██████████| 14/14 [00:00<00:00, 16.31it/s]
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+epoch=1 train_loss=0.1785 val_loss=0.1253 val_mae=0.2431 val_rmse=0.2709 val_pearson=-0.1022 val_spearman=0.0228 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 2/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 2/5:  21%|██▏       | 3/14 [00:00<00:00, 24.38it/s]
+epoch 2/5:  43%|████▎     | 6/14 [00:00<00:00, 25.22it/s]
+epoch 2/5:  71%|███████▏  | 10/14 [00:00<00:00, 27.54it/s]
+epoch 2/5:  93%|█████████▎| 13/14 [00:00<00:00, 26.73it/s]
+epoch 2/5: 100%|██████████| 14/14 [00:00<00:00, 27.59it/s]
+epoch=2 train_loss=0.1176 val_loss=0.0949 val_mae=0.1676 val_rmse=0.2110 val_pearson=-0.2175 val_spearman=0.1410 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 3/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 3/5:  21%|██▏       | 3/14 [00:00<00:00, 23.90it/s]
+epoch 3/5:  43%|████▎     | 6/14 [00:00<00:00, 25.72it/s]
+epoch 3/5:  71%|███████▏  | 10/14 [00:00<00:00, 27.03it/s]
+epoch 3/5:  93%|█████████▎| 13/14 [00:00<00:00, 26.61it/s]
+epoch 3/5: 100%|██████████| 14/14 [00:00<00:00, 27.37it/s]
+epoch=3 train_loss=0.1103 val_loss=0.0906 val_mae=0.1534 val_rmse=0.2037 val_pearson=-0.2327 val_spearman=0.1690 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 4/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 4/5:  21%|██▏       | 3/14 [00:00<00:00, 24.25it/s]
+epoch 4/5:  50%|█████     | 7/14 [00:00<00:00, 29.54it/s]
+epoch 4/5:  71%|███████▏  | 10/14 [00:00<00:00, 26.50it/s]
+epoch 4/5:  93%|█████████▎| 13/14 [00:00<00:00, 25.76it/s]
+epoch 4/5: 100%|██████████| 14/14 [00:00<00:00, 27.22it/s]
+epoch=4 train_loss=0.1094 val_loss=0.0898 val_mae=0.1131 val_rmse=0.1942 val_pearson=-0.2367 val_spearman=0.1707 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+
+epoch 5/5:   0%|          | 0/14 [00:00<?, ?it/s]
+epoch 5/5:  21%|██▏       | 3/14 [00:00<00:00, 26.76it/s]
+epoch 5/5:  43%|████▎     | 6/14 [00:00<00:00, 24.74it/s]
+epoch 5/5:  64%|██████▍   | 9/14 [00:00<00:00, 25.60it/s]
+epoch 5/5:  86%|████████▌ | 12/14 [00:00<00:00, 26.60it/s]
+epoch 5/5: 100%|██████████| 14/14 [00:00<00:00, 27.40it/s]
+epoch=5 train_loss=0.1150 val_loss=0.0880 val_mae=0.1276 val_rmse=0.1955 val_pearson=-0.2346 val_spearman=0.1235 val_majority_sentiment_accuracy=0.9577 val_majority_sentiment_macro_f1=0.3261 val_majority_sentiment_weighted_f1=0.9371
+saved_model=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.pt
+saved_config=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.json
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train_summary.json
+param_count=6332420
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/train.py --train_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_train.jsonl --model thread_transformer_baseline --device cuda --epochs 5 --batch_size 16 --seed 42 --capacity_group default --output_dir runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts --val_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_val.jsonl returncode=0
+==> command_duration_seconds 7.64
+==> evaluate model=thread_transformer_baseline
+
+$ /home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/eval
+/tmp/asf_main_clean/src/evaluate.py:254: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(args.model_path, map_location=args.device)
+/home/alexmhliu/auto_install/miniconda3/envs/asf311/lib/python3.11/site-packages/torch/nn/modules/transformer.py:502: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. (Triggered internally at ../aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+group=overall value=all num_threads=12 mae=0.1167 rmse=0.1190
+group=split value=test num_threads=12 mae=0.1167 rmse=0.1190
+group=observation_ratio value=0.5 num_threads=12 mae=0.1167 rmse=0.1190
+group=event value=prince-toronto num_threads=12 mae=0.1167 rmse=0.1190
+saved_predictions=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/eval/predictions.jsonl
+saved_summary=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/eval/results_summary.csv
+saved_event_errors=runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/eval/error_analysis_by_event.csv
+==> command_exit command=/home/alexmhliu/auto_install/miniconda3/envs/asf311/bin/python src/evaluate.py --data_path /tmp/pheme_cross_event_8j60zwfh/prince-toronto_test.jsonl --model thread_transformer_baseline --model_path runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.pt --config_path runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/artifacts/thread_transformer_baseline_prince-toronto_train.json --device cuda --output_dir runs/20260323_091953_cross_event_prince_toronto/thread_transformer_baseline/eval returncode=0
+==> command_duration_seconds 3.17
+==> summarize completed
+==> anomaly Affect-State Forecaster 的 MAE 明显差于 structure_baseline。
+==> anomaly patchtst_baseline 的 Pearson/Spearman 接近 0。
+==> summarize end_time=1774228850.1433735
