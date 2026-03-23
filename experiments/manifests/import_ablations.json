@@ -892,5 +892,5 @@
   },
   "manifest_path": "experiments/manifests/import_ablations.json",
   "report_path": "experiments/records/import_ablations.md",
-  "html_path": "experiments/html/import_ablations.html"
+  "html_path": "experiments/html/imports/import_ablations.html"
 }

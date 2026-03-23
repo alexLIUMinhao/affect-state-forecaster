@@ -637,5 +637,5 @@
   },
   "manifest_path": "experiments/manifests/20260319_174402_labeler_lexicon_conservative_ratio_05.json",
   "report_path": "experiments/records/20260319_174402_labeler_lexicon_conservative_ratio_05.md",
-  "html_path": "experiments/html/20260319_174402_labeler_lexicon_conservative_ratio_05.html"
+  "html_path": "experiments/html/diagnostics/20260319_174402_labeler_lexicon_conservative_ratio_05.html"
 }

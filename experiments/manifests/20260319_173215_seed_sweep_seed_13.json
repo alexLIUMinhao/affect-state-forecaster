@@ -661,5 +661,5 @@
   },
   "manifest_path": "experiments/manifests/20260319_173215_seed_sweep_seed_13.json",
   "report_path": "experiments/records/20260319_173215_seed_sweep_seed_13.md",
-  "html_path": "experiments/html/20260319_173215_seed_sweep_seed_13.html"
+  "html_path": "experiments/html/seed_sweep/20260319_173215_seed_sweep_seed_13.html"
 }

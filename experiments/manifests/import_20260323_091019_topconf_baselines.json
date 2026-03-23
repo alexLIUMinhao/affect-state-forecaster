@@ -448,5 +448,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260323_091019_topconf_baselines.json",
   "report_path": "experiments/records/import_20260323_091019_topconf_baselines.md",
-  "html_path": "experiments/html/import_20260323_091019_topconf_baselines.html"
+  "html_path": "experiments/html/imports/import_20260323_091019_topconf_baselines.html"
 }

@@ -586,5 +586,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260319_172927_cross_event_germanwings_crash.json",
   "report_path": "experiments/records/import_20260319_172927_cross_event_germanwings_crash.md",
-  "html_path": "experiments/html/import_20260319_172927_cross_event_germanwings_crash.html"
+  "html_path": "experiments/html/imports/import_20260319_172927_cross_event_germanwings_crash.html"
 }

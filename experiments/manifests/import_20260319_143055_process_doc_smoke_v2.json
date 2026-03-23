@@ -200,5 +200,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260319_143055_process_doc_smoke_v2.json",
   "report_path": "experiments/records/import_20260319_143055_process_doc_smoke_v2.md",
-  "html_path": "experiments/html/import_20260319_143055_process_doc_smoke_v2.html"
+  "html_path": "experiments/html/imports/import_20260319_143055_process_doc_smoke_v2.html"
 }

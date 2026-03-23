@@ -586,5 +586,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260319_172746_cross_event_charliehebdo.json",
   "report_path": "experiments/records/import_20260319_172746_cross_event_charliehebdo.md",
-  "html_path": "experiments/html/import_20260319_172746_cross_event_charliehebdo.html"
+  "html_path": "experiments/html/imports/import_20260319_172746_cross_event_charliehebdo.html"
 }

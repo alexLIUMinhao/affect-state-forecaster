@@ -1082,5 +1082,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260323_091235_ratio_sweep_ratio_30.json",
   "report_path": "experiments/records/import_20260323_091235_ratio_sweep_ratio_30.md",
-  "html_path": "experiments/html/import_20260323_091235_ratio_sweep_ratio_30.html"
+  "html_path": "experiments/html/imports/import_20260323_091235_ratio_sweep_ratio_30.html"
 }

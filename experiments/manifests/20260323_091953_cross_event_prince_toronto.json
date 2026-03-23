@@ -976,5 +976,5 @@
   },
   "manifest_path": "experiments/manifests/20260323_091953_cross_event_prince_toronto.json",
   "report_path": "experiments/records/20260323_091953_cross_event_prince_toronto.md",
-  "html_path": "experiments/html/20260323_091953_cross_event_prince_toronto.html"
+  "html_path": "experiments/html/cross_event/20260323_091953_cross_event_prince_toronto.html"
 }

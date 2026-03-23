@@ -574,5 +574,5 @@
   },
   "manifest_path": "experiments/manifests/import_20260319_173142_cross_event_sydneysiege.json",
   "report_path": "experiments/records/import_20260319_173142_cross_event_sydneysiege.md",
-  "html_path": "experiments/html/import_20260319_173142_cross_event_sydneysiege.html"
+  "html_path": "experiments/html/imports/import_20260319_173142_cross_event_sydneysiege.html"
 }
